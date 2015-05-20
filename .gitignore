@@ -30,8 +30,8 @@
 *.x86_64
 *.hex
 
-# Build folder
-build/
+# Package folder
+package/
 
 
 ###OSX###
