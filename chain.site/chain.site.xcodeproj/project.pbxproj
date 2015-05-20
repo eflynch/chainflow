@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9146B8A91B0CDF1000861699 /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9146B8A81B0CDF1000861699 /* maxmspsdk.xcconfig */; };
-		9146B8AB1B0CE17500861699 /* chain.test.c in Sources */ = {isa = PBXBuildFile; fileRef = 9146B8AA1B0CE17500861699 /* chain.test.c */; };
+		91B64A851B0D0C2600777B9A /* chain.site.c in Sources */ = {isa = PBXBuildFile; fileRef = 91B64A841B0D0C2600777B9A /* chain.site.c */; };
+		91B64A871B0D0C4B00777B9A /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9146B89E1B0CDE8800861699 /* chain.test.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.test.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
-		9146B8A81B0CDF1000861699 /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
-		9146B8AA1B0CE17500861699 /* chain.test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chain.test.c; path = chain.test.xcodeproj/../chain.test.c; sourceTree = "<group>"; };
+		91B64A7A1B0D0C0200777B9A /* chain.site.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.site.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
+		91B64A841B0D0C2600777B9A /* chain.site.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chain.site.c; sourceTree = "<group>"; };
+		91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9146B89B1B0CDE8800861699 /* Frameworks */ = {
+		91B64A771B0D0C0200777B9A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -28,19 +28,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9146B8951B0CDE8800861699 = {
+		91B64A711B0D0C0200777B9A = {
 			isa = PBXGroup;
 			children = (
-				9146B8A81B0CDF1000861699 /* maxmspsdk.xcconfig */,
-				9146B8AA1B0CE17500861699 /* chain.test.c */,
-				9146B89F1B0CDE8800861699 /* Products */,
+				91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */,
+				91B64A841B0D0C2600777B9A /* chain.site.c */,
+				91B64A7B1B0D0C0200777B9A /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		9146B89F1B0CDE8800861699 /* Products */ = {
+		91B64A7B1B0D0C0200777B9A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9146B89E1B0CDE8800861699 /* chain.test.mxo */,
+				91B64A7A1B0D0C0200777B9A /* chain.site.mxo */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,80 +48,80 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9146B89D1B0CDE8800861699 /* chain.test */ = {
+		91B64A791B0D0C0200777B9A /* chain.site */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9146B8A51B0CDE8800861699 /* Build configuration list for PBXNativeTarget "chain.test" */;
+			buildConfigurationList = 91B64A811B0D0C0200777B9A /* Build configuration list for PBXNativeTarget "chain.site" */;
 			buildPhases = (
-				9146B89A1B0CDE8800861699 /* Sources */,
-				9146B89B1B0CDE8800861699 /* Frameworks */,
-				9146B89C1B0CDE8800861699 /* Resources */,
+				91B64A761B0D0C0200777B9A /* Sources */,
+				91B64A771B0D0C0200777B9A /* Frameworks */,
+				91B64A781B0D0C0200777B9A /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = chain.test;
-			productName = chain.test;
-			productReference = 9146B89E1B0CDE8800861699 /* chain.test.mxo */;
+			name = chain.site;
+			productName = chain.site;
+			productReference = 91B64A7A1B0D0C0200777B9A /* chain.site.mxo */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		9146B8961B0CDE8800861699 /* Project object */ = {
+		91B64A721B0D0C0200777B9A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Evan Lynch";
 				TargetAttributes = {
-					9146B89D1B0CDE8800861699 = {
-						CreatedOnToolsVersion = 6.3.1;
+					91B64A791B0D0C0200777B9A = {
+						CreatedOnToolsVersion = 6.3.2;
 					};
 				};
 			};
-			buildConfigurationList = 9146B8991B0CDE8800861699 /* Build configuration list for PBXProject "chain.test" */;
+			buildConfigurationList = 91B64A751B0D0C0200777B9A /* Build configuration list for PBXProject "chain.site" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 9146B8951B0CDE8800861699;
-			productRefGroup = 9146B89F1B0CDE8800861699 /* Products */;
+			mainGroup = 91B64A711B0D0C0200777B9A;
+			productRefGroup = 91B64A7B1B0D0C0200777B9A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9146B89D1B0CDE8800861699 /* chain.test */,
+				91B64A791B0D0C0200777B9A /* chain.site */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9146B89C1B0CDE8800861699 /* Resources */ = {
+		91B64A781B0D0C0200777B9A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9146B8A91B0CDF1000861699 /* maxmspsdk.xcconfig in Resources */,
+				91B64A871B0D0C4B00777B9A /* maxmspsdk.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9146B89A1B0CDE8800861699 /* Sources */ = {
+		91B64A761B0D0C0200777B9A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9146B8AB1B0CE17500861699 /* chain.test.c in Sources */,
+				91B64A851B0D0C2600777B9A /* chain.site.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		9146B8A31B0CDE8800861699 /* Debug */ = {
+		91B64A7F1B0D0C0200777B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9146B8A81B0CDF1000861699 /* maxmspsdk.xcconfig */;
+			baseConfigurationReference = 91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -161,9 +161,9 @@
 			};
 			name = Debug;
 		};
-		9146B8A41B0CDE8800861699 /* Release */ = {
+		91B64A801B0D0C0200777B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9146B8A81B0CDF1000861699 /* maxmspsdk.xcconfig */;
+			baseConfigurationReference = 91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -197,16 +197,16 @@
 			};
 			name = Release;
 		};
-		9146B8A61B0CDE8800861699 /* Debug */ = {
+		91B64A821B0D0C0200777B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9146B8A81B0CDF1000861699 /* maxmspsdk.xcconfig */;
+			baseConfigurationReference = 91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */;
 			buildSettings = {
 			};
 			name = Debug;
 		};
-		9146B8A71B0CDE8800861699 /* Release */ = {
+		91B64A831B0D0C0200777B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9146B8A81B0CDF1000861699 /* maxmspsdk.xcconfig */;
+			baseConfigurationReference = 91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
@@ -214,25 +214,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9146B8991B0CDE8800861699 /* Build configuration list for PBXProject "chain.test" */ = {
+		91B64A751B0D0C0200777B9A /* Build configuration list for PBXProject "chain.site" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9146B8A31B0CDE8800861699 /* Debug */,
-				9146B8A41B0CDE8800861699 /* Release */,
+				91B64A7F1B0D0C0200777B9A /* Debug */,
+				91B64A801B0D0C0200777B9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9146B8A51B0CDE8800861699 /* Build configuration list for PBXNativeTarget "chain.test" */ = {
+		91B64A811B0D0C0200777B9A /* Build configuration list for PBXNativeTarget "chain.site" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9146B8A61B0CDE8800861699 /* Debug */,
-				9146B8A71B0CDE8800861699 /* Release */,
+				91B64A821B0D0C0200777B9A /* Debug */,
+				91B64A831B0D0C0200777B9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 9146B8961B0CDE8800861699 /* Project object */;
+	rootObject = 91B64A721B0D0C0200777B9A /* Project object */;
 }

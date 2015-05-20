@@ -13,6 +13,7 @@
 PRODUCT_NAME = $(PROJECT_NAME)
 PRODUCT_VERSION = 6.1.4
 ARCHS = i386 x86_64
+ONLY_ACTIVE_ARCH = NO
 
 
 // Paths
@@ -71,6 +72,8 @@ GENERATE_PKGINFO_FILE = YES
 
 // Flags to enforce some build-time checks for the symbols used while not actually performing a hard link
 C74_SYM_LINKER_FLAGS = @$(C74SUPPORT)/max-includes/c74_linker_flags.txt
+
+OTHER_LDFLAGS = $(C74_SYM_LINKER_FLAGS)
 
 
 // hide all symbols by default
