@@ -76,15 +76,14 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
     if (attrstart && atom_gettype(argv) == A_SYM)
         dict_name = atom_getsym(argv);
 
-    x->s_dictionary = dictionary_new();
-
-    attr_args_process(x, argc, argv);
     if (!x->s_dict_name) {
         if (dict_name)
             object_attr_setsym(x, gensym("name"), dict_name);
         else
             object_attr_setsym(x, gensym("name"), symbol_unique());
     }
+
+    attr_args_process(x, argc, argv);
 
     x->s_outlet = outlet_new(x, NULL);
     x->s_qelem = qelem_new(x, (method)chain_site_qfn);
@@ -100,7 +99,8 @@ void chain_site_set_dict_name(t_chain_site *x, void *attr, long argc, t_atom *ar
 {
     t_symbol *dict_name = atom_getsym(argv);
     if (!x->s_dict_name || !dict_name || x->s_dict_name!=dict_name){
-        object_free(x->s_dictionary);
+        if (x->s_dictionary)
+            object_free(x->s_dictionary);
         x->s_dictionary = dictionary_new();
         x->s_dictionary = dictobj_register(x->s_dictionary, &dict_name);
         x->s_dict_name = dict_name;
@@ -109,9 +109,11 @@ void chain_site_set_dict_name(t_chain_site *x, void *attr, long argc, t_atom *ar
 
 void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv)
 {
+    post("Setting url!");
     t_symbol *url = atom_getsym(argv);
     if (!x->s_url || !url || x->s_url!=url){
-        dictionary_appendsym(x->s_dictionary, gensym("url"), &url);
+        dictionary_deleteentry(x->s_dictionary, gensym("url"));
+        dictionary_appendsym(x->s_dictionary, gensym("url"), url);
         x->s_url = url;
     }
 }
@@ -119,6 +121,9 @@ void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv)
 void chain_site_free(t_chain_site *x)
 {
     chain_site_stop(x);
+
+    if (x->s_dictionary)
+        object_free(x->s_dictionary);
 
     if (x->s_qelem)
         qelem_free(x->s_qelem);

@@ -15,6 +15,7 @@
 typedef struct chain_info
 {
     t_object s_obj;
+    void *s_outlet;
     long s_value;
     t_symbol *s_dict_name;
     t_dictionary *s_dictionary;
@@ -27,6 +28,8 @@ void chain_info_bang(t_chain_info *x);
 void chain_info_set_dict_name(t_chain_info *x, void *attr, long argc, t_atom *argv);
 
 static t_class *s_chain_info_class = NULL;
+
+t_symbol *ps_clear, *ps_append, *ps_url, *ps_name;
 
 int C74_EXPORT main(void)
 {
@@ -41,6 +44,11 @@ int C74_EXPORT main(void)
     CLASS_ATTR_ACCESSORS(c, "name", NULL, chain_info_set_dict_name);
 
     class_register(CLASS_BOX, c);
+
+    ps_clear = gensym("clear");
+    ps_append = gensym("append");
+    ps_url = gensym("url");
+    ps_name = gensym("name");
 
     s_chain_info_class = c;
 
@@ -57,15 +65,14 @@ void *chain_info_new(t_symbol *s, long argc, t_atom *argv)
     if (attrstart && atom_gettype(argv) == A_SYM)
         dict_name = atom_getsym(argv);
 
-    x->s_dictionary = NULL;
-
     attr_args_process(x, argc, argv);
     if (!x->s_dict_name) {
         if (dict_name)
-            object_attr_setsym(x, gensym("name"), dict_name);
+            object_attr_setsym(x, ps_name, dict_name);
     }
 
     x->s_value = 0;
+    x->s_outlet = outlet_new(x, NULL);
     
     return x;
 }
@@ -74,15 +81,19 @@ void chain_info_set_dict_name(t_chain_info *x, void *attr, long argc, t_atom *ar
 {
     t_symbol *dict_name = atom_getsym(argv);
     if (!x->s_dict_name || !dict_name || x->s_dict_name!=dict_name){
-        dictobj_release(x->s_dictionary);
+        if (x->s_dictionary)
+            dictobj_release(x->s_dictionary);
         x->s_dictionary = dictobj_findregistered_retain(dict_name);
+        if (!x->s_dictionary)
+            object_error(x, "Chain site not found!");
         x->s_dict_name = dict_name;
     }
 }
 
 void chain_info_free(t_chain_info *x)
 {
-    dictobj_release(x->s_dictionary);
+    if (x->s_dictionary)
+        dictobj_release(x->s_dictionary);
 }
 
 void chain_info_int(t_chain_info *x, long n)
@@ -93,6 +104,9 @@ void chain_info_int(t_chain_info *x, long n)
 void chain_info_bang(t_chain_info *x)
 {
     t_symbol *url;
-    dictionary_getsym(x->s_dictionary, gensym("url"), &url);
-    post("url is %s", url);
+    dictionary_getsym(x->s_dictionary, ps_url, &url);
+    if (url)
+    {
+        outlet_anything(x->s_outlet, url,0,NIL);
+    }
 }
