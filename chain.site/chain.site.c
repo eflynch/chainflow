@@ -7,10 +7,18 @@
 
 #include "ext.h"
 #include "ext_common.h"
+#include "ext_strings.h"
 #include "ext_obex.h"
 #include "ext_time.h"
 #include "ext_itm.h"
 #include "ext_dictobj.h"
+
+#include "jansson.h"
+
+#include "messages.h"
+#include "requests.h"
+
+#define URL_SIZE 1024
 
 typedef struct chain_site
 {
@@ -109,12 +117,15 @@ void chain_site_set_dict_name(t_chain_site *x, void *attr, long argc, t_atom *ar
 
 void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv)
 {
-    post("Setting url!");
-    t_symbol *url = atom_getsym(argv);
-    if (!x->s_url || !url || x->s_url!=url){
+    t_symbol *url_sym = atom_getsym(argv);
+
+    if (!x->s_url || !url_sym || x->s_url!=url_sym){
         dictionary_deleteentry(x->s_dictionary, gensym("url"));
-        dictionary_appendsym(x->s_dictionary, gensym("url"), url);
-        x->s_url = url;
+        dictionary_appendsym(x->s_dictionary, gensym("url"), url_sym);
+        x->s_url = url_sym;
+        char url_str[URL_SIZE];
+        strncpy_zero(url_str, url_sym->s_name, sizeof(url_str));
+        chain_debug("Set url to: %s", url_str);
     }
 }
 
@@ -148,12 +159,60 @@ void chain_site_int(t_chain_site *x, long n)
 
 void chain_site_bang(t_chain_site *x)
 {
-    chain_site_stop(x);
+    // chain_site_stop(x);
 
-    if (x->s_systhread == NULL) {
-        post("Starting a new thread");
-        systhread_create((method) chain_site_threadproc, x, 0, 0, 0, &x->s_systhread);
+    // if (x->s_systhread == NULL) {
+    //     post("Starting a new thread");
+    //     systhread_create((method) chain_site_threadproc, x, 0, 0, 0, &x->s_systhread);
+    // }
+
+    char *text;
+    json_t *root;
+    json_error_t error;
+
+    text = chain_request(x->s_url->s_name);
+    if(!text){
+        object_error(&x->s_obj, "Request failed totally dude...");
+        return;
     }
+    root = json_loads(text, 0, &error);
+    free(text);
+
+    if(!root){
+        object_error(&x->s_obj, "Request did not return valid JSON.");
+        return;
+    }
+
+    if(!json_is_object(root))
+    {
+        chain_error("JSON root is not an object");
+        json_decref(root);
+        return;
+    }
+    json_t *device_array = json_object_get(root, "devices");
+
+    if(!json_is_array(device_array))
+    {
+        chain_error("JSON device_array is not an array");
+        json_decref(root);
+        return;
+    }
+    for (int i=0; i < json_array_size(device_array); i++){
+        json_t *device, *name;
+        const char *name_text;
+
+        device = json_array_get(device_array, i);
+        if(!json_is_object(device)){
+            chain_error("JSON device is not an object");
+            json_decref(root);
+            return;
+        }
+        name = json_object_get(device, "name");
+        name_text = json_string_value(name);
+        chain_info("Got device name: %s", name_text);
+    }
+
+    json_decref(root);
 
 }
 

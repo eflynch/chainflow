@@ -18,9 +18,9 @@ ONLY_ACTIVE_ARCH = NO
 
 // Paths
 C74SUPPORT = $(SRCROOT)/../max6-sdk/c74support
-LIBJANSSON = $(SRCROOT)/../jansson/build
-HEADER_SEARCH_PATHS = "$(C74SUPPORT)/max-includes" "$(C74SUPPORT)/msp-includes" "$(C74SUPPORT)/jit-includes" "$(LIBJANSSON)/include"
-FRAMEWORK_SEARCH_PATHS = "$(C74SUPPORT)/max-includes" "$(C74SUPPORT)/msp-includes" "$(C74SUPPORT)/jit-includes" "$(LIBJANSSON)/lib"
+COMMON_DIR = $(SRCROOT)/../common
+HEADER_SEARCH_PATHS = "$(C74SUPPORT)/max-includes" "$(C74SUPPORT)/msp-includes" "$(C74SUPPORT)/jit-includes" "$(COMMON_DIR)"
+FRAMEWORK_SEARCH_PATHS = "$(C74SUPPORT)/max-includes" "$(C74SUPPORT)/msp-includes" "$(C74SUPPORT)/jit-includes"
 DSTROOT = $(SRCROOT)/../package/maxchain/externals
 // (This next path is relative to DSTROOT)
 INSTALL_PATH = /
