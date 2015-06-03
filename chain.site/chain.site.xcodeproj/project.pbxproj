@@ -13,6 +13,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		91AA37BA1B178EBD00F56982 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../jansson/build/lib/libjansson.a; sourceTree = "<group>"; };
 		91B64A7A1B0D0C0200777B9A /* chain.site.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.site.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B64A841B0D0C2600777B9A /* chain.site.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chain.site.c; sourceTree = "<group>"; };
 		91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
@@ -33,6 +34,7 @@
 		91B64A711B0D0C0200777B9A = {
 			isa = PBXGroup;
 			children = (
+				91AA37BA1B178EBD00F56982 /* libjansson.a */,
 				91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */,
 				91B64A881B0E345B00777B9A /* commonsyms.c */,
 				91B64A841B0D0C2600777B9A /* chain.site.c */,

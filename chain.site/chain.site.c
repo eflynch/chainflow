@@ -136,7 +136,7 @@ void chain_site_sleeptime(t_chain_site *x, long sleeptime)
 {
     if (sleeptime<10)
         sleeptime = 10;
-    x->s_sleeptime = sleeptime;
+    x->s_sleeptime = (int)sleeptime;
 }
 
 void chain_site_int(t_chain_site *x, long n)
@@ -180,12 +180,8 @@ void chain_site_qfn(t_chain_site *x){
     outlet_int(x->s_outlet, myValue);
 }
 
-void *chain_site_threadproc(t_chain_site *x)
-{
-    while(1){
-        if (x->s_systhread_cancel)
-            break;
-
+void *chain_site_threadproc(t_chain_site *x) {
+    while(!x->s_systhread_cancel){
         systhread_mutex_lock(x->s_mutex);
         x->s_value++;
         systhread_mutex_unlock(x->s_mutex);
