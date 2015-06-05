@@ -15,7 +15,7 @@
 		91CF9E001B1F6F94001D45FA /* libjansson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91CF9DFF1B1F6F94001D45FA /* libjansson.dylib */; };
 		91CF9E021B1F7678001D45FA /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9E011B1F7678001D45FA /* messages.c */; };
 		91CF9E041B20CC66001D45FA /* queries.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9E031B20CC66001D45FA /* queries.c */; };
-		91CF9E061B20E720001D45FA /* chainapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9E051B20E720001D45FA /* chainapi.c */; };
+		91CF9E081B22377F001D45FA /* chainsummary.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9E071B22377F001D45FA /* chainsummary.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,7 +28,7 @@
 		91CF9DFF1B1F6F94001D45FA /* libjansson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libjansson.dylib; path = ../../../../../usr/local/lib/libjansson.dylib; sourceTree = "<group>"; };
 		91CF9E011B1F7678001D45FA /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
 		91CF9E031B20CC66001D45FA /* queries.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queries.c; path = ../common/queries.c; sourceTree = "<group>"; };
-		91CF9E051B20E720001D45FA /* chainapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chainapi.c; sourceTree = "<group>"; };
+		91CF9E071B22377F001D45FA /* chainsummary.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chainsummary.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,9 +53,9 @@
 				91CF9DF61B1F6212001D45FA /* requests.c */,
 				91CF9E011B1F7678001D45FA /* messages.c */,
 				91CF9E031B20CC66001D45FA /* queries.c */,
+				91CF9E071B22377F001D45FA /* chainsummary.c */,
 				91B64A881B0E345B00777B9A /* commonsyms.c */,
 				91B64A841B0D0C2600777B9A /* chain.site.c */,
-				91CF9E051B20E720001D45FA /* chainapi.c */,
 				91B64A7B1B0D0C0200777B9A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -139,7 +139,7 @@
 				91B64A891B0E345B00777B9A /* commonsyms.c in Sources */,
 				91B64A851B0D0C2600777B9A /* chain.site.c in Sources */,
 				91CF9DF71B1F6212001D45FA /* requests.c in Sources */,
-				91CF9E061B20E720001D45FA /* chainapi.c in Sources */,
+				91CF9E081B22377F001D45FA /* chainsummary.c in Sources */,
 				91CF9E021B1F7678001D45FA /* messages.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

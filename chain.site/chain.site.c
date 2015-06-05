@@ -1,6 +1,6 @@
 /**
  @file
- chain.test - a simple chain_site object
+ chain.site - a simple chain_site object
  
  @ingroup    maxchain
  */
@@ -12,7 +12,7 @@
 
 #include "messages.h"
 #include "queries.h"
-#include "chainapi.h"
+#include "chainsummary.h"
 
 #define URL_SIZE 1024
 
@@ -37,12 +37,12 @@ void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv);
 
 static t_class *s_chain_site_class = NULL;
 
-t_symbol *gsym_url, *gsym_db;
+t_symbol *ps_url, *ps_db;
 
 int C74_EXPORT main(void)
 {
-    gsym_url = gensym("url");
-    gsym_db = gensym("db");
+    ps_url = gensym("url");
+    ps_db = gensym("db");
     
     t_class *c;
 
@@ -112,8 +112,8 @@ void chain_site_set_site_name(t_chain_site *x, void *attr, long argc, t_atom *ar
         db_open(site_name, NULL, &x->s_db);
         query_init_database(x->s_db);
 
-        dictionary_deleteentry(x->s_dictionary, gsym_db);
-        dictionary_appendobject(x->s_dictionary, gsym_db, x->s_db);
+        dictionary_deleteentry(x->s_dictionary, ps_db);
+        dictionary_appendobject(x->s_dictionary, ps_db, x->s_db);
     }
 }
 
@@ -122,8 +122,8 @@ void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv)
     t_symbol *url_sym = atom_getsym(argv);
 
     if (!x->s_url || !url_sym || x->s_url!=url_sym){
-        dictionary_deleteentry(x->s_dictionary, gsym_url);
-        dictionary_appendsym(x->s_dictionary, gsym_url, url_sym);
+        dictionary_deleteentry(x->s_dictionary, ps_url);
+        dictionary_appendsym(x->s_dictionary, ps_url, url_sym);
         x->s_url = url_sym;
         char url_str[URL_SIZE];
         strncpy_zero(url_str, url_sym->s_name, sizeof(url_str));
@@ -141,13 +141,11 @@ void chain_site_load(t_chain_site *x)
         chain_error("no url set");
         return;
     }
-    chainapi_load_summary(x->s_url->s_name, x->s_db);
+    chain_load_summary(x->s_url->s_name, x->s_db);
 }
 
 void chain_site_free(t_chain_site *x)
 {
     if (x->s_dictionary)
         object_free(x->s_dictionary);
-    if (x->s_db)
-        db_close(&x->s_db);
 }
