@@ -87,6 +87,8 @@ void chain_load_summary(const char *url, t_database *db){
             data_type_text = json_string_value(data_type);
 
             sensor_id = query_insert_sensor(db, metric_id, device_id, href_text, unit_text, sensor_type_text, data_type_text);
+
+            // TODO: update with recent value if available
         }
     }
     json_decref(root);

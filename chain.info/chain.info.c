@@ -28,6 +28,7 @@ void chain_info_int(t_chain_info *x, long n);
 void chain_info_bang(t_chain_info *x);
 void chain_info_set_site_name(t_chain_info *x, void *attr, long argc, t_atom *argv);
 void chain_info_metrics(t_chain_info *x);
+void chain_info_devices(t_chain_info *x);
 
 static t_class *s_chain_info_class = NULL;
 
@@ -41,6 +42,7 @@ int C74_EXPORT main(void)
     
     class_addmethod(c, (method)chain_info_bang, "bang", 0);
     class_addmethod(c, (method)chain_info_metrics, "metrics", 0);
+    class_addmethod(c, (method)chain_info_devices, "devices", 0);
     class_addmethod(c, (method)chain_info_int, "int", A_LONG, 0);
 
     CLASS_ATTR_SYM(c, "name", 0, t_chain_info, s_site_name);
@@ -133,5 +135,31 @@ void chain_info_metrics(t_chain_info *x)
 
     atom_setparse(&ac, &av, parsestr);
     outlet_anything(x->s_outlet, gensym("metrics"), ac, av);
+    sysmem_freeptr(av);
+}
+
+void chain_info_devices(t_chain_info *x)
+{ 
+    t_db_result *db_result = NULL;
+    t_atom *av = NULL;
+    long ac = 0;
+    int numrecords;
+
+    char parsestr[1024];
+    strcpy(parsestr, "");
+
+    query_list_devices(x->s_db, &db_result);
+
+    numrecords = db_result_numrecords(db_result);
+
+    for (int i=0; i<numrecords; i++){
+        const char *name;
+        name = db_result_string(db_result, i, 0);
+        strcat(parsestr, " ");
+        strcat(parsestr, name);
+    }
+
+    atom_setparse(&ac, &av, parsestr);
+    outlet_anything(x->s_outlet, gensym("devices"), ac, av);
     sysmem_freeptr(av);
 }

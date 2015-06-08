@@ -49,6 +49,8 @@ static const char *create_metrics_table = \
 
 static const char *list_metrics = "SELECT name FROM metrics";
 
+static const char *list_devices = "SELECT name FROM devices";
+
 void query_init_database(t_database *db){
     t_max_err err = MAX_ERR_NONE;
 
@@ -110,4 +112,12 @@ void query_list_metrics(t_database *db, t_db_result **db_result){
     err = db_query(db, db_result, list_metrics);
     if (err)
         chain_error("Error getting metrics list");
+}
+
+void query_list_devices(t_database *db, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, list_devices);
+    if (err)
+        chain_error("Error getting devices list");
 }

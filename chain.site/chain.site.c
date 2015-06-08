@@ -20,6 +20,8 @@
 typedef struct chain_site
 {
     t_object s_obj;
+    t_systhread s_systhread_load;
+    void *s_outlet_busy;
     void *s_outlet;
     t_symbol *s_site_name;
     t_symbol *s_url;
@@ -34,6 +36,7 @@ void chain_site_bang(t_chain_site *x);
 void chain_site_int(t_chain_site *x, long n);
 void chain_site_set_site_name(t_chain_site *x, void *attr, long argc, t_atom *argv);
 void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv);
+void *chain_site_load_threadproc(t_chain_site *x);
 
 static t_class *s_chain_site_class = NULL;
 
@@ -93,7 +96,9 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
 
     attr_args_process(x, argc, argv);
 
+    x->s_outlet_busy = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
+    x->s_systhread_load = NULL;
     return x;
 }
 
@@ -141,11 +146,36 @@ void chain_site_load(t_chain_site *x)
         chain_error("no url set");
         return;
     }
-    chain_load_summary(x->s_url->s_name, x->s_db);
+    if (x->s_systhread_load == NULL){
+        outlet_int(x->s_outlet_busy, 1);
+        systhread_create((method) chain_site_load_threadproc, x, 0, 0, 0, &x->s_systhread_load);
+    } else {
+        chain_error("BUSY");
+    }
 }
 
 void chain_site_free(t_chain_site *x)
 {
     if (x->s_dictionary)
         object_free(x->s_dictionary);
+
+    unsigned int ret;
+    if (x->s_systhread_load){
+        systhread_join(x->s_systhread_load, &ret);
+        x->s_systhread_load = NULL;
+    }
 }
+
+
+void *chain_site_load_threadproc(t_chain_site *x)
+{
+    chain_load_summary(x->s_url->s_name, x->s_db); 
+    outlet_int(x->s_outlet_busy, 0);
+
+    x->s_systhread_load = NULL;
+
+    systhread_exit(0);
+    return NULL;
+}
+
+
