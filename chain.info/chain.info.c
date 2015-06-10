@@ -16,6 +16,8 @@
 typedef struct chain_info
 {
     t_object s_obj;
+    t_systhread s_systhread_setup;
+    int s_setup_cancel;
     void *s_outlet;
     t_symbol *s_site_name;
     t_dictionary *s_dictionary;
@@ -29,6 +31,9 @@ void chain_info_bang(t_chain_info *x);
 void chain_info_set_site_name(t_chain_info *x, void *attr, long argc, t_atom *argv);
 void chain_info_metrics(t_chain_info *x);
 void chain_info_devices(t_chain_info *x);
+
+int chain_inf_get_dict(t_chain_info *x);
+void *chain_info_setup_threadproc(t_chain_info *x);
 
 static t_class *s_chain_info_class = NULL;
 
@@ -78,6 +83,7 @@ void *chain_info_new(t_symbol *s, long argc, t_atom *argv)
     }
 
     x->s_outlet = outlet_new(x, NULL);
+    x->s_setup_cancel = false;
     
     return x;
 }
@@ -85,23 +91,44 @@ void *chain_info_new(t_symbol *s, long argc, t_atom *argv)
 void chain_info_set_site_name(t_chain_info *x, void *attr, long argc, t_atom *argv)
 {
     t_symbol *site_name = atom_getsym(argv);
-    if (!x->s_site_name || !site_name || x->s_site_name!=site_name){
-        if (x->s_dictionary)
-            dictobj_release(x->s_dictionary);
-        x->s_dictionary = dictobj_findregistered_retain(site_name);
-        if (!x->s_dictionary)
-            object_error((t_object*)x, "Chain site not found!");
+    if (!x->s_site_name || x->s_site_name!=site_name){
         x->s_site_name = site_name;
 
-        dictionary_getobject(x->s_dictionary, ps_db, &x->s_db);
+        if (x->s_systhread_setup == NULL){
+            systhread_create((method) chain_info_setup_threadproc, x, 0, 0, 0, &x->s_systhread_setup);
+        }
+        
 
     }
+}
+
+int chain_info_get_dict(t_chain_info *x)
+{
+    int err = 0;
+    if (x->s_dictionary)
+        dictobj_release(x->s_dictionary);
+    x->s_dictionary = dictobj_findregistered_retain(x->s_site_name);
+
+    if (!x->s_dictionary)
+        err = 1;
+
+    dictionary_getobject(x->s_dictionary, ps_db, &x->s_db);
+
+    return err;
 }
 
 void chain_info_free(t_chain_info *x)
 {
     if (x->s_dictionary)
         dictobj_release(x->s_dictionary);
+
+
+    unsigned int ret;
+    if (x->s_systhread_setup){
+        x->s_setup_cancel = true;
+        systhread_join(x->s_systhread_setup, &ret);
+        x->s_systhread_setup = NULL;
+    }
 }
 
 void chain_info_int(t_chain_info *x, long n)
@@ -117,7 +144,7 @@ void chain_info_metrics(t_chain_info *x)
     t_db_result *db_result = NULL;
     t_atom *av = NULL;
     long ac = 0;
-    int numrecords;
+    long numrecords;
 
     char parsestr[1024];
     strcpy(parsestr, "");
@@ -143,7 +170,7 @@ void chain_info_devices(t_chain_info *x)
     t_db_result *db_result = NULL;
     t_atom *av = NULL;
     long ac = 0;
-    int numrecords;
+    long numrecords;
 
     char parsestr[1024];
     strcpy(parsestr, "");
@@ -162,4 +189,19 @@ void chain_info_devices(t_chain_info *x)
     atom_setparse(&ac, &av, parsestr);
     outlet_anything(x->s_outlet, gensym("devices"), ac, av);
     sysmem_freeptr(av);
+}
+
+void *chain_info_setup_threadproc(t_chain_info *x)
+{
+    int err=1;
+    while(err){
+        chain_info_get_dict(x);
+        systhread_sleep(1000);
+
+        if (x->s_setup_cancel)
+            break;
+    }
+
+    systhread_exit(0);
+    return NULL;
 }

@@ -45,7 +45,8 @@ void chain_load_summary(const char *url, t_database *db){
     query_clear_database(db);
     for (int i=0; i < json_array_size(device_array); i++){
         json_t *device, *name, *href, *sensor_array;
-        const char *name_text, *href_text;
+        const char *name_text_temp, *href_text;
+        const char name_text[256];
         long device_id;
 
         device = json_array_get(device_array, i);
@@ -55,14 +56,15 @@ void chain_load_summary(const char *url, t_database *db){
             return;
         }
         name = json_object_get(device, "name");
-        name_text = json_string_value(name);
+        name_text_temp = json_string_value(name);
+        sprintf(name_text, "`%s`", name_text_temp);
         href = json_object_get(device, "href");
         href_text = json_string_value(href);
         device_id = query_insert_device(db, name_text, 0.0f, 0.0f, 0.0f);
 
         sensor_array = json_object_get(device, "sensors");
         for (int j=0; j < json_array_size(sensor_array); j++){
-            json_t *sensor, *metric, *href, *unit, *sensor_type, *data_type;
+            json_t *sensor, *metric, *href, *unit, *sensor_type, *data_type, *data_array;
             const char *metric_text, *href_text, *unit_text, *sensor_type_text, *data_type_text;
             long metric_id, sensor_id;
 
@@ -85,10 +87,30 @@ void chain_load_summary(const char *url, t_database *db){
             sensor_type_text = json_string_value(sensor_type);
             data_type = json_object_get(sensor, "dataType");
             data_type_text = json_string_value(data_type);
+            data_array = json_object_get(sensor, "data");
 
-            sensor_id = query_insert_sensor(db, metric_id, device_id, href_text, unit_text, sensor_type_text, data_type_text);
+            json_t *data, *value, *timestamp;
+            double d_value;
+            const char *timestamp_text;
 
-            // TODO: update with recent value if available
+            if (json_array_size(data_array)){
+                data = json_array_get(data_array, json_array_size(data_array) - 1);
+                if(!json_is_object(data)){
+                    chain_error("JSON data is not an object");
+                    json_decref(root);
+                    return;
+                }
+                timestamp = json_object_get(data, "timestamp");
+                timestamp_text = json_string_value(timestamp);
+                value = json_object_get(data, "value");
+                d_value = json_real_value(value);
+            } else { 
+                timestamp_text = NULL;
+                d_value = 0;
+            }
+
+            sensor_id = query_insert_sensor(db, metric_id, device_id, href_text, unit_text,
+                                            sensor_type_text, data_type_text, d_value, timestamp_text);
         }
     }
     json_decref(root);

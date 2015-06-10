@@ -9,6 +9,7 @@
 #include "messages.h"
 
 #define BUFFER_SIZE  (20 * 1024 * 1024)  /* 20 MB */
+#define TIMEOUT 1000 * 10
 
 
 struct write_result
@@ -65,6 +66,7 @@ static char *request(const char *url)
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_response);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &write_result);
     curl_easy_setopt(curl, CURLOPT_URL, url);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, TIMEOUT);
     status = curl_easy_perform(curl);
     if (status != 0){
         chain_error("Failed to connect to URL %s with status: %ld", url, status);

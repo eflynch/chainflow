@@ -9,12 +9,18 @@
 /* Begin PBXBuildFile section */
 		917AE2CC1B2649590007B529 /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 917AE2CB1B2649590007B529 /* maxmspsdk.xcconfig */; };
 		917AE2CE1B264A2D0007B529 /* chain.device.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2CD1B264A2D0007B529 /* chain.device.c */; };
+		917AE2D01B2748F90007B529 /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2CF1B2748F90007B529 /* commonsyms.c */; };
+		917AE2D21B27492B0007B529 /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2D11B27492B0007B529 /* messages.c */; };
+		917AE2D41B2762240007B529 /* queries.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2D31B2762240007B529 /* queries.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		917AE2C11B26494D0007B529 /* chain.device.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.device.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
 		917AE2CB1B2649590007B529 /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
 		917AE2CD1B264A2D0007B529 /* chain.device.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chain.device.c; sourceTree = "<group>"; };
+		917AE2CF1B2748F90007B529 /* commonsyms.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = commonsyms.c; path = "../max6-sdk/c74support/max-includes/common/commonsyms.c"; sourceTree = "<group>"; };
+		917AE2D11B27492B0007B529 /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
+		917AE2D31B2762240007B529 /* queries.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queries.c; path = ../common/queries.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +38,9 @@
 			isa = PBXGroup;
 			children = (
 				917AE2CD1B264A2D0007B529 /* chain.device.c */,
+				917AE2D31B2762240007B529 /* queries.c */,
+				917AE2D11B27492B0007B529 /* messages.c */,
+				917AE2CF1B2748F90007B529 /* commonsyms.c */,
 				917AE2CB1B2649590007B529 /* maxmspsdk.xcconfig */,
 				917AE2C21B26494D0007B529 /* Products */,
 			);
@@ -112,6 +121,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				917AE2D41B2762240007B529 /* queries.c in Sources */,
+				917AE2D01B2748F90007B529 /* commonsyms.c in Sources */,
+				917AE2D21B27492B0007B529 /* messages.c in Sources */,
 				917AE2CE1B264A2D0007B529 /* chain.device.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
