@@ -21,10 +21,12 @@ typedef struct chain_site
 {
     t_object s_obj;
     t_systhread s_systhread_load;
+    t_systhread s_systhread_play;
     void *s_outlet_busy;
     void *s_outlet;
     t_symbol *s_site_name;
     t_symbol *s_url;
+    t_symbol *s_wshref;
     t_dictionary *s_dictionary;
     t_database *s_db;
 } t_chain_site;
@@ -37,6 +39,7 @@ void chain_site_int(t_chain_site *x, long n);
 void chain_site_set_site_name(t_chain_site *x, void *attr, long argc, t_atom *argv);
 void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv);
 void *chain_site_load_threadproc(t_chain_site *x);
+void *chain_site_play_threadproc(t_chain_site *x);
 
 static t_class *s_chain_site_class = NULL;
 
@@ -69,12 +72,25 @@ int C74_EXPORT main(void)
     return 0;
 }
 
-void chain_site_int(t_chain_site *x, long n)
+void chain_site_bang(t_chain_site *x)
 {
 }
 
-void chain_site_bang(t_chain_site *x)
+void chain_site_int(t_chain_site *x, long n)
 {
+    if(!x->s_db){
+        chain_error("database not open");
+        return;
+    }
+    if(!x->s_url){
+        chain_error("no url set");
+        return;
+    }
+    if (x->s_systhread_play == NULL){
+        systhread_create((method) chain_site_play_threadproc, x, 0, 0, 0, &x->s_systhread_play);
+    } else {
+        chain_error("Already playing");
+    }
 }
 
 void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
@@ -132,7 +148,6 @@ void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv)
         x->s_url = url_sym;
         char url_str[URL_SIZE];
         strncpy_zero(url_str, url_sym->s_name, sizeof(url_str));
-        chain_debug("Set url to: %s", url_str);
     }
 }
 
@@ -169,10 +184,22 @@ void chain_site_free(t_chain_site *x)
 
 void *chain_site_load_threadproc(t_chain_site *x)
 {
+    const char *wshref;
     chain_load_summary(x->s_url->s_name, x->s_db); 
+    chain_load_websocket(x->s_url->s_name, &wshref);
     outlet_int(x->s_outlet_busy, 0);
 
     x->s_systhread_load = NULL;
+    x->s_wshref = gensym(wshref);
+    free(wshref);
+
+    systhread_exit(0);
+    return NULL;
+}
+
+void *chain_site_play_threadproc(t_chain_site *x)
+{
+    chain_info("Connecting to %s", x->s_wshref->s_name);
 
     systhread_exit(0);
     return NULL;

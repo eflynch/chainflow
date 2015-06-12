@@ -43,7 +43,7 @@ int chain_device_get_dict(t_chain_device *x);
 
 static t_class *s_chain_device_class = NULL;
 
-t_symbol *ps_name, *ps_db;
+t_symbol *ps_name, *ps_db, *ps_maxchain;
 
 int C74_EXPORT main(void)
 {
@@ -69,6 +69,7 @@ int C74_EXPORT main(void)
 
     ps_name = gensym("name");
     ps_db = gensym("db");
+    ps_maxchain = gensym("maxchain");
     
     return 0;
 }
@@ -104,7 +105,8 @@ void chain_device_set_site_name(t_chain_device *x, void *attr, long argc, t_atom
         x->s_site_name = site_name; 
 
         if (x->s_systhread_setup == NULL){
-            systhread_create((method) chain_device_setup_threadproc, x, 0, 0, 0, &x->s_systhread_setup);
+            systhread_create((method) chain_device_setup_threadproc, x,
+                             0, 0, 0, &x->s_systhread_setup);
         }
     }
 }
@@ -152,22 +154,17 @@ void chain_device_set_query(t_chain_device *x)
         return;
     }
 
-    t_max_err err;
-    const char *query = "SELECT timestamp, value, metric_id FROM sensors, devices WHERE devices.name = \"%s\" AND devices.device_id = sensors.device_id";
+    const char *query = "SELECT timestamp, value, metric_id FROM sensors,"
+        " devices WHERE devices.name = \"%s\" AND devices.device_id = sensors.device_id";
 
     if(!x->s_db){
         return;
     }
 
-    if (x->s_view){
-        db_view_remove(x->s_db, &x->s_view);
-    }
-
     char buffer[2048];
     sprintf(buffer, query, x->s_device_name->s_name);
     db_view_create(x->s_db, buffer, &x->s_view);
-    return;
-    object_attach_byptr_register(x, x->s_db, _sym_nobox);
+    object_attach_byptr_register(x, x->s_view, ps_maxchain);
 }
 
 void chain_device_send_all(t_chain_device *x){
@@ -203,7 +200,8 @@ void chain_device_send_all(t_chain_device *x){
     }
 }
 
-void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg,
+                         void *sender, void *data)
 {
     if (sender == x->s_view && x->s_live_flag) {
        chain_device_send_all(x); 

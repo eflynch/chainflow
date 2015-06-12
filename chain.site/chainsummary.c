@@ -5,6 +5,32 @@
 #include "requests.h"
 #include "queries.h"
 
+void chain_load_websocket(const char *url, const char **wstext){
+    char *text;
+    json_error_t error;
+    json_t *root;
+
+    text = chain_request(url);
+    if(!text){
+        chain_error("Request for ws totally failed dude...");
+        return;
+    }
+    root = json_loads(text, 0, &error);
+    free(text);
+
+    if(!root){
+        chain_error("Request did not return valid JSON.");
+        return;
+    }
+
+    json_t *_links = json_object_get(root, "_links");
+    json_t *websocketStream = json_object_get(_links, "ch:websocketStream");
+    json_t *jtwshref = json_object_get(websocketStream, "href");
+    const char *wshreftext = json_string_value(jtwshref);
+    *wstext = malloc(2048);
+    strcpy(*wstext, wshreftext);
+}
+
 void chain_load_summary(const char *url, t_database *db){
     char *text;
     json_t *root;
