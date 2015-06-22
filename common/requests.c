@@ -9,7 +9,7 @@
 #include "messages.h"
 
 #define BUFFER_SIZE  (20 * 1024 * 1024)  /* 20 MB */
-#define TIMEOUT 1000 * 10
+#define TIMEOUT 1000 * 30
 
 
 struct write_result

@@ -7,6 +7,11 @@ static const char *insert_device_query = \
 "(name, latitude, longitude, elevation) "
 "VALUES (\"%s\", %f, %f, %f)";
 
+static const char *update_sensor_query = \
+"UPDATE sensors SET timestamp = \"%s\", value = %lf WHERE href=(\"%s\"); "
+"SELECT devices.name FROM devices, sensors WHERE sensors.device_id = devices.device_id "
+"AND sensors.href=(\"%s\");";
+
 static const char *insert_metric_query = \
 "INSERT OR IGNORE INTO metrics (name) VALUES (\"%s\");"
 "SELECT metric_id FROM metrics WHERE name=(\"%s\");";
@@ -55,6 +60,18 @@ static const char *list_devices = "SELECT name FROM devices";
 static const char *get_metric = "SELECT name FROM metrics WHERE metric_id=%ld";
 
 static const char *get_device_by_name = "SELECT device_id FROM devices WHERE name=\"%s\"";
+
+static const char *get_data_by_device_name = \
+"SELECT sensors.value, sensors.timestamp, metrics.name FROM sensors, devices, metrics "
+"WHERE sensors.device_id=devices.device_id AND "
+"devices.name=(\"%s\") AND "
+"sensors.metric_id=metrics.metric_id";
+
+static const char *get_data_by_sensor_href = \
+"SELECT sensors.value, sensors.timestamp, metrics.name FROM sensors, metrics "
+"WHERE sensors.metric_id=metrics.metric_id AND "
+"sensors.href = (\"%s\")";
+
 
 void query_init_database(t_database *db){
     t_max_err err = MAX_ERR_NONE;
@@ -113,6 +130,18 @@ long query_insert_sensor(t_database *db, long metric_id, long device_id, const c
     return id;
 }
 
+void query_update_sensor(t_database *db, const char *sensor_href, const char *timestamp, double value,
+                         t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, update_sensor_query, timestamp, value, sensor_href, sensor_href); 
+
+    if (err)
+        chain_error("Error updating sensor");
+
+
+}
+
 void query_list_metrics(t_database *db, t_db_result **db_result){
     t_max_err err = MAX_ERR_NONE;
 
@@ -140,11 +169,34 @@ void query_metric_by_id(t_database *db, long metric_id, t_db_result **db_result)
 long query_device_by_name(t_database *db, const char *device_name){
     t_max_err err = MAX_ERR_NONE;
 
-    t_db_result *db_result;
+    t_db_result *db_result = NULL;
 
     err = db_query(db, &db_result, get_device_by_name, device_name);
     if (err)
         chain_error("Error getting device");
 
-    return 0;
+    if(!db_result_numrecords(db_result)){
+        chain_error("Could not find device");
+        return 0;
+    }
+
+    long id = db_result_long(db_result, 0, 0);
+
+    return id;
+}
+
+void query_data_by_device_name(t_database *db, const char *device_name, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, get_data_by_device_name, device_name);
+    if (err)
+        chain_error("Error getting device data");
+}
+
+void query_data_by_sensor_href(t_database *db, const char *sensor_href, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, get_data_by_sensor_href, sensor_href);
+    if (err)
+        chain_error("Error getting device data");
 }

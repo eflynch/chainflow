@@ -38,6 +38,7 @@ void *chain_device_setup_threadproc(t_chain_device *x);
 
 void chain_device_set_query(t_chain_device *x);
 void chain_device_send_all(t_chain_device *x);
+void chain_device_send_sensor(t_chain_device *x, const char *href);
 int chain_device_get_dict(t_chain_device *x);
 
 
@@ -116,7 +117,6 @@ void chain_device_set_device_name(t_chain_device *x, void *attr, long argc, t_at
     t_symbol *device_name = atom_getsym(argv);
     if (!x->s_device_name || x->s_device_name!=device_name){
         x->s_device_name = device_name;
-        chain_device_set_query(x);
     }
 }
 
@@ -132,6 +132,9 @@ int chain_device_get_dict(t_chain_device *x)
         err = 1;
     }
     dictionary_getobject(x->s_dictionary, ps_db, &x->s_db);
+    // Attach object to site
+    object_subscribe(ps_maxchain, x->s_site_name, NULL, x);
+
     return err;
 }
 
@@ -148,54 +151,57 @@ void chain_device_free(t_chain_device *x)
     }
 }
 
-void chain_device_set_query(t_chain_device *x)
-{
-    if (!x->s_device_name){
-        return;
-    }
-
-    const char *query = "SELECT timestamp, value, metric_id FROM sensors,"
-        " devices WHERE devices.name = \"%s\" AND devices.device_id = sensors.device_id";
-
+void chain_device_send_sensor(t_chain_device *x, const char *href){
     if(!x->s_db){
+        chain_error("No DB!");
         return;
     }
 
-    char buffer[2048];
-    sprintf(buffer, query, x->s_device_name->s_name);
-    db_view_create(x->s_db, buffer, &x->s_view);
-    object_attach_byptr_register(x, x->s_view, ps_maxchain);
+    t_db_result *db_result = NULL;
+
+    query_data_by_sensor_href(x->s_db, href, &db_result);
+
+    if (!db_result_numrecords(db_result)){
+        chain_error("No sensor found");
+        return;
+    }
+
+    double value = db_result_float(db_result, 0, 0);
+    const char *timestamp = db_result_string(db_result, 0, 1);
+    const char *metric_name = db_result_string(db_result, 0, 2);
+
+    t_atom av[2];
+    short ac = 2;
+    atom_setsym(av, gensym(metric_name));
+    atom_setfloat(av+1, value);
+
+    outlet_list(x->s_outlet, 0L, ac, av);
 }
 
 void chain_device_send_all(t_chain_device *x){
-
-    if (!x->s_view){
-        chain_error("No query set");
+    if(!x->s_db){
+        chain_error("No DB!");
         return;
     }
 
-    t_db_result *db_result;
+    t_db_result *db_result = NULL;
 
-    db_view_getresult(x->s_view, &db_result);
+    query_data_by_device_name(x->s_db, x->s_device_name->s_name, &db_result);
 
     long numrecords = db_result_numrecords(db_result);
 
     for (int i=0; i<numrecords; i++){
         const char *timestamp, *metric_name;
-        t_db_result *db_metric_result = NULL;
         double value;
-        long metric_id;
-        timestamp = db_result_string(db_result, i, 0);
-        value = db_result_float(db_result, i, 1);
-        metric_id = db_result_long(db_result, i, 2);
-
-        query_metric_by_id(x->s_db, metric_id, &db_metric_result);
-        metric_name = db_result_string(db_metric_result, 0, 0);
+        timestamp = db_result_string(db_result, i, 1);
+        value = db_result_float(db_result, i, 0);
+        metric_name = db_result_string(db_result, i, 2);
 
         t_atom av[2];
         short ac = 2;
         atom_setsym(av, gensym(metric_name));
         atom_setfloat(av+1, value);
+
         outlet_list(x->s_outlet, 0L, ac, av);
     }
 }
@@ -203,8 +209,9 @@ void chain_device_send_all(t_chain_device *x){
 void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg,
                          void *sender, void *data)
 {
-    if (sender == x->s_view && x->s_live_flag) {
-       chain_device_send_all(x); 
+    if (s == x->s_site_name && x->s_live_flag && msg == x->s_device_name) {
+        const char *href = (const char *)data;
+        chain_device_send_sensor(x, href);
     }
 }
 
@@ -228,8 +235,6 @@ void *chain_device_setup_threadproc(t_chain_device *x)
         if (x->s_setup_cancel)
             break;
     }
-    if (x->s_device_name)
-        chain_device_set_query(x);
 
     systhread_exit(0);
     return NULL;

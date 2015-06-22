@@ -4,32 +4,16 @@
  
  @ingroup    maxchain
  */
+#include "chain.site.h"
 
-#include "ext.h"
-#include "ext_common.h"
-#include "ext_dictobj.h"
-#include "ext_database.h"
+#include "libwebsockets.h"
 
 #include "messages.h"
 #include "queries.h"
 #include "chainsummary.h"
+#include "chainwebsocket.h"
 
 #define URL_SIZE 1024
-
-
-typedef struct chain_site
-{
-    t_object s_obj;
-    t_systhread s_systhread_load;
-    t_systhread s_systhread_play;
-    void *s_outlet_busy;
-    void *s_outlet;
-    t_symbol *s_site_name;
-    t_symbol *s_url;
-    t_symbol *s_wshref;
-    t_dictionary *s_dictionary;
-    t_database *s_db;
-} t_chain_site;
 
 void *chain_site_new(t_symbol *s, long argc, t_atom *argv);
 void chain_site_free(t_chain_site *x);
@@ -43,12 +27,13 @@ void *chain_site_play_threadproc(t_chain_site *x);
 
 static t_class *s_chain_site_class = NULL;
 
-t_symbol *ps_url, *ps_db;
+t_symbol *ps_url, *ps_db, *ps_maxchain;
 
 int C74_EXPORT main(void)
 {
     ps_url = gensym("url");
     ps_db = gensym("db");
+    ps_maxchain = gensym("maxchain");
     
     t_class *c;
 
@@ -115,6 +100,9 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
     x->s_outlet_busy = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
     x->s_systhread_load = NULL;
+    x->s_systhread_play = NULL;
+    x->s_play_cancel = false;
+
     return x;
 }
 
@@ -135,6 +123,9 @@ void chain_site_set_site_name(t_chain_site *x, void *attr, long argc, t_atom *ar
 
         dictionary_deleteentry(x->s_dictionary, ps_db);
         dictionary_appendobject(x->s_dictionary, ps_db, x->s_db);
+
+        // Register object
+        object_register(ps_maxchain, site_name, x);
     }
 }
 
@@ -179,6 +170,13 @@ void chain_site_free(t_chain_site *x)
         systhread_join(x->s_systhread_load, &ret);
         x->s_systhread_load = NULL;
     }
+
+    unsigned int ret2;
+    if (x->s_systhread_play){
+        x->s_play_cancel = true;
+        systhread_join(x->s_systhread_play, &ret2);
+        x->s_systhread_play = NULL;
+    } 
 }
 
 
@@ -199,7 +197,14 @@ void *chain_site_load_threadproc(t_chain_site *x)
 
 void *chain_site_play_threadproc(t_chain_site *x)
 {
-    chain_info("Connecting to %s", x->s_wshref->s_name);
+    struct libwebsocket_context *context = chain_websocket_connect(x);
+
+    int n = 0;
+    while(n>=0){
+        n = libwebsocket_service(context, 2000);
+        if (x->s_play_cancel)
+            break;
+    }
 
     systhread_exit(0);
     return NULL;

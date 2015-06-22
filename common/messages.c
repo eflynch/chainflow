@@ -3,7 +3,7 @@
 
 void chain_error(const char *fmt, ...)
 {
-    char buffer[256];
+    char buffer[2048];
     va_list args;
     va_start(args, fmt);
     vsprintf(buffer, fmt, args);
@@ -13,7 +13,7 @@ void chain_error(const char *fmt, ...)
 
 void chain_info(const char *fmt, ...)
 {
-    char buffer[256];
+    char buffer[2048];
     va_list args;
     va_start(args, fmt);
     vsprintf(buffer, fmt, args);
@@ -23,7 +23,7 @@ void chain_info(const char *fmt, ...)
 
 void chain_debug(const char *fmt, ...)
 {
-    char buffer[256];
+    char buffer[2048];
     va_list args;
     va_start(args, fmt);
     vsprintf(buffer, fmt, args);
