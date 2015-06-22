@@ -37,7 +37,7 @@ void *chain_info_setup_threadproc(t_chain_info *x);
 
 static t_class *s_chain_info_class = NULL;
 
-t_symbol *ps_clear, *ps_append, *ps_url, *ps_name, *ps_db;
+t_symbol *ps_url, *ps_name, *ps_db;
 
 int C74_EXPORT main(void)
 {
@@ -55,8 +55,6 @@ int C74_EXPORT main(void)
 
     class_register(CLASS_BOX, c);
 
-    ps_clear = gensym("clear");
-    ps_append = gensym("append");
     ps_url = gensym("url");
     ps_name = gensym("name");
     ps_db = gensym("db");

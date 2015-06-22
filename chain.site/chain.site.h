@@ -1,11 +1,20 @@
-#ifndef __CHAIN_SITE_H__
-#define __CHAIN_SITE_H__
+//
+//  chain.site.h
+//
+//
+//  Created by Evan Lynch on 6/22/15.
+//
+//
 
+#ifndef ____chain_site__
+#define ____chain_site__
+
+#include <stdio.h>
 #include "ext.h"
 #include "ext_dictobj.h"
 #include "ext_database.h"
 
-#endif
+#endif /* defined(____chain_site__) */
 
 typedef struct chain_site
 {
