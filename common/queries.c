@@ -1,11 +1,12 @@
 #include "ext_database.h"
 
 #include "messages.h"
+#include "chainlib.h"
 
 static const char *insert_device_query = \
 "INSERT INTO devices"
-"(name, latitude, longitude, elevation) "
-"VALUES (\"%s\", %f, %f, %f)";
+"(name, href, latitude, longitude, elevation, x, z) "
+"VALUES (\"%s\", \"%s\", %f, %f, %f, %f, %f)";
 
 static const char *update_sensor_query = \
 "UPDATE sensors SET timestamp = \"%s\", value = %lf WHERE href=(\"%s\"); "
@@ -29,7 +30,9 @@ static const char *create_devices_table = \
 "href VARCHAR(255),"
 "latitude FLOAT,"
 "longitude FLOAT,"
-"elevation FLOAT"
+"elevation FLOAT,"
+"x FLOAT,"
+"z FLOAT"
 ")";
 
 static const char *create_sensors_table = \
@@ -53,6 +56,16 @@ static const char *create_metrics_table = \
 "name VARCHAR(255) UNIQUE"
 ")";
 
+static const char *list_metrics_by_device_name = \
+"SELECT metrics.name FROM sensors, devices, metrics WHERE "
+"sensors.device_id=devices.device_id AND "
+"devices.name=(\"%s\") AND "
+"sensors.metric_id=metrics.metric_id";
+
+static const char *list_devices_near_point = \
+"SELECT name, x, z FROM devices WHERE "
+"x >= %lf AND x < %lf AND z >= %lf AND z < %lf";
+
 static const char *list_metrics = "SELECT name FROM metrics";
 
 static const char *list_devices = "SELECT name FROM devices";
@@ -60,6 +73,10 @@ static const char *list_devices = "SELECT name FROM devices";
 static const char *get_metric = "SELECT name FROM metrics WHERE metric_id=%ld";
 
 static const char *get_device_by_name = "SELECT device_id FROM devices WHERE name=\"%s\"";
+
+static const char *get_device_location = \
+"SELECT latitude, longitude, elevation, x, z "
+"FROM devices WHERE name=\"%s\"";
 
 static const char *get_data_by_device_name = \
 "SELECT sensors.value, sensors.timestamp, metrics.name FROM sensors, devices, metrics "
@@ -71,6 +88,13 @@ static const char *get_data_by_sensor_href = \
 "SELECT sensors.value, sensors.timestamp, metrics.name FROM sensors, metrics "
 "WHERE sensors.metric_id=metrics.metric_id AND "
 "sensors.href = (\"%s\")";
+
+static const char *get_data_by_device_name_metric_name = \
+"SELECT sensors.value, sensors.timestamp FROM sensors, devices, metrics "
+"WHERE sensors.device_id=devices.device_id AND "
+"sensors.metric_id=metrics.metric_id AND "
+"devices.name=(\"%s\") AND "
+"metrics.name=(\"%s\")";
 
 
 void query_init_database(t_database *db){
@@ -92,9 +116,12 @@ void query_clear_database(t_database *db){
         chain_error("Error clearing database");
 }
 
-long query_insert_device(t_database *db, const char *name, float lat, float lon, float ele){
+long query_insert_device(t_database *db, const char *name, const char *href,
+                         float lat, float lon, float ele){
     t_max_err err = MAX_ERR_NONE;
-    err = db_query(db, NULL, insert_device_query, name, lat, lon, ele);
+    double xz[2];
+    chain_convert_geo_xz(lat, lon, xz);
+    err = db_query(db, NULL, insert_device_query, name, href, lat, lon, ele, xz[0], xz[1]);
     if (err)
         chain_error("Error inserting devices");
     long id;
@@ -150,12 +177,28 @@ void query_list_metrics(t_database *db, t_db_result **db_result){
         chain_error("Error getting metrics list");
 }
 
+void query_list_metrics_by_device_name(t_database *db, const char *device_name, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, list_metrics_by_device_name, device_name);
+    if (err)
+        chain_error("Error getting metrics list by device name");
+}
+
 void query_list_devices(t_database *db, t_db_result **db_result){
     t_max_err err = MAX_ERR_NONE;
 
     err = db_query(db, db_result, list_devices);
     if (err)
         chain_error("Error getting devices list");
+}
+
+void query_list_devices_near_point(t_database *db, double x, double z, double s, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, list_devices_near_point, x-s, x+s, z-s, z+s);
+    if (err)
+        chain_error("Error getting devices near %ld, %ld", x, z);
 }
 
 void query_metric_by_id(t_database *db, long metric_id, t_db_result **db_result){
@@ -185,6 +228,15 @@ long query_device_by_name(t_database *db, const char *device_name){
     return id;
 }
 
+
+void query_get_device_location(t_database *db, const char *device_name, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, get_device_location, device_name);
+    if (err)
+        chain_error("Error getting device location");
+}
+
 void query_data_by_device_name(t_database *db, const char *device_name, t_db_result **db_result){
     t_max_err err = MAX_ERR_NONE;
 
@@ -199,4 +251,13 @@ void query_data_by_sensor_href(t_database *db, const char *sensor_href, t_db_res
     err = db_query(db, db_result, get_data_by_sensor_href, sensor_href);
     if (err)
         chain_error("Error getting device data");
+}
+
+void query_data_by_device_name_metric_name(t_database *db, const char *device_name,
+                                           const char *metric_name, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, get_data_by_device_name_metric_name, device_name, metric_name);
+    if (err)
+        chain_error("Error getting device-metric data");
 }

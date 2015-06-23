@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91A7C8711B39B2F400843B96 /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 91A7C8701B39B2F400843B96 /* commonsyms.c */; };
 		91C57A091B3899BE005686FD /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 91C57A081B3899BE005686FD /* maxmspsdk.xcconfig */; };
 		91C57A0B1B389AA5005686FD /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 91C57A0A1B389AA5005686FD /* messages.c */; };
 		91C57A0D1B389AA9005686FD /* chain.metric.c in Sources */ = {isa = PBXBuildFile; fileRef = 91C57A0C1B389AA9005686FD /* chain.metric.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		91A7C8701B39B2F400843B96 /* commonsyms.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = commonsyms.c; path = "../max6-sdk/c74support/max-includes/common/commonsyms.c"; sourceTree = "<group>"; };
 		91C579FE1B3899A9005686FD /* chain.metric.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.metric.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C57A081B3899BE005686FD /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
 		91C57A0A1B389AA5005686FD /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
@@ -34,6 +36,7 @@
 		91C579F51B3899A9005686FD = {
 			isa = PBXGroup;
 			children = (
+				91A7C8701B39B2F400843B96 /* commonsyms.c */,
 				91C57A0E1B389AAE005686FD /* chain.metric.h */,
 				91C57A0C1B389AA9005686FD /* chain.metric.c */,
 				91C57A0A1B389AA5005686FD /* messages.c */,
@@ -117,6 +120,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91A7C8711B39B2F400843B96 /* commonsyms.c in Sources */,
 				91C57A0D1B389AA9005686FD /* chain.metric.c in Sources */,
 				91C57A0B1B389AA5005686FD /* messages.c in Sources */,
 			);

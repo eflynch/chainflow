@@ -14,6 +14,7 @@ void chain_metric_free(t_chain_metric *x);
 void chain_metric_bang(t_chain_metric *x);
 void chain_metric_int(t_chain_metric *x, long n);
 void chain_metric_set_site_name(t_chain_metric *x, void *attr, long argc, t_atom *argv);
+void chain_metric_set_metric_name(t_chain_metric *x, void *attr, long argc, t_atom *argv);
 void *chain_metric_setup_threadproc(t_chain_metric *x);
 
 static t_class *s_chain_metric_class = NULL;
@@ -31,6 +32,8 @@ int C74_EXPORT main(void)
 
     CLASS_ATTR_SYM(c, "name", 0, t_chain_metric, s_site_name);
     CLASS_ATTR_ACCESSORS(c, "name", NULL, chain_metric_set_site_name);
+    CLASS_ATTR_SYM(c, "metric_name", 0, t_chain_metric, s_metric_name);
+    CLASS_ATTR_ACCESSORS(c, "metric_name", NULL, chain_metric_set_metric_name);
 
     class_register(CLASS_BOX, c);
 
@@ -76,6 +79,14 @@ void chain_metric_set_site_name(t_chain_metric *x, void *attr, long argc, t_atom
         }
         
 
+    }
+}
+
+void chain_metric_set_metric_name(t_chain_metric *x, void *attr, long argc, t_atom *argv)
+{
+    t_symbol *metric_name = atom_getsym(argv);
+    if(!x->s_metric_name || x->s_metric_name!=metric_name){
+        x->s_metric_name = metric_name;
     }
 }
 

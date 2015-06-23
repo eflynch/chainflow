@@ -11,9 +11,9 @@
 		91753D731B2B86E00059E455 /* libwebsockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D721B2B86E00059E455 /* libwebsockets.a */; };
 		91753D751B2B86F60059E455 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D741B2B86F60059E455 /* libjansson.a */; };
 		91753D771B2B8AD10059E455 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D761B2B8AD10059E455 /* libssl.dylib */; };
-		91753D791B2B8B0D0059E455 /* libwebsockets_shared.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D781B2B8B0D0059E455 /* libwebsockets_shared.dylib */; };
 		91753D7B1B2B8B760059E455 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D7A1B2B8B760059E455 /* libcrypto.dylib */; };
 		91753D7D1B2B8B9C0059E455 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D7C1B2B8B9C0059E455 /* libz.dylib */; };
+		91ABCC101B39DA100085CC66 /* chainlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 91ABCC0F1B39DA100085CC66 /* chainlib.c */; };
 		91B64A851B0D0C2600777B9A /* chain.site.c in Sources */ = {isa = PBXBuildFile; fileRef = 91B64A841B0D0C2600777B9A /* chain.site.c */; };
 		91B64A871B0D0C4B00777B9A /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */; };
 		91B64A891B0E345B00777B9A /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 91B64A881B0E345B00777B9A /* commonsyms.c */; };
@@ -29,9 +29,9 @@
 		91753D721B2B86E00059E455 /* libwebsockets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebsockets.a; path = ../../../../../usr/local/lib/libwebsockets.a; sourceTree = "<group>"; };
 		91753D741B2B86F60059E455 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../../../../../usr/local/lib/libjansson.a; sourceTree = "<group>"; };
 		91753D761B2B8AD10059E455 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
-		91753D781B2B8B0D0059E455 /* libwebsockets_shared.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libwebsockets_shared.dylib; path = ../../../../../usr/local/lib/libwebsockets_shared.dylib; sourceTree = "<group>"; };
 		91753D7A1B2B8B760059E455 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
 		91753D7C1B2B8B9C0059E455 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		91ABCC0F1B39DA100085CC66 /* chainlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainlib.c; path = ../common/chainlib.c; sourceTree = "<group>"; };
 		91B64A7A1B0D0C0200777B9A /* chain.site.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.site.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B64A841B0D0C2600777B9A /* chain.site.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chain.site.c; sourceTree = "<group>"; };
 		91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
@@ -55,7 +55,6 @@
 				91753D731B2B86E00059E455 /* libwebsockets.a in Frameworks */,
 				91753D751B2B86F60059E455 /* libjansson.a in Frameworks */,
 				91CF9DF91B1F667B001D45FA /* libcurl.dylib in Frameworks */,
-				91753D791B2B8B0D0059E455 /* libwebsockets_shared.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +69,6 @@
 				91753D7A1B2B8B760059E455 /* libcrypto.dylib */,
 				91753D761B2B8AD10059E455 /* libssl.dylib */,
 				91CF9DF81B1F667B001D45FA /* libcurl.dylib */,
-				91753D781B2B8B0D0059E455 /* libwebsockets_shared.dylib */,
 				91753D741B2B86F60059E455 /* libjansson.a */,
 				91753D721B2B86E00059E455 /* libwebsockets.a */,
 				91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */,
@@ -80,6 +78,7 @@
 				91CF9E071B22377F001D45FA /* chainsummary.c */,
 				91753D6C1B2B75B00059E455 /* chainwebsocket.c */,
 				91B64A881B0E345B00777B9A /* commonsyms.c */,
+				91ABCC0F1B39DA100085CC66 /* chainlib.c */,
 				91B64A841B0D0C2600777B9A /* chain.site.c */,
 				91B64A7B1B0D0C0200777B9A /* Products */,
 			);
@@ -165,6 +164,7 @@
 				91B64A891B0E345B00777B9A /* commonsyms.c in Sources */,
 				91B64A851B0D0C2600777B9A /* chain.site.c in Sources */,
 				91CF9DF71B1F6212001D45FA /* requests.c in Sources */,
+				91ABCC101B39DA100085CC66 /* chainlib.c in Sources */,
 				91CF9E081B22377F001D45FA /* chainsummary.c in Sources */,
 				91CF9E021B1F7678001D45FA /* messages.c in Sources */,
 			);
@@ -255,7 +255,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 			};
 			name = Debug;
@@ -264,7 +263,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 			};
 			name = Release;

@@ -5,3 +5,8 @@ all:
 		xcodebuild -project $$project/$$project.xcodeproj ; \
 	done
 
+clean:
+	for project in $(PROJECTS) ; do \
+		xcodebuild -project $$project/$$project.xcodeproj clean ; \
+	done
+

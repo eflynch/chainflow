@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "ext.h"
+#include "ext_common.h"
 #include "ext_dictobj.h"
 #include "ext_database.h"
 
@@ -23,6 +24,7 @@ typedef struct chain_metric
     int s_setup_cancel;
     void *s_outlet;
     t_symbol *s_site_name;
+    t_symbol *s_metric_name;
     t_dictionary *s_dictionary;
     t_database *s_db;
 } t_chain_metric;

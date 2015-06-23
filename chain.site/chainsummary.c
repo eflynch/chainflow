@@ -70,10 +70,11 @@ void chain_load_summary(const char *url, t_database *db){
 
     query_clear_database(db);
     for (int i=0; i < json_array_size(device_array); i++){
-        json_t *device, *name, *href, *sensor_array;
+        json_t *device, *name, *href, *sensor_array, *geoLocation, *latitude, *longitude, *elevation;
         const char *name_text_temp, *href_text;
         const char name_text[256];
         long device_id;
+        float lat, lon, ele;
 
         device = json_array_get(device_array, i);
         if(!json_is_object(device)){
@@ -86,7 +87,22 @@ void chain_load_summary(const char *url, t_database *db){
         sprintf(name_text, "`%s`", name_text_temp);
         href = json_object_get(device, "href");
         href_text = json_string_value(href);
-        device_id = query_insert_device(db, name_text, 0.0f, 0.0f, 0.0f);
+
+        geoLocation = json_object_get(device, "geoLocation");
+        if(!json_is_object(geoLocation)){
+            lat = 0L;
+            lon = 0L;
+            ele = 0L;
+        } else {
+            latitude = json_object_get(geoLocation, "latitude");
+            longitude = json_object_get(geoLocation, "longitude");
+            elevation = json_object_get(geoLocation, "elevation");
+            lat = json_real_value(latitude);
+            lon = json_real_value(longitude);
+            ele = json_real_value(elevation);
+        }
+
+        device_id = query_insert_device(db, name_text, href_text, lat, lon, ele);
 
         sensor_array = json_object_get(device, "sensors");
         for (int j=0; j < json_array_size(sensor_array); j++){

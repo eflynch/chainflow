@@ -31,13 +31,14 @@ void chain_info_bang(t_chain_info *x);
 void chain_info_set_site_name(t_chain_info *x, void *attr, long argc, t_atom *argv);
 void chain_info_metrics(t_chain_info *x);
 void chain_info_devices(t_chain_info *x);
+void chain_info_near(t_chain_info *x, t_symbol *s, long argc, t_atom *argv);
 
 int chain_inf_get_dict(t_chain_info *x);
 void *chain_info_setup_threadproc(t_chain_info *x);
 
 static t_class *s_chain_info_class = NULL;
 
-t_symbol *ps_url, *ps_name, *ps_db;
+t_symbol *ps_url, *ps_name, *ps_db, *ps_devices, *ps_metrics;
 
 int C74_EXPORT main(void)
 {
@@ -48,6 +49,7 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_info_bang, "bang", 0);
     class_addmethod(c, (method)chain_info_metrics, "metrics", 0);
     class_addmethod(c, (method)chain_info_devices, "devices", 0);
+    class_addmethod(c, (method)chain_info_near, "near", A_GIMME, 0);
     class_addmethod(c, (method)chain_info_int, "int", A_LONG, 0);
 
     CLASS_ATTR_SYM(c, "name", 0, t_chain_info, s_site_name);
@@ -58,6 +60,8 @@ int C74_EXPORT main(void)
     ps_url = gensym("url");
     ps_name = gensym("name");
     ps_db = gensym("db");
+    ps_metrics = gensym("metrics");
+    ps_devices = gensym("devices");
 
     s_chain_info_class = c;
 
@@ -137,56 +141,69 @@ void chain_info_bang(t_chain_info *x)
 {
 }
 
+void chain_info_near(t_chain_info *x, t_symbol *s, long argc, t_atom *argv)
+{
+    if (argc!=3){
+        chain_error("near expected with 3 arguments; found %ld", argc);
+        return;
+    }
+    float f_x = atom_getfloat(argv);
+    float f_z = atom_getfloat(argv+1);
+    float f_r = atom_getfloat(argv+2);
+
+    t_db_result *db_result = NULL;
+
+    query_list_devices_near_point(x->s_db, (double)f_x, (double)f_z, (double)f_r, &db_result);
+
+    long numrecords = db_result_numrecords(db_result);
+    t_atom av[numrecords];
+    for (int i=0; i<numrecords; i++){
+        const char *name;
+        name = db_result_string(db_result, i, 0);
+        atom_setsym(av+i, gensym(name));
+    }
+
+    outlet_anything(x->s_outlet, ps_devices, numrecords, av);
+}
+
 void chain_info_metrics(t_chain_info *x)
 { 
     t_db_result *db_result = NULL;
-    t_atom *av = NULL;
-    long ac = 0;
     long numrecords;
-
-    char parsestr[1024];
-    strcpy(parsestr, "");
 
     query_list_metrics(x->s_db, &db_result);
 
     numrecords = db_result_numrecords(db_result);
 
+    t_atom av[numrecords];
+
     for (int i=0; i<numrecords; i++){
         const char *name;
         name = db_result_string(db_result, i, 0);
-        strcat(parsestr, " ");
-        strcat(parsestr, name);
+        atom_setsym(av+i, gensym(name));
     }
 
-    atom_setparse(&ac, &av, parsestr);
-    outlet_anything(x->s_outlet, gensym("metrics"), ac, av);
-    sysmem_freeptr(av);
+    outlet_anything(x->s_outlet, ps_metrics, numrecords, av);
 }
 
 void chain_info_devices(t_chain_info *x)
 { 
     t_db_result *db_result = NULL;
-    t_atom *av = NULL;
-    long ac = 0;
     long numrecords;
-
-    char parsestr[1024];
-    strcpy(parsestr, "");
 
     query_list_devices(x->s_db, &db_result);
 
     numrecords = db_result_numrecords(db_result);
 
+    t_atom av[numrecords];
+
     for (int i=0; i<numrecords; i++){
         const char *name;
         name = db_result_string(db_result, i, 0);
-        strcat(parsestr, " ");
-        strcat(parsestr, name);
+        atom_setsym(av+i, gensym(name));
     }
 
-    atom_setparse(&ac, &av, parsestr);
-    outlet_anything(x->s_outlet, gensym("devices"), ac, av);
-    sysmem_freeptr(av);
+    outlet_anything(x->s_outlet, ps_devices, numrecords, av);
 }
 
 void *chain_info_setup_threadproc(t_chain_info *x)

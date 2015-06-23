@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9112F5711B39BB2600FBDFCB /* chainlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 9112F5701B39BB2600FBDFCB /* chainlib.c */; };
 		917AE2CC1B2649590007B529 /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 917AE2CB1B2649590007B529 /* maxmspsdk.xcconfig */; };
 		917AE2CE1B264A2D0007B529 /* chain.device.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2CD1B264A2D0007B529 /* chain.device.c */; };
 		917AE2D01B2748F90007B529 /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2CF1B2748F90007B529 /* commonsyms.c */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9112F5701B39BB2600FBDFCB /* chainlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainlib.c; path = ../common/chainlib.c; sourceTree = "<group>"; };
 		917AE2C11B26494D0007B529 /* chain.device.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.device.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
 		917AE2CB1B2649590007B529 /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
 		917AE2CD1B264A2D0007B529 /* chain.device.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chain.device.c; sourceTree = "<group>"; };
@@ -39,6 +41,7 @@
 			children = (
 				917AE2CD1B264A2D0007B529 /* chain.device.c */,
 				917AE2D31B2762240007B529 /* queries.c */,
+				9112F5701B39BB2600FBDFCB /* chainlib.c */,
 				917AE2D11B27492B0007B529 /* messages.c */,
 				917AE2CF1B2748F90007B529 /* commonsyms.c */,
 				917AE2CB1B2649590007B529 /* maxmspsdk.xcconfig */,
@@ -121,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9112F5711B39BB2600FBDFCB /* chainlib.c in Sources */,
 				917AE2D41B2762240007B529 /* queries.c in Sources */,
 				917AE2D01B2748F90007B529 /* commonsyms.c in Sources */,
 				917AE2D21B27492B0007B529 /* messages.c in Sources */,
@@ -238,6 +242,7 @@
 				917AE2CA1B26494D0007B529 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

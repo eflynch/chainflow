@@ -72,7 +72,6 @@ static char *request(const char *url)
         chain_error("Failed to connect to URL %s with status: %ld", url, status);
         goto error;
     }
-    chain_info("Connected to URL: %s", url);
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &code);
     if (code != 200)
     {
