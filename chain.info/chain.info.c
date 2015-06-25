@@ -32,8 +32,9 @@ void chain_info_set_site_name(t_chain_info *x, void *attr, long argc, t_atom *ar
 void chain_info_metrics(t_chain_info *x);
 void chain_info_devices(t_chain_info *x);
 void chain_info_near(t_chain_info *x, t_symbol *s, long argc, t_atom *argv);
+void chain_info_nearest(t_chain_info *x, t_symbol *s, long argc, t_atom *argv);
 
-int chain_inf_get_dict(t_chain_info *x);
+int chain_info_get_dict(t_chain_info *x);
 void *chain_info_setup_threadproc(t_chain_info *x);
 
 static t_class *s_chain_info_class = NULL;
@@ -50,6 +51,7 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_info_metrics, "metrics", 0);
     class_addmethod(c, (method)chain_info_devices, "devices", 0);
     class_addmethod(c, (method)chain_info_near, "near", A_GIMME, 0);
+    class_addmethod(c, (method)chain_info_nearest, "nearest", A_GIMME, 0);
     class_addmethod(c, (method)chain_info_int, "int", A_LONG, 0);
 
     CLASS_ATTR_SYM(c, "name", 0, t_chain_info, s_site_name);
@@ -154,6 +156,31 @@ void chain_info_near(t_chain_info *x, t_symbol *s, long argc, t_atom *argv)
     t_db_result *db_result = NULL;
 
     query_list_devices_near_point(x->s_db, (double)f_x, (double)f_z, (double)f_r, &db_result);
+
+    long numrecords = db_result_numrecords(db_result);
+    t_atom av[numrecords];
+    for (int i=0; i<numrecords; i++){
+        const char *name;
+        name = db_result_string(db_result, i, 0);
+        atom_setsym(av+i, gensym(name));
+    }
+
+    outlet_anything(x->s_outlet, ps_devices, numrecords, av);
+}
+
+void chain_info_nearest(t_chain_info *x, t_symbol *s, long argc, t_atom *argv)
+{
+    if (argc!=3){
+        chain_error("near expected with 3 arguments; found %ld", argc);
+        return;
+    }
+    float f_x = atom_getfloat(argv);
+    float f_z = atom_getfloat(argv+1);
+    long n = atom_getlong(argv+2);
+
+    t_db_result *db_result = NULL;
+
+    query_list_nearest_devices(x->s_db, (double)f_x, (double)f_z, n, &db_result);
 
     long numrecords = db_result_numrecords(db_result);
     t_atom av[numrecords];

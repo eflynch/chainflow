@@ -13,6 +13,7 @@ void query_update_sensor(t_database *db, const char *sensor_href, const char *ti
 void query_list_metrics(t_database *db, t_db_result **db_result);
 void query_list_devices(t_database *db, t_db_result **db_result);
 void query_list_devices_near_point(t_database *db, double x, double z, double s, t_db_result **db_result);
+void query_list_nearest_devices(t_database *db, double x, double z, long n, t_db_result **db_result);
 void query_metric_by_id(t_database *db, long metric_id, t_db_result **db_result);
 void query_list_metrics_by_device_name(t_database *db, const char *device_name, t_db_result **db_result);
 

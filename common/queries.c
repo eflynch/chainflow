@@ -62,9 +62,18 @@ static const char *list_metrics_by_device_name = \
 "devices.name=(\"%s\") AND "
 "sensors.metric_id=metrics.metric_id";
 
+static const char *list_nearest_devices = \
+"SELECT name, x, z, "
+"(((x - %lf) * (x - %lf)) + ((z - %lf) * (z - %lf))) AS distance "
+"FROM devices "
+"ORDER BY distance "
+"LIMIT %ld";
+
 static const char *list_devices_near_point = \
-"SELECT name, x, z FROM devices WHERE "
-"x >= %lf AND x < %lf AND z >= %lf AND z < %lf";
+"SELECT name, x, z, "
+"(((x - %lf) * (x - %lf)) + ((z - %lf) * (z - %lf))) AS distance "
+"FROM devices WHERE distance <= %lf * %lf "
+"ORDER BY distance";
 
 static const char *list_metrics = "SELECT name FROM metrics";
 
@@ -196,9 +205,17 @@ void query_list_devices(t_database *db, t_db_result **db_result){
 void query_list_devices_near_point(t_database *db, double x, double z, double s, t_db_result **db_result){
     t_max_err err = MAX_ERR_NONE;
 
-    err = db_query(db, db_result, list_devices_near_point, x-s, x+s, z-s, z+s);
+    err = db_query(db, db_result, list_devices_near_point, x, x, z, z, s, s);
     if (err)
         chain_error("Error getting devices near %ld, %ld", x, z);
+}
+
+void query_list_nearest_devices(t_database *db, double x, double z, long n, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, list_nearest_devices, x, x, z, z, n);
+    if (err)
+        chain_error("Error getting nearest devices");
 }
 
 void query_metric_by_id(t_database *db, long metric_id, t_db_result **db_result){

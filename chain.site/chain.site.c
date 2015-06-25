@@ -71,6 +71,15 @@ void chain_site_int(t_chain_site *x, long n)
         chain_error("no url set");
         return;
     }
+    unsigned int ret;
+    if (x->s_systhread_play != NULL && n == 0){
+        x->s_play_cancel = true;
+        systhread_join(x->s_systhread_play, &ret);
+        x->s_systhread_play = NULL;
+        x->s_play_cancel = false;
+        return;
+    }
+
     if (x->s_systhread_play == NULL){
         systhread_create((method) chain_site_play_threadproc, x, 0, 0, 0, &x->s_systhread_play);
     } else {
@@ -187,10 +196,14 @@ void *chain_site_load_threadproc(t_chain_site *x)
     chain_load_websocket(x->s_url->s_name, &wshref);
     outlet_int(x->s_outlet_busy, 0);
 
-    x->s_systhread_load = NULL;
-    x->s_wshref = gensym(wshref);
-    free(wshref);
+    if(!wshref){
+        chain_error("Could not get websocket address.");
+    } else {
+        x->s_wshref = gensym(wshref);
+        free(wshref);
+    }
 
+    x->s_systhread_load = NULL;
     systhread_exit(0);
     return NULL;
 }
@@ -198,6 +211,11 @@ void *chain_site_load_threadproc(t_chain_site *x)
 void *chain_site_play_threadproc(t_chain_site *x)
 {
     struct libwebsocket_context *context = chain_websocket_connect(x);
+
+    if(!context){
+        systhread_exit(0);
+        return NULL;
+    }
 
     int n = 0;
     while(n>=0){
