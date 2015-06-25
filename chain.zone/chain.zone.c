@@ -19,6 +19,9 @@ typedef struct chain_zone
     t_systhread s_systhread_setup;
     int s_setup_cancel;
     void *s_outlet;
+    float s_pos[3];
+    float s_enter_threshold;
+    float s_exit_threshold;
     t_symbol *s_site_name;
     t_dictionary *s_dictionary;
     t_database *s_db;
@@ -29,6 +32,10 @@ void chain_zone_free(t_chain_zone *x);
 void chain_zone_int(t_chain_zone *x, long n);
 void chain_zone_bang(t_chain_zone *x);
 void chain_zone_set_site_name(t_chain_zone *x, void *attr, long argc, t_atom *argv);
+void chain_zone_set_pos(t_chain_zone *x, void *attr, long argc, t_atom *argv);
+void chain_zone_set_enter(t_chain_zone *x, void *attr, long argc, t_atom *argv);
+void chain_zone_set_exit(t_chain_zone *x, void *attr, long argc, t_atom *argv);
+
 
 int chain_zone_get_dict(t_chain_zone *x);
 void *chain_zone_setup_threadproc(t_chain_zone *x);
@@ -48,6 +55,13 @@ int C74_EXPORT main(void)
     
     CLASS_ATTR_SYM(c, "name", 0, t_chain_zone, s_site_name);
     CLASS_ATTR_ACCESSORS(c, "name", NULL, chain_zone_set_site_name);
+
+    CLASS_ATTR_FLOAT(c, "pos", 0, t_chain_zone, s_pos);
+    CLASS_ATTR_ACCESSORS(c, "pos", NULL, chain_zone_set_pos);
+    CLASS_ATTR_FLOAT(c, "enter", 0, t_chain_zone, s_enter_threshold);
+    CLASS_ATTR_ACCESSORS(c, "enter", NULL, chain_zone_set_enter);
+    CLASS_ATTR_FLOAT(c, "exit", 0, t_chain_zone, s_exit_threshold);
+    CLASS_ATTR_ACCESSORS(c, "exit", NULL, chain_zone_set_exit);
     
     class_register(CLASS_BOX, c);
     
@@ -93,6 +107,29 @@ void chain_zone_set_site_name(t_chain_zone *x, void *attr, long argc, t_atom *ar
             systhread_create((method) chain_zone_setup_threadproc, x, 0, 0, 0, &x->s_systhread_setup);
         }
     }
+}
+
+void chain_zone_set_pos(t_chain_zone *x, void *attr, long argc, t_atom *argv){
+    if (argc != 3){
+        chain_error("Zone position requires 3 arguments not %ld", argc);
+        return;
+    }
+    float f_x = atom_getfloat(argv);
+    float f_y = atom_getfloat(argv+1);
+    float f_z = atom_getfloat(argv+1);
+    x->s_pos[0] = f_x;
+    x->s_pos[1] = f_y;
+    x->s_pos[2] = f_z;
+}
+
+void chain_zone_set_enter(t_chain_zone *x, void *attr, long argc, t_atom *argv){
+    float enter_threshold = atom_getfloat(argv);
+    x->s_enter_threshold = enter_threshold;
+}
+
+void chain_zone_set_exit(t_chain_zone *x, void *attr, long argc, t_atom *argv){
+    float exit_threshold = atom_getfloat(argv);
+    x->s_exit_threshold = exit_threshold;
 }
 
 int chain_zone_get_dict(t_chain_zone *x)
