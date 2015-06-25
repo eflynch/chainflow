@@ -10,6 +10,8 @@
 		91A014781B3C8547006B2788 /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 91A014771B3C8547006B2788 /* maxmspsdk.xcconfig */; };
 		91A0147A1B3C8559006B2788 /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 91A014791B3C8559006B2788 /* messages.c */; };
 		91A0147C1B3C85AC006B2788 /* chain.zone.c in Sources */ = {isa = PBXBuildFile; fileRef = 91A0147B1B3C85AC006B2788 /* chain.zone.c */; };
+		91A0147E1B3CA761006B2788 /* queries.c in Sources */ = {isa = PBXBuildFile; fileRef = 91A0147D1B3CA761006B2788 /* queries.c */; };
+		91A014801B3CA785006B2788 /* chainlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 91A0147F1B3CA785006B2788 /* chainlib.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,6 +19,8 @@
 		91A014771B3C8547006B2788 /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
 		91A014791B3C8559006B2788 /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
 		91A0147B1B3C85AC006B2788 /* chain.zone.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chain.zone.c; sourceTree = "<group>"; };
+		91A0147D1B3CA761006B2788 /* queries.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queries.c; path = ../common/queries.c; sourceTree = "<group>"; };
+		91A0147F1B3CA785006B2788 /* chainlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainlib.c; path = ../common/chainlib.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +39,8 @@
 			children = (
 				91A014771B3C8547006B2788 /* maxmspsdk.xcconfig */,
 				91A014791B3C8559006B2788 /* messages.c */,
+				91A0147D1B3CA761006B2788 /* queries.c */,
+				91A0147F1B3CA785006B2788 /* chainlib.c */,
 				91A0147B1B3C85AC006B2788 /* chain.zone.c */,
 				91A0146E1B3C8531006B2788 /* Products */,
 			);
@@ -116,7 +122,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				91A0147C1B3C85AC006B2788 /* chain.zone.c in Sources */,
+				91A014801B3CA785006B2788 /* chainlib.c in Sources */,
 				91A0147A1B3C8559006B2788 /* messages.c in Sources */,
+				91A0147E1B3CA761006B2788 /* queries.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +240,7 @@
 				91A014761B3C8531006B2788 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
