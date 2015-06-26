@@ -4,7 +4,6 @@ This build max external objects for interacting with chainAPI
 ## Build instructions ##
 
 ### Install dependencies ###
-> brew install openssl --universal
 > brew install cmake
 
 ### Clone repository ###
