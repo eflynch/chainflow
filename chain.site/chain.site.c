@@ -121,6 +121,12 @@ void chain_site_set_site_name(t_chain_site *x, void *attr, long argc, t_atom *ar
     if (!x->s_site_name || !site_name || x->s_site_name!=site_name){
         if (x->s_dictionary)
             object_free(x->s_dictionary);
+        t_dictionary *temp = dictobj_findregistered_retain(site_name);
+        if(temp){
+            dictobj_release(temp);
+            chain_error("Chain site %s already defined", site_name->s_name);
+            return;
+        }
         x->s_dictionary = dictionary_new();
         x->s_dictionary = dictobj_register(x->s_dictionary, &site_name);
         x->s_site_name = site_name;

@@ -237,7 +237,7 @@ void *chain_info_setup_threadproc(t_chain_info *x)
 {
     int err=1;
     while(err){
-        chain_info_get_dict(x);
+        err = chain_info_get_dict(x);
         systhread_sleep(1000);
 
         if (x->s_setup_cancel)
