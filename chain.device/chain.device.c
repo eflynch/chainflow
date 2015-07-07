@@ -363,6 +363,19 @@ void chain_device_location(t_chain_device *x)
 void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end)
 {
     chain_info("%s: %ld, %ld", metric->s_name, start, end);
+
+    t_db_result *db_result = NULL;
+    query_sensor_href_by_device_name_metric_name(x->s_db, x->s_device_name->s_name,
+                                                 metric->s_name, &db_result);
+    const char *sensor_href = db_result_string(db_result, 0, 0);
+    double *data;
+    long data_len;
+    chain_get_data(sensor_href, start, end, &data, &data_len);
+
+    t_atom av[data_len];
+    atom_setdouble_array(data_len, av, data_len, data);
+    outlet_anything(x->s_outlet, metric, data_len, av);
+    free(data);
 }
 
 void *chain_device_setup_threadproc(t_chain_device *x)

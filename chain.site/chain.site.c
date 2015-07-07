@@ -10,7 +10,7 @@
 
 #include "messages.h"
 #include "queries.h"
-#include "chainsummary.h"
+#include "chainquery.h"
 #include "chainwebsocket.h"
 
 #define URL_SIZE 1024
@@ -199,7 +199,7 @@ void *chain_site_load_threadproc(t_chain_site *x)
 {
     const char *wshref;
     chain_load_summary(x->s_url->s_name, x->s_db); 
-    chain_load_websocket(x->s_url->s_name, &wshref);
+    chain_get_websocket(x->s_url->s_name, &wshref);
     outlet_int(x->s_outlet_busy, 0);
 
     if(!wshref){

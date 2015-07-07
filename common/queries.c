@@ -105,6 +105,13 @@ static const char *get_data_by_device_name_metric_name = \
 "devices.name=(\"%s\") AND "
 "metrics.name=(\"%s\")";
 
+static const char *get_sensor_href_by_device_name_metric_name = \
+"SELECT sensors.href FROM sensors, devices, metrics "
+"WHERE sensors.device_id=devices.device_id AND "
+"sensors.metric_id=metrics.metric_id AND "
+"devices.name=(\"%s\") AND "
+"metrics.name=(\"%s\")";
+
 
 void query_init_database(t_database *db){
     t_max_err err = MAX_ERR_NONE;
@@ -277,4 +284,13 @@ void query_data_by_device_name_metric_name(t_database *db, const char *device_na
     err = db_query(db, db_result, get_data_by_device_name_metric_name, device_name, metric_name);
     if (err)
         chain_error("Error getting device-metric data");
+}
+
+void query_sensor_href_by_device_name_metric_name(t_database *db, const char *device_name,
+                                                  const char *metric_name, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, get_sensor_href_by_device_name_metric_name, device_name, metric_name);
+    if (err)
+        chain_error("Error getting sensor href");
 }

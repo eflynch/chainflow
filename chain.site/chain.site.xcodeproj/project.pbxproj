@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9136691B1B4C73C90066E155 /* chainquery.c in Sources */ = {isa = PBXBuildFile; fileRef = 9136691A1B4C73C90066E155 /* chainquery.c */; };
 		914468C51B3DF4C300B1D910 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 914468C41B3DF4C300B1D910 /* libjansson.a */; };
 		914468C71B3E012700B1D910 /* libwebsockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 914468C61B3E012700B1D910 /* libwebsockets.a */; };
 		91753D6D1B2B75B00059E455 /* chainwebsocket.c in Sources */ = {isa = PBXBuildFile; fileRef = 91753D6C1B2B75B00059E455 /* chainwebsocket.c */; };
@@ -21,10 +22,10 @@
 		91CF9DF91B1F667B001D45FA /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91CF9DF81B1F667B001D45FA /* libcurl.dylib */; };
 		91CF9E021B1F7678001D45FA /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9E011B1F7678001D45FA /* messages.c */; };
 		91CF9E041B20CC66001D45FA /* queries.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9E031B20CC66001D45FA /* queries.c */; };
-		91CF9E081B22377F001D45FA /* chainsummary.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9E071B22377F001D45FA /* chainsummary.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9136691A1B4C73C90066E155 /* chainquery.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainquery.c; path = ../common/chainquery.c; sourceTree = "<group>"; };
 		914468C41B3DF4C300B1D910 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../jansson/build/lib/libjansson.a; sourceTree = SOURCE_ROOT; };
 		914468C61B3E012700B1D910 /* libwebsockets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebsockets.a; path = ../libwebsockets/build/lib/libwebsockets.a; sourceTree = SOURCE_ROOT; };
 		91753D6C1B2B75B00059E455 /* chainwebsocket.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chainwebsocket.c; sourceTree = "<group>"; };
@@ -41,7 +42,6 @@
 		91CF9DF81B1F667B001D45FA /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		91CF9E011B1F7678001D45FA /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
 		91CF9E031B20CC66001D45FA /* queries.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queries.c; path = ../common/queries.c; sourceTree = "<group>"; };
-		91CF9E071B22377F001D45FA /* chainsummary.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chainsummary.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +75,7 @@
 				91CF9DF61B1F6212001D45FA /* requests.c */,
 				91CF9E011B1F7678001D45FA /* messages.c */,
 				91CF9E031B20CC66001D45FA /* queries.c */,
-				91CF9E071B22377F001D45FA /* chainsummary.c */,
+				9136691A1B4C73C90066E155 /* chainquery.c */,
 				91753D6C1B2B75B00059E455 /* chainwebsocket.c */,
 				91B64A881B0E345B00777B9A /* commonsyms.c */,
 				91ABCC0F1B39DA100085CC66 /* chainlib.c */,
@@ -165,7 +165,7 @@
 				91B64A851B0D0C2600777B9A /* chain.site.c in Sources */,
 				91CF9DF71B1F6212001D45FA /* requests.c in Sources */,
 				91ABCC101B39DA100085CC66 /* chainlib.c in Sources */,
-				91CF9E081B22377F001D45FA /* chainsummary.c in Sources */,
+				9136691B1B4C73C90066E155 /* chainquery.c in Sources */,
 				91CF9E021B1F7678001D45FA /* messages.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
