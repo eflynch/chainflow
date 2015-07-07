@@ -37,6 +37,7 @@ void chain_device_metric(t_chain_device *x, t_symbol *metric);
 void chain_device_sensors(t_chain_device *x);
 void chain_device_geoLocation(t_chain_device *x);
 void chain_device_location(t_chain_device *x);
+void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end);
 void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
 void chain_device_set_site_name(t_chain_device *x, void *attr, long argc, t_atom *argv);
 void chain_device_set_device_name(t_chain_device *x, void *attr, long argc, t_atom *argv);
@@ -66,6 +67,7 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_device_sensors, "sensors", 0);
     class_addmethod(c, (method)chain_device_geoLocation, "geoLocation", 0);
     class_addmethod(c, (method)chain_device_location, "location", 0);
+    class_addmethod(c, (method)chain_device_data, "data", A_SYM, A_LONG, A_LONG);
 
     CLASS_ATTR_SYM(c, "name", 0, t_chain_device, s_site_name);
     CLASS_ATTR_ACCESSORS(c, "name", NULL, (method)chain_device_set_site_name);
@@ -355,6 +357,12 @@ void chain_device_location(t_chain_device *x)
     atom_setfloat(av, f_x);
     atom_setfloat(av+1, f_z);
     outlet_anything(x->s_outlet2, ps_location, ac, av);
+}
+
+
+void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end)
+{
+    chain_info("%s: %ld, %ld", metric->s_name, start, end);
 }
 
 void *chain_device_setup_threadproc(t_chain_device *x)
