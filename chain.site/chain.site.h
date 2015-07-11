@@ -9,6 +9,7 @@
 #ifndef ____chain_site__
 #define ____chain_site__
 
+#include <time.h>
 #include <stdio.h>
 #include "ext.h"
 #include "ext_dictobj.h"
@@ -30,3 +31,14 @@ typedef struct chain_site
     t_dictionary *s_dictionary;
     t_database *s_db;
 } t_chain_site;
+
+typedef struct chain_event
+{
+    time_t s_time;
+    const char *s_href;
+    const char *s_timestamp;
+    double s_value;
+} t_chain_event;
+ 
+int chain_site_update_sensors(t_chain_site *x, const char *href,
+                              const char *timestamp, double value);

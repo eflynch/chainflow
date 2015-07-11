@@ -118,7 +118,7 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
 void chain_site_set_site_name(t_chain_site *x, void *attr, long argc, t_atom *argv)
 {
     t_symbol *site_name = atom_getsym(argv);
-    if (!x->s_site_name || !site_name || x->s_site_name!=site_name){
+    if (!x->s_site_name || x->s_site_name!=site_name){
         if (x->s_dictionary)
             object_free(x->s_dictionary);
         t_dictionary *temp = dictobj_findregistered_retain(site_name);
@@ -146,11 +146,19 @@ void chain_site_set_site_name(t_chain_site *x, void *attr, long argc, t_atom *ar
 
 void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv)
 {
+    
+    t_max_err err = MAX_ERR_NONE;
+
     t_symbol *url_sym = atom_getsym(argv);
+    
+    if(!x->s_dictionary){
+        chain_error("Cannot set url, bad dictionary");
+        return;
+    }
 
     if (!x->s_url || !url_sym || x->s_url!=url_sym){
-        dictionary_deleteentry(x->s_dictionary, ps_url);
-        dictionary_appendsym(x->s_dictionary, ps_url, url_sym);
+        err = dictionary_deleteentry(x->s_dictionary, ps_url);
+        err = dictionary_appendsym(x->s_dictionary, ps_url, url_sym);
         x->s_url = url_sym;
         char url_str[URL_SIZE];
         strncpy_zero(url_str, url_sym->s_name, sizeof(url_str));
@@ -177,9 +185,6 @@ void chain_site_load(t_chain_site *x)
 
 void chain_site_free(t_chain_site *x)
 {
-    if (x->s_dictionary)
-        object_free(x->s_dictionary);
-
     unsigned int ret;
     if (x->s_systhread_load){
         systhread_join(x->s_systhread_load, &ret);
@@ -191,9 +196,30 @@ void chain_site_free(t_chain_site *x)
         x->s_play_cancel = true;
         systhread_join(x->s_systhread_play, &ret2);
         x->s_systhread_play = NULL;
-    } 
+    }
+    
+    if (x->s_dictionary){
+        object_free(x->s_dictionary);
+    }
 }
 
+int chain_site_update_sensors(t_chain_site *x, const char *href, const char *timestamp, double value)
+{
+    t_db_result *db_result = NULL;
+    query_update_sensor(x->s_db, href, timestamp, value, &db_result);
+
+    if (!db_result_numrecords(db_result)){
+        chain_error("Failed to aquire device name");
+        return 1;
+    }
+    const char *device_name = db_result_string(db_result, 0, 0);
+
+    t_symbol *device_name_sym;
+    device_name_sym = gensym(device_name);
+    object_notify(x, device_name_sym, (void *)href);
+
+    return 0;
+}
 
 void *chain_site_load_threadproc(t_chain_site *x)
 {
@@ -206,7 +232,7 @@ void *chain_site_load_threadproc(t_chain_site *x)
         chain_error("Could not get websocket address.");
     } else {
         x->s_wshref = gensym(wshref);
-        free(wshref);
+        free((void *)wshref);
     }
 
     x->s_systhread_load = NULL;

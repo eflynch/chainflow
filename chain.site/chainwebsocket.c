@@ -4,7 +4,6 @@
 #include "libwebsockets.h"
 #include "jansson.h"
 #include "messages.h"
-#include "queries.h"
 
 static int chain_callback(struct libwebsocket_context *ctx, struct libwebsocket *wsi,
               enum libwebsocket_callback_reasons reason, void *user, void *in, size_t len){
@@ -45,21 +44,11 @@ static int chain_callback(struct libwebsocket_context *ctx, struct libwebsocket 
             d_value = json_real_value(value);
             href_text = json_string_value(href);
 
-            t_db_result *db_result = NULL;
-            query_update_sensor(x->s_db, href_text, timestamp_text, d_value, &db_result);
-
-            if (!db_result_numrecords(db_result)){
-                chain_error("Failed to aquire device name");
+            int err = chain_site_update_sensors(x, href_text, timestamp_text, d_value);
+            if (err){
                 json_decref(root);
                 return 1;
             }
-            device_name_text = db_result_string(db_result, 0, 0);
-
-            t_symbol *device_name_sym;
-            device_name_sym = gensym(device_name_text);
-            object_notify(x, device_name_sym, href_text);
-
-            json_decref(root);
             break;
         }
         default:
