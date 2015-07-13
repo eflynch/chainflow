@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91674A151B53FED300029E21 /* chainworker.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A141B53FED300029E21 /* chainworker.c */; };
+		91674A171B53FED800029E21 /* queries.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A161B53FED800029E21 /* queries.c */; };
+		91674A191B53FEFA00029E21 /* chainlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A181B53FEFA00029E21 /* chainlib.c */; };
 		91A7C8711B39B2F400843B96 /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 91A7C8701B39B2F400843B96 /* commonsyms.c */; };
 		91C57A091B3899BE005686FD /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 91C57A081B3899BE005686FD /* maxmspsdk.xcconfig */; };
 		91C57A0B1B389AA5005686FD /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 91C57A0A1B389AA5005686FD /* messages.c */; };
@@ -14,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		91674A141B53FED300029E21 /* chainworker.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainworker.c; path = ../common/chainworker.c; sourceTree = "<group>"; };
+		91674A161B53FED800029E21 /* queries.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queries.c; path = ../common/queries.c; sourceTree = "<group>"; };
+		91674A181B53FEFA00029E21 /* chainlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainlib.c; path = ../common/chainlib.c; sourceTree = "<group>"; };
 		91A7C8701B39B2F400843B96 /* commonsyms.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = commonsyms.c; path = "../max6-sdk/c74support/max-includes/common/commonsyms.c"; sourceTree = "<group>"; };
 		91C579FE1B3899A9005686FD /* chain.metric.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.metric.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C57A081B3899BE005686FD /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
@@ -39,6 +45,9 @@
 				91A7C8701B39B2F400843B96 /* commonsyms.c */,
 				91C57A0E1B389AAE005686FD /* chain.metric.h */,
 				91C57A0C1B389AA9005686FD /* chain.metric.c */,
+				91674A141B53FED300029E21 /* chainworker.c */,
+				91674A181B53FEFA00029E21 /* chainlib.c */,
+				91674A161B53FED800029E21 /* queries.c */,
 				91C57A0A1B389AA5005686FD /* messages.c */,
 				91C57A081B3899BE005686FD /* maxmspsdk.xcconfig */,
 				91C579FF1B3899A9005686FD /* Products */,
@@ -120,9 +129,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91674A171B53FED800029E21 /* queries.c in Sources */,
 				91A7C8711B39B2F400843B96 /* commonsyms.c in Sources */,
 				91C57A0D1B389AA9005686FD /* chain.metric.c in Sources */,
 				91C57A0B1B389AA5005686FD /* messages.c in Sources */,
+				91674A151B53FED300029E21 /* chainworker.c in Sources */,
+				91674A191B53FEFA00029E21 /* chainlib.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

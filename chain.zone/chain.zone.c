@@ -16,21 +16,17 @@
 
 #include "messages.h"
 #include "queries.h"
+#include "chainworker.h"
 
 typedef struct chain_zone
 {
-    t_object s_obj;
-    t_systhread s_systhread_setup;
-    int s_setup_cancel;
+    t_chain_worker s_worker;
     void *s_outlet;
     void *s_outlet2;
     float s_pos[3];
     float s_enter_threshold;
     float s_exit_threshold;
     t_hashtab *s_current_devices;
-    t_symbol *s_site_name;
-    t_dictionary *s_dictionary;
-    t_database *s_db;
 } t_chain_zone;
 
 typedef struct t_ordered_triple {
@@ -39,24 +35,29 @@ typedef struct t_ordered_triple {
     float s_z;
 } t_ordered_triple;
 
+// Create + Destroy
 void *chain_zone_new(t_symbol *s, long argc, t_atom *argv);
 void chain_zone_free(t_chain_zone *x);
+
+// Methods
 void chain_zone_int(t_chain_zone *x, long n);
 void chain_zone_bang(t_chain_zone *x);
-void chain_zone_set_site_name(t_chain_zone *x, void *attr, long argc, t_atom *argv);
+
+//Atributes
 void chain_zone_set_pos(t_chain_zone *x, void *attr, long argc, t_atom *argv);
 void chain_zone_set_enter(t_chain_zone *x, void *attr, long argc, t_atom *argv);
 void chain_zone_set_exit(t_chain_zone *x, void *attr, long argc, t_atom *argv);
 
-
+// Helpers
 void chain_zone_update(t_chain_zone *x);
 void chain_zone_exit_handler(t_hashtab_entry *e, void *arg);
-int chain_zone_get_dict(t_chain_zone *x);
-void *chain_zone_setup_threadproc(t_chain_zone *x);
+
+// Notify
+void chain_zone_notify(t_chain_zone *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
 
 static t_class *s_chain_zone_class = NULL;
 
-t_symbol *ps_url, *ps_name, *ps_db, *ps_devices, *ps_added, *ps_removed;
+t_symbol *ps_url, *ps_name, *ps_devices, *ps_added, *ps_removed;
 
 int C74_EXPORT main(void)
 {
@@ -66,9 +67,9 @@ int C74_EXPORT main(void)
     
     class_addmethod(c, (method)chain_zone_bang, "bang", 0);
     class_addmethod(c, (method)chain_zone_int, "int", A_LONG, 0);
+    class_addmethod(c, (method)chain_zone_notify, "notify", A_CANT, 0);
     
-    CLASS_ATTR_SYM(c, "name", 0, t_chain_zone, s_site_name);
-    CLASS_ATTR_ACCESSORS(c, "name", NULL, chain_zone_set_site_name);
+    CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_zone, s_worker.s_site_name);
 
     CLASS_ATTR_FLOAT(c, "pos", 0, t_chain_zone, s_pos);
     CLASS_ATTR_ACCESSORS(c, "pos", NULL, chain_zone_set_pos);
@@ -81,7 +82,6 @@ int C74_EXPORT main(void)
     
     ps_url = gensym("url");
     ps_name = gensym("name");
-    ps_db = gensym("db");
     ps_devices = gensym("devices");
     ps_added = gensym("added");
     ps_removed = gensym("removed");
@@ -94,40 +94,30 @@ int C74_EXPORT main(void)
 void *chain_zone_new(t_symbol *s, long argc, t_atom *argv)
 {
     t_chain_zone *x = (t_chain_zone *)object_alloc(s_chain_zone_class);
-    
-    long attrstart = attr_args_offset(argc, argv);
-    t_symbol *site_name = NULL;
-    
-    if (attrstart && atom_gettype(argv) == A_SYM)
-        site_name = atom_getsym(argv);
 
+    chain_worker_new((t_chain_worker *)x, s, argc, argv);
+    
     x->s_enter_threshold = 10.0;
     x->s_exit_threshold = 20.0;   
 
     attr_args_process(x, argc, argv);
-    if (!x->s_site_name) {
-        if (site_name)
-            object_attr_setsym(x, ps_name, site_name);
-    }
 
     x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
-    x->s_setup_cancel = false;
     x->s_current_devices = hashtab_new(0);
-    
+
     return x;
 }
 
-void chain_zone_set_site_name(t_chain_zone *x, void *attr, long argc, t_atom *argv)
+void chain_zone_free(t_chain_zone *x)
 {
-    t_symbol *site_name = atom_getsym(argv);
-    if (!x->s_site_name || x->s_site_name!=site_name){
-        x->s_site_name = site_name;
-        
-        if (x->s_systhread_setup == NULL){
-            systhread_create((method) chain_zone_setup_threadproc, x, 0, 0, 0, &x->s_systhread_setup);
-        }
-    }
+    chain_worker_release_site((t_chain_worker *)x);
+    hashtab_chuck(x->s_current_devices);
+}
+
+void chain_zone_notify(t_chain_zone *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+{
+    chain_worker_notify((t_chain_worker *) x, s, msg, sender, data);
 }
 
 void chain_zone_set_pos(t_chain_zone *x, void *attr, long argc, t_atom *argv){
@@ -166,44 +156,13 @@ void chain_zone_set_exit(t_chain_zone *x, void *attr, long argc, t_atom *argv){
     chain_zone_update(x);
 }
 
-int chain_zone_get_dict(t_chain_zone *x)
-{
-    int err = 0;
-    if (x->s_dictionary)
-        dictobj_release(x->s_dictionary);
-    x->s_dictionary = dictobj_findregistered_retain(x->s_site_name);
-    
-    if (!x->s_dictionary)
-        err = 1;
-    
-    dictionary_getobject(x->s_dictionary, ps_db, &x->s_db);
-    
-    return err;
-}
-
-void chain_zone_free(t_chain_zone *x)
-{
-    if (x->s_dictionary)
-        dictobj_release(x->s_dictionary);
-
-    hashtab_chuck(x->s_current_devices);
-    
-    
-    unsigned int ret;
-    if (x->s_systhread_setup){
-        x->s_setup_cancel = true;
-        systhread_join(x->s_systhread_setup, &ret);
-        x->s_systhread_setup = NULL;
-    }
-}
-
 void chain_zone_update(t_chain_zone *x)
 {
     hashtab_funall(x->s_current_devices, (method)chain_zone_exit_handler, x);
 
     t_db_result *db_result = NULL;
 
-    query_list_devices_near_point(x->s_db, x->s_pos[0], x->s_pos[2], x->s_enter_threshold, &db_result);
+    query_list_devices_near_point(x->s_worker.s_db, x->s_pos[0], x->s_pos[2], x->s_enter_threshold, &db_result);
 
     long numrecords = db_result_numrecords(db_result);
     for (int i=0; i<numrecords; i++){
@@ -271,17 +230,4 @@ void chain_zone_bang(t_chain_zone *x)
         sysmem_freeptr(keys);
 }
 
-void *chain_zone_setup_threadproc(t_chain_zone *x)
-{
-    int err=1;
-    while(err){
-        err = chain_zone_get_dict(x);
-        systhread_sleep(1000);
-        
-        if (x->s_setup_cancel)
-            break;
-    }
-    
-    systhread_exit(0);
-    return NULL;
-}
+

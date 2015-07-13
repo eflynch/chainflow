@@ -30,6 +30,7 @@ typedef struct chain_site
     t_symbol *s_wshref;
     t_dictionary *s_dictionary;
     t_database *s_db;
+    void *s_reg_ptr
 } t_chain_site;
 
 typedef struct chain_event

@@ -13,24 +13,27 @@
 #include "messages.h"
 #include "queries.h"
 #include "chainlib.h"
+#include "chainworker.h"
 
 typedef struct chain_device
 {
-    t_object s_obj;
-    t_systhread s_systhread_setup;
-    int s_setup_cancel;
-    t_symbol *s_site_name;
+    t_chain_worker s_worker;
     t_symbol *s_device_name;
-    t_dictionary *s_dictionary;
-    t_database *s_db;
     t_object *s_view;
     long s_live_flag;
     void *s_outlet;
     void *s_outlet2;
 } t_chain_device;
 
+// Create + Destroy
 void *chain_device_new(t_symbol *s, long argc, t_atom *argv);
 void chain_device_free(t_chain_device *x);
+
+// Attribute Setters
+void chain_device_set_site_name(t_chain_device *x, void *attr, long argc, t_atom *argv);
+void chain_device_set_device_name(t_chain_device *x, void *attr, long argc, t_atom *argv);
+
+// Methods
 void chain_device_int(t_chain_device *x, long n);
 void chain_device_bang(t_chain_device *x);
 void chain_device_metric(t_chain_device *x, t_symbol *metric);
@@ -38,20 +41,19 @@ void chain_device_sensors(t_chain_device *x);
 void chain_device_geoLocation(t_chain_device *x);
 void chain_device_location(t_chain_device *x);
 void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end);
-void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
-void chain_device_set_site_name(t_chain_device *x, void *attr, long argc, t_atom *argv);
-void chain_device_set_device_name(t_chain_device *x, void *attr, long argc, t_atom *argv);
-void *chain_device_setup_threadproc(t_chain_device *x);
 
-void chain_device_set_query(t_chain_device *x);
+// Helpers
 void chain_device_send_all(t_chain_device *x);
 void chain_device_send_sensor(t_chain_device *x, const char *href);
-int chain_device_get_dict(t_chain_device *x);
+
+// Notify
+void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
 
 
 static t_class *s_chain_device_class = NULL;
 
-t_symbol *ps_name, *ps_db, *ps_maxchain, *ps_location, *ps_geoLocation, *ps_sensors;
+t_symbol *ps_name, *ps_location, *ps_geoLocation, *ps_sensors;
+
 
 int C74_EXPORT main(void)
 {
@@ -69,8 +71,7 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_device_location, "location", 0);
     class_addmethod(c, (method)chain_device_data, "data", A_SYM, A_LONG, A_LONG);
 
-    CLASS_ATTR_SYM(c, "name", 0, t_chain_device, s_site_name);
-    CLASS_ATTR_ACCESSORS(c, "name", NULL, (method)chain_device_set_site_name);
+    CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_device, s_worker.s_site_name);
 
     CLASS_ATTR_SYM(c, "device_name", 0, t_chain_device, s_device_name);
     CLASS_ATTR_ACCESSORS(c, "device_name", NULL, (method)chain_device_set_device_name);
@@ -81,8 +82,6 @@ int C74_EXPORT main(void)
     s_chain_device_class = c;
 
     ps_name = gensym("name");
-    ps_db = gensym("db");
-    ps_maxchain = gensym("maxchain");
     ps_sensors = gensym("sensors");
     ps_location = gensym("location");
     ps_geoLocation = gensym("geoLocation");
@@ -94,16 +93,7 @@ void *chain_device_new(t_symbol *s, long argc, t_atom *argv)
 {
     t_chain_device *x = (t_chain_device *)object_alloc(s_chain_device_class);
 
-    long attrstart = attr_args_offset(argc, argv);
-    t_symbol *site_name = NULL;
-
-    if (attrstart && atom_gettype(argv) == A_SYM)
-        site_name = atom_getsym(argv);
-
-    if (!x->s_site_name) {
-        if (site_name)
-            object_attr_setsym(x, ps_name, site_name);
-    }
+    chain_worker_new((t_chain_worker *)x, s, argc, argv);
 
     attr_args_process(x, argc, argv);
 
@@ -111,21 +101,24 @@ void *chain_device_new(t_symbol *s, long argc, t_atom *argv)
     x->s_outlet = outlet_new(x, NULL);
     x->s_live_flag = 1;
     x->s_view = NULL;
-    x->s_setup_cancel = false;
+
     return x;
 }
 
-void chain_device_set_site_name(t_chain_device *x, void *attr, long argc, t_atom *argv)
+void chain_device_free(t_chain_device *x)
 {
-    t_symbol *site_name = atom_getsym(argv);
-    if (!x->s_site_name || x->s_site_name!=site_name){
-        x->s_site_name = site_name; 
+    chain_worker_free((t_chain_worker *)x);
+}
 
-        if (x->s_systhread_setup == NULL){
-            systhread_create((method) chain_device_setup_threadproc, x,
-                             0, 0, 0, &x->s_systhread_setup);
-        }
+void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg,
+                         void *sender, void *data)
+{
+    if (s == x->s_worker.s_site_name && x->s_live_flag && msg == x->s_device_name) {
+        const char *href = (const char *)data;
+        chain_device_send_sensor(x, href);
     }
+
+    chain_worker_notify((t_chain_worker *)x, s, msg, sender, data);
 }
 
 void chain_device_set_device_name(t_chain_device *x, void *attr, long argc, t_atom *argv)
@@ -136,46 +129,15 @@ void chain_device_set_device_name(t_chain_device *x, void *attr, long argc, t_at
     }
 }
 
-int chain_device_get_dict(t_chain_device *x)
-{
-    int err = 0;
-
-    if (x->s_dictionary)
-        dictobj_release(x->s_dictionary);
-    x->s_dictionary = dictobj_findregistered_retain(x->s_site_name);
-
-    if (!x->s_dictionary){
-        err = 1;
-    }
-    dictionary_getobject(x->s_dictionary, ps_db, &x->s_db);
-    // Attach object to site
-    object_subscribe(ps_maxchain, x->s_site_name, NULL, x);
-
-    return err;
-}
-
-void chain_device_free(t_chain_device *x)
-{
-    if (x->s_dictionary)
-        dictobj_release(x->s_dictionary);
-
-    unsigned int ret;
-    if (x->s_systhread_setup){
-        x->s_setup_cancel = true;
-        systhread_join(x->s_systhread_setup, &ret);
-        x->s_systhread_setup = NULL;
-    }
-}
-
 void chain_device_send_sensor(t_chain_device *x, const char *href){
-    if(!x->s_db){
+    if(!x->s_worker.s_db){
         chain_error("No DB!");
         return;
     }
 
     t_db_result *db_result = NULL;
 
-    query_data_by_sensor_href(x->s_db, href, &db_result);
+    query_data_by_sensor_href(x->s_worker.s_db, href, &db_result);
 
     if (!db_result_numrecords(db_result)){
         chain_error("No sensor found");
@@ -195,7 +157,7 @@ void chain_device_send_sensor(t_chain_device *x, const char *href){
 }
 
 void chain_device_send_metric(t_chain_device *x, t_symbol *metric){
-    if(!x->s_db){
+    if(!x->s_worker.s_db){
         chain_error("No DB!");
         return;
     }
@@ -207,7 +169,7 @@ void chain_device_send_metric(t_chain_device *x, t_symbol *metric){
 
     t_db_result *db_result = NULL;
 
-    query_data_by_device_name_metric_name(x->s_db, x->s_device_name->s_name, metric->s_name, &db_result);
+    query_data_by_device_name_metric_name(x->s_worker.s_db, x->s_device_name->s_name, metric->s_name, &db_result);
 
     if (!db_result_numrecords(db_result)){
         chain_error("No such metric for this device");
@@ -226,7 +188,7 @@ void chain_device_send_metric(t_chain_device *x, t_symbol *metric){
 }
 
 void chain_device_send_all(t_chain_device *x){
-    if(!x->s_db){
+    if(!x->s_worker.s_db){
         chain_error("No DB!");
         return;
     }
@@ -238,7 +200,7 @@ void chain_device_send_all(t_chain_device *x){
 
     t_db_result *db_result = NULL;
 
-    query_data_by_device_name(x->s_db, x->s_device_name->s_name, &db_result);
+    query_data_by_device_name(x->s_worker.s_db, x->s_device_name->s_name, &db_result);
 
     long numrecords = db_result_numrecords(db_result);
 
@@ -258,15 +220,6 @@ void chain_device_send_all(t_chain_device *x){
     }
 }
 
-void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg,
-                         void *sender, void *data)
-{
-    if (s == x->s_site_name && x->s_live_flag && msg == x->s_device_name) {
-        const char *href = (const char *)data;
-        chain_device_send_sensor(x, href);
-    }
-}
-
 void chain_device_int(t_chain_device *x, long n)
 {
 }
@@ -283,7 +236,7 @@ void chain_device_metric(t_chain_device *x, t_symbol *metric)
 
 void chain_device_sensors(t_chain_device *x)
 {
-    if(!x->s_db){
+    if(!x->s_worker.s_db){
         chain_error("No DB!");
         return;
     }
@@ -294,7 +247,7 @@ void chain_device_sensors(t_chain_device *x)
     t_db_result *db_result = NULL;
     long numrecords;
 
-    query_list_metrics_by_device_name(x->s_db, x->s_device_name->s_name, &db_result); 
+    query_list_metrics_by_device_name(x->s_worker.s_db, x->s_device_name->s_name, &db_result); 
 
     numrecords = db_result_numrecords(db_result);
     if(!numrecords){
@@ -314,7 +267,7 @@ void chain_device_sensors(t_chain_device *x)
 
 void chain_device_geoLocation(t_chain_device *x)
 {
-    if(!x->s_db){
+    if(!x->s_worker.s_db){
         chain_error("No DB!");
         return;
     }
@@ -323,7 +276,7 @@ void chain_device_geoLocation(t_chain_device *x)
         return;
     }
     t_db_result *db_result = NULL;
-    query_get_device_location(x->s_db, x->s_device_name->s_name, &db_result);
+    query_get_device_location(x->s_worker.s_db, x->s_device_name->s_name, &db_result);
 
     double lat = db_result_float(db_result, 0, 0);
     double lon = db_result_float(db_result, 0, 1);
@@ -338,7 +291,7 @@ void chain_device_geoLocation(t_chain_device *x)
 
 void chain_device_location(t_chain_device *x)
 {
-    if(!x->s_db){
+    if(!x->s_worker.s_db){
         chain_error("No DB!");
         return;
     }
@@ -347,7 +300,7 @@ void chain_device_location(t_chain_device *x)
         return;
     }
     t_db_result *db_result = NULL;
-    query_get_device_location(x->s_db, x->s_device_name->s_name, &db_result);
+    query_get_device_location(x->s_worker.s_db, x->s_device_name->s_name, &db_result);
 
     double f_x = db_result_float(db_result, 0, 3);
     double f_z = db_result_float(db_result, 0, 4);
@@ -365,7 +318,7 @@ void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end
     chain_info("%s: %ld, %ld", metric->s_name, start, end);
 
     t_db_result *db_result = NULL;
-    query_sensor_href_by_device_name_metric_name(x->s_db, x->s_device_name->s_name,
+    query_sensor_href_by_device_name_metric_name(x->s_worker.s_db, x->s_device_name->s_name,
                                                  metric->s_name, &db_result);
     const char *sensor_href = db_result_string(db_result, 0, 0);
     double *data;
@@ -378,17 +331,4 @@ void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end
     free(data);
 }
 
-void *chain_device_setup_threadproc(t_chain_device *x)
-{
-    int err=1;
-    while (err){
-        err = chain_device_get_dict(x);
-        systhread_sleep(1000);
 
-        if (x->s_setup_cancel)
-            break;
-    }
-
-    systhread_exit(0);
-    return NULL;
-}

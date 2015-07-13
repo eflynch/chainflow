@@ -15,25 +15,35 @@
 
 #define URL_SIZE 1024
 
+
+// Create and Destroy
 void *chain_site_new(t_symbol *s, long argc, t_atom *argv);
 void chain_site_free(t_chain_site *x);
+
+// Methods
 void chain_site_load(t_chain_site *x);
 void chain_site_bang(t_chain_site *x);
 void chain_site_int(t_chain_site *x, long n);
-void chain_site_set_site_name(t_chain_site *x, void *attr, long argc, t_atom *argv);
+
+// Attibute Setters
+void chain_site_release_site(t_chain_site *x);
+void chain_site_set_site_name(t_chain_site *x, t_symbol *site_name);
 void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv);
+
+// Threads
 void *chain_site_load_threadproc(t_chain_site *x);
 void *chain_site_play_threadproc(t_chain_site *x);
 
 static t_class *s_chain_site_class = NULL;
 
-t_symbol *ps_url, *ps_db, *ps_maxchain;
+t_symbol *ps_url, *ps_db, *ps_maxchain, *ps_deprecated;
 
 int C74_EXPORT main(void)
 {
     ps_url = gensym("url");
     ps_db = gensym("db");
     ps_maxchain = gensym("maxchain");
+    ps_deprecated = gensym("deprecated");
     
     t_class *c;
 
@@ -44,8 +54,7 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_site_int, "int", A_LONG, 0);
     class_addmethod(c, (method)chain_site_bang, "bang", 0);
 
-    CLASS_ATTR_SYM(c, "name", 0, t_chain_site, s_site_name);
-    CLASS_ATTR_ACCESSORS(c, "name", NULL, chain_site_set_site_name);
+    CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_site, s_site_name);
 
     CLASS_ATTR_SYM(c, "url", 0, t_chain_site, s_url);
     CLASS_ATTR_ACCESSORS(c, "url", NULL, chain_site_set_url);
@@ -53,38 +62,8 @@ int C74_EXPORT main(void)
     class_register(CLASS_BOX, c);
     
     s_chain_site_class = c;
-    
+
     return 0;
-}
-
-void chain_site_bang(t_chain_site *x)
-{
-}
-
-void chain_site_int(t_chain_site *x, long n)
-{
-    if(!x->s_db){
-        chain_error("database not open");
-        return;
-    }
-    if(!x->s_url){
-        chain_error("no url set");
-        return;
-    }
-    unsigned int ret;
-    if (x->s_systhread_play != NULL && n == 0){
-        x->s_play_cancel = true;
-        systhread_join(x->s_systhread_play, &ret);
-        x->s_systhread_play = NULL;
-        x->s_play_cancel = false;
-        return;
-    }
-
-    if (x->s_systhread_play == NULL){
-        systhread_create((method) chain_site_play_threadproc, x, 0, 0, 0, &x->s_systhread_play);
-    } else {
-        chain_error("Already playing");
-    }
 }
 
 void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
@@ -93,16 +72,13 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
 
     long attrstart = attr_args_offset(argc, argv);
     t_symbol *site_name = NULL;
-
-    if (attrstart && atom_gettype(argv) == A_SYM)
+    if (attrstart && atom_gettype(argv) == A_SYM){
         site_name = atom_getsym(argv);
-
-    if (!x->s_site_name) {
-        if (site_name)
-            object_attr_setsym(x, gensym("name"), site_name);
-        else
-            object_attr_setsym(x, gensym("name"), symbol_unique());
     }
+    if (!site_name){
+        site_name = gensym("default_site");
+    }
+    chain_site_set_site_name(x, site_name);
 
     attr_args_process(x, argc, argv);
 
@@ -115,38 +91,60 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
     return x;
 }
 
-void chain_site_set_site_name(t_chain_site *x, void *attr, long argc, t_atom *argv)
+void chain_site_free(t_chain_site *x)
 {
-    t_symbol *site_name = atom_getsym(argv);
-    if (!x->s_site_name || x->s_site_name!=site_name){
-        if (x->s_dictionary)
-            object_free(x->s_dictionary);
-        t_dictionary *temp = dictobj_findregistered_retain(site_name);
-        if(temp){
-            dictobj_release(temp);
-            chain_error("Chain site %s already defined", site_name->s_name);
-            return;
-        }
-        x->s_dictionary = dictionary_new();
-        x->s_dictionary = dictobj_register(x->s_dictionary, &site_name);
-        x->s_site_name = site_name;
+    unsigned int ret;
+    if (x->s_systhread_load){
+        systhread_join(x->s_systhread_load, &ret);
+        x->s_systhread_load = NULL;
+    }
 
-        if(x->s_db)
-            db_close(&x->s_db);
-        db_open(site_name, NULL, &x->s_db);
-        query_init_database(x->s_db);
+    unsigned int ret2;
+    if (x->s_systhread_play){
+        x->s_play_cancel = true;
+        systhread_join(x->s_systhread_play, &ret2);
+        x->s_systhread_play = NULL;
+    }
+    chain_site_release_site(x);    
+}
 
-        dictionary_deleteentry(x->s_dictionary, ps_db);
-        dictionary_appendobject(x->s_dictionary, ps_db, x->s_db);
+void chain_site_set_site_name(t_chain_site *x, t_symbol *site_name)
+{
+    // Check if site_name already being used
+    t_dictionary *temp = dictobj_findregistered_retain(site_name);
+    if(temp){
+        dictobj_release(temp);
+        chain_error("Chain site %s already defined", site_name->s_name);
+        return;
+    }
 
-        // Register object
-        object_register(ps_maxchain, site_name, x);
+    // Create and register dictionary
+    x->s_dictionary = dictionary_new();
+    x->s_dictionary = dictobj_register(x->s_dictionary, &site_name);
+    x->s_site_name = site_name;
+
+
+    // Create database and add to dictionary
+    db_open(site_name, NULL, &x->s_db);
+    query_init_database(x->s_db);
+
+    dictionary_appendobject(x->s_dictionary, ps_db, x->s_db);
+
+    // Register object
+    x->s_reg_ptr = object_register(ps_maxchain, site_name, x);
+}
+
+void chain_site_release_site(t_chain_site *x)
+{
+    if (x->s_dictionary){
+        object_free(x->s_dictionary);
+        x->s_dictionary = NULL;
+        object_unregister(x->s_reg_ptr);
     }
 }
 
 void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv)
 {
-    
     t_max_err err = MAX_ERR_NONE;
 
     t_symbol *url_sym = atom_getsym(argv);
@@ -183,25 +181,7 @@ void chain_site_load(t_chain_site *x)
     }
 }
 
-void chain_site_free(t_chain_site *x)
-{
-    unsigned int ret;
-    if (x->s_systhread_load){
-        systhread_join(x->s_systhread_load, &ret);
-        x->s_systhread_load = NULL;
-    }
 
-    unsigned int ret2;
-    if (x->s_systhread_play){
-        x->s_play_cancel = true;
-        systhread_join(x->s_systhread_play, &ret2);
-        x->s_systhread_play = NULL;
-    }
-    
-    if (x->s_dictionary){
-        object_free(x->s_dictionary);
-    }
-}
 
 int chain_site_update_sensors(t_chain_site *x, const char *href, const char *timestamp, double value)
 {
@@ -219,6 +199,36 @@ int chain_site_update_sensors(t_chain_site *x, const char *href, const char *tim
     object_notify(x, device_name_sym, (void *)href);
 
     return 0;
+}
+
+void chain_site_bang(t_chain_site *x)
+{
+}
+
+void chain_site_int(t_chain_site *x, long n)
+{
+    if(!x->s_db){
+        chain_error("database not open");
+        return;
+    }
+    if(!x->s_url){
+        chain_error("no url set");
+        return;
+    }
+    unsigned int ret;
+    if (x->s_systhread_play != NULL && n == 0){
+        x->s_play_cancel = true;
+        systhread_join(x->s_systhread_play, &ret);
+        x->s_systhread_play = NULL;
+        x->s_play_cancel = false;
+        return;
+    }
+
+    if (x->s_systhread_play == NULL){
+        systhread_create((method) chain_site_play_threadproc, x, 0, 0, 0, &x->s_systhread_play);
+    } else {
+        chain_error("Already playing");
+    }
 }
 
 void *chain_site_load_threadproc(t_chain_site *x)

@@ -15,11 +15,13 @@
 #include "ext_dictobj.h"
 #include "ext_database.h"
 
+#include "chainworker.h"
+
 #endif /* defined(____chain_metric__) */
 
 typedef struct chain_metric
 {
-    t_object s_obj;
+    t_chain_worker s_worker;
     t_systhread s_systhread_setup;
     int s_setup_cancel;
     void *s_outlet;

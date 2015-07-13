@@ -27,8 +27,8 @@ typedef struct chain_map
     t_jrgba s_outline;
     t_jrgba s_background;
     t_jrgba s_hilite;
-    t_systhread s_systhread_setup;
-    int s_setup_cancel;
+    t_systhread s_systhread_find_site;
+    int s_find_site_cancel;
     void *s_outlet;
     t_symbol *s_site_name;
     t_dictionary *s_dictionary;
@@ -38,8 +38,12 @@ typedef struct chain_map
 /************************************************************/
 // Prototypes
 
+
+// Create + Destroy
 void *chain_map_new(t_symbol *s, long argc, t_atom *argv);
 void chain_map_free(t_chain_map *x);
+
+// Methods
 void chain_map_int(t_chain_map *x, long n);
 void chain_map_bang(t_chain_map *x);
 void chain_map_paint(t_chain_map *x, t_object *view);
@@ -51,16 +55,24 @@ void chain_map_mouseenter(t_chain_map *x, t_object *patcherview, t_pt pt, long m
 void chain_map_mouseleave(t_chain_map *x, t_object *patcherview, t_pt pt, long modifiers);
 void chain_map_mousemove(t_chain_map *x, t_object *patcherview, t_pt pt, long modifiers);
 
+// Attributes
 void chain_map_set_site_name(t_chain_map *x, void *attr, long argc, t_atom *argv);
 
-int chain_map_get_dict(t_chain_map *x);
-void *chain_map_setup_threadproc(t_chain_map *x);
+// Setup + Teardown
+void chain_map_release_site(t_chain_map *x);
+void chain_map_find_site(t_chain_map *x);
+void *chain_map_find_site_threadproc(t_chain_map *x);
+
+// Notify
+void chain_map_notify(t_chain_map *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
+
 
 /*************************************************************/
 // Globals and Statics
 
 static t_class *s_chain_map_class = NULL;
 t_symbol *ps_url, *ps_name, *ps_db, *ps_devices, *ps_metrics;
+t_symbol *ps_maxchain, *ps_free, *ps_willfree;
 
 static void init_globals(void){
     ps_url = gensym("url");
@@ -68,6 +80,9 @@ static void init_globals(void){
     ps_db = gensym("db");
     ps_metrics = gensym("metrics");
     ps_devices = gensym("devices");
+    ps_maxchain = gensym("maxchain");
+    ps_free = gensym("free");
+    ps_willfree = gensym("willfree");
 }
 
 /************************************************************/
@@ -96,6 +111,8 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_map_mouseenter, "mouseenter", A_CANT, 0);
     class_addmethod(c, (method)chain_map_mouseleave, "mouseleave", A_CANT, 0);
     class_addmethod(c, (method)chain_map_mousemove, "mousemove", A_CANT, 0);
+
+    class_addmethod(c, (method)chain_map_notify, "notify", A_CANT, 0);
 
     CLASS_ATTR_SYM(c, "name", 0, t_chain_map, s_site_name);
     CLASS_ATTR_ACCESSORS(c, "name", NULL, chain_map_set_site_name);
@@ -132,7 +149,7 @@ void *chain_map_new(t_symbol *s, long argc, t_atom *argv)
     if (x) {
         
         x->s_outlet = outlet_new(x, NULL);
-        x->s_setup_cancel = false;
+        x->s_find_site_cancel = false;
         long flags;
         flags = 0
                 | JBOX_DRAWFIRSTIN 
@@ -170,47 +187,94 @@ void *chain_map_new(t_symbol *s, long argc, t_atom *argv)
     return x;
 }
 
+void chain_map_free(t_chain_map *x)
+{
+    if (x->s_dictionary){
+        dictobj_release(x->s_dictionary);
+    }
+
+    jbox_free(&x->s_box);
+
+    unsigned int ret;
+    if (x->s_systhread_find_site){
+        x->s_find_site_cancel = true;
+        systhread_join(x->s_systhread_find_site, &ret);
+        x->s_systhread_find_site = NULL;
+    }
+}
+
+void chain_map_release_site(t_chain_map *x)
+{
+    if (x->s_systhread_find_site){
+        x->s_find_site_cancel = true;
+        unsigned int ret;
+        systhread_join(x->s_systhread_find_site, &ret);
+        x->s_systhread_find_site = NULL;
+    }
+
+    if (x->s_dictionary){
+        dictobj_release(x->s_dictionary);
+        x->s_dictionary = NULL;
+    }
+
+    object_unsubscribe(ps_maxchain, x->s_site_name, NULL, x); 
+}
+
+void chain_map_find_site(t_chain_map *x)
+{
+    // Make sure it is released
+    chain_map_release_site(x);
+
+    // Find a site
+    systhread_create((method) chain_map_find_site_threadproc, x,
+                     0, 0, 0, &x->s_systhread_find_site);
+}
+
+void *chain_map_find_site_threadproc(t_chain_map *x)
+{
+    while(1){
+        if (x->s_find_site_cancel){
+            x->s_find_site_cancel = false;
+            break;
+        }
+
+        x->s_dictionary = dictobj_findregistered_retain(x->s_site_name);
+        if (x->s_dictionary){
+            // Cache pointer to database
+            dictionary_getobject(x->s_dictionary, ps_db, &x->s_db);
+
+            // Attach object to site
+            object_subscribe(ps_maxchain, x->s_site_name, NULL, x);
+            break;
+        }
+
+        systhread_sleep(1000);
+    }
+    
+
+    x->s_systhread_find_site = NULL;
+    systhread_exit(0);
+    return NULL;
+}
+
+void chain_map_notify(t_chain_map *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+{
+    if (s == x->s_site_name && msg == ps_free){
+        chain_map_find_site(x);
+    } 
+
+    if (s == x->s_site_name && msg == ps_willfree){
+        chain_map_release_site(x);
+    }
+}
+
 void chain_map_set_site_name(t_chain_map *x, void *attr, long argc, t_atom *argv)
 {
     t_symbol *site_name = atom_getsym(argv);
     if (!x->s_site_name || x->s_site_name!=site_name){
         x->s_site_name = site_name;
 
-        if (x->s_systhread_setup == NULL){
-            systhread_create((method) chain_map_setup_threadproc, x, 0, 0, 0, &x->s_systhread_setup);
-        }
-        
-
-    }
-}
-
-int chain_map_get_dict(t_chain_map *x)
-{
-    int err = 0;
-    if (x->s_dictionary)
-        dictobj_release(x->s_dictionary);
-    x->s_dictionary = dictobj_findregistered_retain(x->s_site_name);
-
-    if (!x->s_dictionary)
-        err = 1;
-
-    dictionary_getobject(x->s_dictionary, ps_db, &x->s_db);
-
-    return err;
-}
-
-void chain_map_free(t_chain_map *x)
-{
-    if (x->s_dictionary)
-        dictobj_release(x->s_dictionary);
-
-    jbox_free(&x->s_box);
-
-    unsigned int ret;
-    if (x->s_systhread_setup){
-        x->s_setup_cancel = true;
-        systhread_join(x->s_systhread_setup, &ret);
-        x->s_systhread_setup = NULL;
+        chain_map_find_site(x);
     }
 }
 
@@ -317,20 +381,4 @@ void chain_map_mouseleave(t_chain_map *x, t_object *patcherview, t_pt pt, long m
 void chain_map_mousemove(t_chain_map *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     // nothing to do here, but could track mouse position inside object
-}
-
-
-void *chain_map_setup_threadproc(t_chain_map *x)
-{
-    int err=1;
-    while(err){
-        err = chain_map_get_dict(x);
-        systhread_sleep(1000);
-
-        if (x->s_setup_cancel)
-            break;
-    }
-
-    systhread_exit(0);
-    return NULL;
 }
