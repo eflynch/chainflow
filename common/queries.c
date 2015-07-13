@@ -83,6 +83,8 @@ static const char *get_metric = "SELECT name FROM metrics WHERE metric_id=%ld";
 
 static const char *get_device_by_name = "SELECT device_id FROM devices WHERE name=\"%s\"";
 
+static const char *list_sensors = "SELECT href FROM sensors";
+
 static const char *get_device_location = \
 "SELECT latitude, longitude, elevation, x, z "
 "FROM devices WHERE name=\"%s\"";
@@ -207,6 +209,14 @@ void query_list_devices(t_database *db, t_db_result **db_result){
     err = db_query(db, db_result, list_devices);
     if (err)
         chain_error("Error getting devices list");
+}
+
+void query_list_sensors(t_database *db, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, list_sensors);
+    if (err)
+        chain_error("Error getting sensors list");
 }
 
 void query_list_devices_near_point(t_database *db, double x, double z, double s, t_db_result **db_result){

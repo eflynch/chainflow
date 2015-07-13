@@ -12,6 +12,8 @@
 #include "queries.h"
 #include "chainquery.h"
 #include "chainwebsocket.h"
+#include "chainhistorical.h"
+#include "chainevent.h"
 
 #define URL_SIZE 1024
 
@@ -33,6 +35,10 @@ void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv);
 // Threads
 void *chain_site_load_threadproc(t_chain_site *x);
 void *chain_site_play_threadproc(t_chain_site *x);
+void *chain_site_historical_threadproc(t_chain_site *x);
+
+void chain_site_play_historical(t_chain_site *x);
+void chain_site_play_live(t_chain_site *x);
 
 static t_class *s_chain_site_class = NULL;
 
@@ -55,6 +61,11 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_site_bang, "bang", 0);
 
     CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_site, s_site_name);
+
+    CLASS_ATTR_LONG(c, "live", 0, t_chain_site, s_live);
+
+    CLASS_ATTR_LONG(c, "start", 0, t_chain_site, s_historical_start);
+    CLASS_ATTR_FLOAT(c, "scale", 0, t_chain_site, s_historical_ts);
 
     CLASS_ATTR_SYM(c, "url", 0, t_chain_site, s_url);
     CLASS_ATTR_ACCESSORS(c, "url", NULL, chain_site_set_url);
@@ -80,13 +91,15 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
     }
     chain_site_set_site_name(x, site_name);
 
-    attr_args_process(x, argc, argv);
-
     x->s_outlet_busy = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
     x->s_systhread_load = NULL;
     x->s_systhread_play = NULL;
     x->s_play_cancel = false;
+    x->s_historical_cancel = false;
+    x->s_live = true;
+
+    attr_args_process(x, argc, argv);
 
     return x;
 }
@@ -250,13 +263,12 @@ void *chain_site_load_threadproc(t_chain_site *x)
     return NULL;
 }
 
-void *chain_site_play_threadproc(t_chain_site *x)
-{
+// Run through websocket .. see chainwebsocket.c
+void chain_site_play_live(t_chain_site *x){
     struct libwebsocket_context *context = chain_websocket_connect(x);
 
     if(!context){
-        systhread_exit(0);
-        return NULL;
+        return;
     }
 
     int n = 0;
@@ -265,9 +277,58 @@ void *chain_site_play_threadproc(t_chain_site *x)
         if (x->s_play_cancel)
             break;
     }
+}
+
+// Run through HTTP/JSON .. see chainhistorical.c
+void chain_site_play_historical(t_chain_site *x){
+    if (x->s_historical_pq){
+        free(x->s_historical_pq->buf);
+        free(x->s_historical_pq);
+    }
+    x->s_historical_pq = priq_new(sizeof(t_chain_event));
+    x->s_historical_clk = new_clk(x->s_historical_start, x->s_historical_ts);
+    systhread_mutex_new(&x->s_historical_mutex, 0L);
+
+    if (x->s_systhread_historical == NULL){
+        systhread_create((method) chain_site_historical_threadproc, x, 0, 0, 0, &x->s_systhread_historical);
+    } else {
+        chain_error("Thread already running");
+    }
+
+    chain_historical_process(x);
+
+    unsigned int ret;
+    x->s_historical_cancel = true;
+    systhread_join(x->s_systhread_historical, &ret);
+    x->s_systhread_historical = NULL;
+    x->s_historical_cancel = false;
+
+    systhread_mutex_free(x->s_historical_mutex);
+    free_clk(x->s_historical_clk);
+}
+// Helper process for HTTP/JSON method
+void *chain_site_historical_threadproc(t_chain_site *x)
+{
+    chain_historical_lookahead(x);
 
     systhread_exit(0);
     return NULL;
 }
 
+// Play data
+void *chain_site_play_threadproc(t_chain_site *x)
+{
+    while (!x->s_wshref){
+        systhread_sleep(1000);
+    }
+
+    if (x->s_live){
+        chain_site_play_live(x);
+    } else {
+        chain_site_play_historical(x);
+    }
+    
+    systhread_exit(0);
+    return NULL;
+}
 

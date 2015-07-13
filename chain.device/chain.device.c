@@ -322,12 +322,14 @@ void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end
                                                  metric->s_name, &db_result);
     const char *sensor_href = db_result_string(db_result, 0, 0);
     double *data;
+    long *timestamps;
     long data_len;
-    chain_get_data(sensor_href, start, end, &data, &data_len);
+    chain_get_data(sensor_href, start, end, &data, &timestamps, &data_len);
 
     t_atom av[data_len];
     atom_setdouble_array(data_len, av, data_len, data);
     outlet_anything(x->s_outlet, metric, data_len, av);
+    free(timestamps);
     free(data);
 }
 

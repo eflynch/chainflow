@@ -189,7 +189,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"outlettype" : [ "bang" ],
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{
@@ -227,6 +227,7 @@
 						"tags" : "",
 						"style" : "",
 						"subpatcher_template" : "",
+						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-37",
@@ -245,11 +246,11 @@
 									"id" : "obj-35",
 									"maxclass" : "newobj",
 									"numinlets" : 1,
-									"numoutlets" : 2,
-									"outlettype" : [ "", "bang" ],
-									"patching_rect" : [ 50.0, 100.0, 129.0, 22.0 ],
+									"numoutlets" : 3,
+									"outlettype" : [ "bang", "", "bang" ],
+									"patching_rect" : [ 50.0, 86.0, 40.0, 22.0 ],
 									"style" : "",
-									"text" : "t l b"
+									"text" : "t b l b"
 								}
 
 							}
@@ -319,6 +320,7 @@
 									"destination" : [ "obj-26", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
+									"midpoints" : [ 59.5, 219.0, 108.5, 219.0 ],
 									"source" : [ "obj-31", 0 ]
 								}
 
@@ -334,10 +336,21 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-26", 0 ],
+									"disabled" : 0,
+									"hidden" : 0,
+									"midpoints" : [ 59.5, 123.0, 36.0, 123.0, 36.0, 237.0, 108.5, 237.0 ],
+									"source" : [ "obj-35", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-34", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"source" : [ "obj-35", 0 ]
+									"midpoints" : [ 70.0, 123.0, 59.5, 123.0 ],
+									"source" : [ "obj-35", 1 ]
 								}
 
 							}
@@ -346,7 +359,8 @@
 									"destination" : [ "obj-37", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"source" : [ "obj-35", 1 ]
+									"midpoints" : [ 80.5, 129.0, 169.5, 129.0 ],
+									"source" : [ "obj-35", 2 ]
 								}
 
 							}
@@ -355,6 +369,7 @@
 									"destination" : [ "obj-26", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
+									"midpoints" : [ 169.5, 237.0, 108.5, 237.0 ],
 									"source" : [ "obj-37", 0 ]
 								}
 

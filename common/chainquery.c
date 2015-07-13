@@ -7,6 +7,9 @@
 #include "requests.h"
 #include "queries.h"
 
+#include "chainquery.h"
+#include "pseudoclock.h"
+
 static int chain_query(const char *url, json_t **root){
     char *text;
     json_error_t error;
@@ -25,7 +28,7 @@ static int chain_query(const char *url, json_t **root){
     return 0;
 }
 
-void chain_get_data(const char *url, long start, long end, double **data, long *data_len){
+void chain_get_data(const char *url, long start, long end, double **data, long **timestamps, long *data_len){
     json_t *sensor_root;
     int err = 0;
     err = chain_query(url, &sensor_root);
@@ -57,7 +60,16 @@ void chain_get_data(const char *url, long start, long end, double **data, long *
     json_t *data_node = json_object_get(data_root, "data");
 
     long array_size = json_array_size(data_node);
-    double *data_array = malloc(array_size * sizeof(*data_array));
+    *data = malloc(array_size * sizeof(*data));
+    if(!*data){
+        chain_error("Failed to allocate for array");
+        return;
+    }
+    *timestamps = malloc(array_size * sizeof(*timestamps));
+    if(!*timestamps){
+        chain_error("Failed to allocate for array");
+        return;
+    }
     for (int i=0; i<array_size; i++){
         json_t *data_point, *timestamp, *value;
         data_point = json_array_get(data_node, i);
@@ -65,10 +77,11 @@ void chain_get_data(const char *url, long start, long end, double **data, long *
         value = json_object_get(data_point, "value");
         double value_double = json_real_value(value);
         const char *timestamp_text = json_string_value(timestamp);
-        *(data_array + i) = value_double;
+        long timestamp_long = time_from_string(timestamp_text);
+        *(*data + i) = value_double;
+        *(*timestamps + i) = timestamp_long;
     }
 
-    *data = data_array;
     *data_len = array_size;
 
     json_decref(sensor_root);
@@ -84,7 +97,7 @@ void chain_get_websocket(const char *url, const char **wstext){
     json_t *jtwshref = json_object_get(websocketStream, "href");
     const char *wshreftext = json_string_value(jtwshref);
     *wstext = (char *)malloc((strlen(wshreftext) + 1) * sizeof(char));
-    strcpy(*wstext, wshreftext);
+    strcpy((char *)*wstext, wshreftext);
 
     json_decref(root);
 }

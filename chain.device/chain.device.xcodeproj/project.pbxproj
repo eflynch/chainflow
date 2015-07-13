@@ -18,6 +18,7 @@
 		917AE2D01B2748F90007B529 /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2CF1B2748F90007B529 /* commonsyms.c */; };
 		917AE2D21B27492B0007B529 /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2D11B27492B0007B529 /* messages.c */; };
 		917AE2D41B2762240007B529 /* queries.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2D31B2762240007B529 /* queries.c */; };
+		918FD3C91B4DE0DD00B07589 /* pseudoclock.c in Sources */ = {isa = PBXBuildFile; fileRef = 918FD3C81B4DE0DD00B07589 /* pseudoclock.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		917AE2CF1B2748F90007B529 /* commonsyms.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = commonsyms.c; path = "../max6-sdk/c74support/max-includes/common/commonsyms.c"; sourceTree = "<group>"; };
 		917AE2D11B27492B0007B529 /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
 		917AE2D31B2762240007B529 /* queries.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queries.c; path = ../common/queries.c; sourceTree = "<group>"; };
+		918FD3C81B4DE0DD00B07589 /* pseudoclock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pseudoclock.c; path = ../common/pseudoclock.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 				9112F5701B39BB2600FBDFCB /* chainlib.c */,
 				913342EB1B4C7A78000CB78A /* requests.c */,
 				91674A121B537C2400029E21 /* chainworker.c */,
+				918FD3C81B4DE0DD00B07589 /* pseudoclock.c */,
 				913342E71B4C7A42000CB78A /* chainquery.c */,
 				917AE2D11B27492B0007B529 /* messages.c */,
 				917AE2CF1B2748F90007B529 /* commonsyms.c */,
@@ -143,6 +146,7 @@
 			files = (
 				913342E81B4C7A42000CB78A /* chainquery.c in Sources */,
 				9112F5711B39BB2600FBDFCB /* chainlib.c in Sources */,
+				918FD3C91B4DE0DD00B07589 /* pseudoclock.c in Sources */,
 				917AE2D41B2762240007B529 /* queries.c in Sources */,
 				91674A131B537C2400029E21 /* chainworker.c in Sources */,
 				917AE2D01B2748F90007B529 /* commonsyms.c in Sources */,

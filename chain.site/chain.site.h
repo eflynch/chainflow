@@ -15,14 +15,19 @@
 #include "ext_dictobj.h"
 #include "ext_database.h"
 
-#endif /* defined(____chain_site__) */
+#include "pri_queue.h"
+#include "pseudoclock.h"
 
 typedef struct chain_site
 {
     t_object s_obj;
     t_systhread s_systhread_load;
     t_systhread s_systhread_play;
+    t_systhread s_systhread_historical;
+    t_systhread_mutex s_historical_mutex;
     int s_play_cancel;
+    int s_historical_cancel;
+    int s_live;
     void *s_outlet_busy;
     void *s_outlet;
     t_symbol *s_site_name;
@@ -30,16 +35,14 @@ typedef struct chain_site
     t_symbol *s_wshref;
     t_dictionary *s_dictionary;
     t_database *s_db;
-    void *s_reg_ptr
+    void *s_reg_ptr;
+    t_pseudo_clk *s_historical_clk;
+    float s_historical_ts;
+    long s_historical_start;
+    pri_queue s_historical_pq;
 } t_chain_site;
 
-typedef struct chain_event
-{
-    time_t s_time;
-    const char *s_href;
-    const char *s_timestamp;
-    double s_value;
-} t_chain_event;
- 
+#endif /* defined(____chain_site__) */
+
 int chain_site_update_sensors(t_chain_site *x, const char *href,
                               const char *timestamp, double value);
