@@ -2,7 +2,7 @@
 	"name" : "testproj",
 	"version" : 1,
 	"creationdate" : -777052294,
-	"modificationdate" : -776715320,
+	"modificationdate" : -775251324,
 	"viewrect" : [ 1077.0, 73.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -12,8 +12,7 @@
 		"patchers" : 		{
 			"testproj.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1,
-				"toplevel" : 1
+				"local" : 1
 			}
 ,
 			"devicevoice~.maxpat" : 			{
@@ -31,6 +30,10 @@
 			}
 ,
 			"databrowser.maxpat" : 			{
+				"kind" : "patcher"
+			}
+,
+			"historical_example.maxpat" : 			{
 				"kind" : "patcher"
 			}
 
@@ -322,12 +325,22 @@
 ,
 			"hoa.3d.decoder~.mxo" : 			{
 				"kind" : "object",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/things/maxchain/testproj/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
 			}
 ,
 			"hoa.map.mxo" : 			{
 				"kind" : "object",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/things/maxchain/testproj/patchers",
+					"projectrelativepath" : "./patchers"
+				}
+
 			}
 
 		}

@@ -1,0 +1,251 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		91674A2E1B55681A00029E21 /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 91674A2D1B55681A00029E21 /* maxmspsdk.xcconfig */; };
+		91674A301B55688900029E21 /* pseudoclock.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A2F1B55688900029E21 /* pseudoclock.c */; };
+		91674A321B55689200029E21 /* chainlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A311B55689200029E21 /* chainlib.c */; };
+		91674A341B5568B000029E21 /* chain.time.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A331B5568B000029E21 /* chain.time.c */; };
+		91674A361B5568ED00029E21 /* chainworker.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A351B5568ED00029E21 /* chainworker.c */; };
+		91674A381B5568F100029E21 /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A371B5568F100029E21 /* commonsyms.c */; };
+		91674A3A1B556BE600029E21 /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A391B556BE600029E21 /* messages.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		91674A231B55680700029E21 /* chain.time.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.time.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
+		91674A2D1B55681A00029E21 /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
+		91674A2F1B55688900029E21 /* pseudoclock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pseudoclock.c; path = ../common/pseudoclock.c; sourceTree = "<group>"; };
+		91674A311B55689200029E21 /* chainlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainlib.c; path = ../common/chainlib.c; sourceTree = "<group>"; };
+		91674A331B5568B000029E21 /* chain.time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chain.time.c; sourceTree = "<group>"; };
+		91674A351B5568ED00029E21 /* chainworker.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainworker.c; path = ../common/chainworker.c; sourceTree = "<group>"; };
+		91674A371B5568F100029E21 /* commonsyms.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = commonsyms.c; path = "../max6-sdk/c74support/max-includes/common/commonsyms.c"; sourceTree = "<group>"; };
+		91674A391B556BE600029E21 /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		91674A201B55680700029E21 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		91674A1A1B55680700029E21 = {
+			isa = PBXGroup;
+			children = (
+				91674A331B5568B000029E21 /* chain.time.c */,
+				91674A391B556BE600029E21 /* messages.c */,
+				91674A2F1B55688900029E21 /* pseudoclock.c */,
+				91674A351B5568ED00029E21 /* chainworker.c */,
+				91674A371B5568F100029E21 /* commonsyms.c */,
+				91674A311B55689200029E21 /* chainlib.c */,
+				91674A241B55680700029E21 /* Products */,
+				91674A2D1B55681A00029E21 /* maxmspsdk.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		91674A241B55680700029E21 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				91674A231B55680700029E21 /* chain.time.mxo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		91674A221B55680700029E21 /* chain.time */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91674A2A1B55680800029E21 /* Build configuration list for PBXNativeTarget "chain.time" */;
+			buildPhases = (
+				91674A1F1B55680700029E21 /* Sources */,
+				91674A201B55680700029E21 /* Frameworks */,
+				91674A211B55680700029E21 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = chain.time;
+			productName = chain.time;
+			productReference = 91674A231B55680700029E21 /* chain.time.mxo */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		91674A1B1B55680700029E21 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "Evan Lynch";
+				TargetAttributes = {
+					91674A221B55680700029E21 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
+			};
+			buildConfigurationList = 91674A1E1B55680700029E21 /* Build configuration list for PBXProject "chain.time" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 91674A1A1B55680700029E21;
+			productRefGroup = 91674A241B55680700029E21 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				91674A221B55680700029E21 /* chain.time */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		91674A211B55680700029E21 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91674A2E1B55681A00029E21 /* maxmspsdk.xcconfig in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		91674A1F1B55680700029E21 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91674A341B5568B000029E21 /* chain.time.c in Sources */,
+				91674A3A1B556BE600029E21 /* messages.c in Sources */,
+				91674A381B5568F100029E21 /* commonsyms.c in Sources */,
+				91674A301B55688900029E21 /* pseudoclock.c in Sources */,
+				91674A321B55689200029E21 /* chainlib.c in Sources */,
+				91674A361B5568ED00029E21 /* chainworker.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		91674A281B55680800029E21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 91674A2D1B55681A00029E21 /* maxmspsdk.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		91674A291B55680800029E21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 91674A2D1B55681A00029E21 /* maxmspsdk.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		91674A2B1B55680800029E21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 91674A2D1B55681A00029E21 /* maxmspsdk.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		91674A2C1B55680800029E21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 91674A2D1B55681A00029E21 /* maxmspsdk.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		91674A1E1B55680700029E21 /* Build configuration list for PBXProject "chain.time" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91674A281B55680800029E21 /* Debug */,
+				91674A291B55680800029E21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		91674A2A1B55680800029E21 /* Build configuration list for PBXNativeTarget "chain.time" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91674A2B1B55680800029E21 /* Debug */,
+				91674A2C1B55680800029E21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 91674A1B1B55680700029E21 /* Project object */;
+}

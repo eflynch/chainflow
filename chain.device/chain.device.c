@@ -19,7 +19,6 @@ typedef struct chain_device
 {
     t_chain_worker s_worker;
     t_symbol *s_device_name;
-    t_object *s_view;
     long s_live_flag;
     void *s_outlet;
     void *s_outlet2;
@@ -30,7 +29,6 @@ void *chain_device_new(t_symbol *s, long argc, t_atom *argv);
 void chain_device_free(t_chain_device *x);
 
 // Attribute Setters
-void chain_device_set_site_name(t_chain_device *x, void *attr, long argc, t_atom *argv);
 void chain_device_set_device_name(t_chain_device *x, void *attr, long argc, t_atom *argv);
 
 // Methods
@@ -100,7 +98,6 @@ void *chain_device_new(t_symbol *s, long argc, t_atom *argv)
     x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
     x->s_live_flag = 1;
-    x->s_view = NULL;
 
     return x;
 }

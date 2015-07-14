@@ -2,6 +2,9 @@
 #define ____pseudoclock__
 
 #include <time.h>
+#include <string.h>
+#include <stdlib.h>
+#include "messages.h"
 
 typedef struct pseudo_clk {
     time_t local_start;
@@ -15,6 +18,8 @@ typedef struct pseudo_clk {
 time_t local_now(void);
 
 time_t time_from_string(const char *string);
+
+char *string_from_time(time_t rawtime);
 
 time_t pseudo_now(t_pseudo_clk *clk);
 

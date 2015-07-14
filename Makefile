@@ -1,4 +1,4 @@
-PROJECTS = chain.info chain.site chain.test chain.device chain.metric chain.zone chain.map
+PROJECTS = chain.info chain.site chain.test chain.device chain.metric chain.zone chain.map chain.time
 
 all:
 	for project in $(PROJECTS) ; do \
