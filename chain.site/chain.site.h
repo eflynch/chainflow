@@ -17,6 +17,7 @@
 
 #include "pri_queue.h"
 #include "pseudoclock.h"
+#include "chainevent.h"
 
 typedef struct chain_site
 {
@@ -44,5 +45,4 @@ typedef struct chain_site
 
 #endif /* defined(____chain_site__) */
 
-int chain_site_update_sensors(t_chain_site *x, const char *href,
-                              const char *timestamp, double value);
+int chain_site_update_sensors(t_chain_site *x, t_chain_event *e);

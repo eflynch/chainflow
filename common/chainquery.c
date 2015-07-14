@@ -28,7 +28,9 @@ static int chain_query(const char *url, json_t **root){
     return 0;
 }
 
-void chain_get_data(const char *url, long start, long end, double **data, long **timestamps, long *data_len){
+void chain_get_data(const char *url, time_t start, time_t end, t_chain_event **events, long *num_events){
+    // Get data history url from sensor url
+
     json_t *sensor_root;
     int err = 0;
     err = chain_query(url, &sensor_root);
@@ -43,6 +45,7 @@ void chain_get_data(const char *url, long start, long end, double **data, long *
 
     const char *data_history_url = json_string_value(href);
 
+    // Format data query url
     char rangequery[1024];
     sprintf(rangequery, "&timestamp__gte=%ld&timestamp__lt=%ld", start, end);
 
@@ -50,6 +53,7 @@ void chain_get_data(const char *url, long start, long end, double **data, long *
     strcpy(data_url, data_history_url);
     strcat(data_url, rangequery);
 
+    // Parse result
     json_t *data_root;
     err = chain_query(data_url, &data_root);
     if (err){
@@ -60,29 +64,30 @@ void chain_get_data(const char *url, long start, long end, double **data, long *
     json_t *data_node = json_object_get(data_root, "data");
 
     long array_size = json_array_size(data_node);
-    *data = malloc(array_size * sizeof(*data));
-    if(!*data){
-        chain_error("Failed to allocate for array");
-        return;
-    }
-    *timestamps = malloc(array_size * sizeof(*timestamps));
-    if(!*timestamps){
-        chain_error("Failed to allocate for array");
-        return;
-    }
+
+    *events = malloc(sizeof(t_chain_event) * array_size);
+
     for (int i=0; i<array_size; i++){
+        // Parse event
         json_t *data_point, *timestamp, *value;
         data_point = json_array_get(data_node, i);
         timestamp = json_object_get(data_point, "timestamp");
         value = json_object_get(data_point, "value");
         double value_double = json_real_value(value);
         const char *timestamp_text = json_string_value(timestamp);
-        long timestamp_long = time_from_string(timestamp_text);
-        *(*data + i) = value_double;
-        *(*timestamps + i) = timestamp_long;
+        time_t unix_timestamp = time_from_string(timestamp_text);
+
+        if (unix_timestamp <= 0){
+            chain_error("Received a wonky timestamp: %s", timestamp_text);
+        }
+
+        // Create event
+        t_chain_event e = chain_new_event(unix_timestamp, url, timestamp_text, value_double);
+
+        memcpy(*events + i, &e, sizeof(t_chain_event));
     }
 
-    *data_len = array_size;
+    *num_events = array_size;
 
     json_decref(sensor_root);
     json_decref(data_root);
@@ -130,7 +135,7 @@ void chain_load_summary(const char *url, t_database *db){
     for (int i=0; i < json_array_size(device_array); i++){
         json_t *device, *name, *href, *sensor_array, *geoLocation, *latitude, *longitude, *elevation;
         const char *name_text_temp, *href_text;
-        const char name_text[256];
+        char name_text[256];
         long device_id;
         float lat, lon, ele;
 

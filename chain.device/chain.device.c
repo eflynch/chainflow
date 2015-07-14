@@ -13,6 +13,7 @@
 #include "messages.h"
 #include "queries.h"
 #include "chainlib.h"
+#include "chainevent.h"
 #include "chainworker.h"
 
 typedef struct chain_device
@@ -312,22 +313,21 @@ void chain_device_location(t_chain_device *x)
 
 void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end)
 {
-    chain_info("%s: %ld, %ld", metric->s_name, start, end);
-
     t_db_result *db_result = NULL;
     query_sensor_href_by_device_name_metric_name(x->s_worker.s_db, x->s_device_name->s_name,
                                                  metric->s_name, &db_result);
     const char *sensor_href = db_result_string(db_result, 0, 0);
     double *data;
-    long *timestamps;
-    long data_len;
-    chain_get_data(sensor_href, start, end, &data, &timestamps, &data_len);
+    long num_events;
+    t_chain_event *events;
+    chain_get_data(sensor_href, start, end, &events, &num_events);
 
-    t_atom av[data_len];
-    atom_setdouble_array(data_len, av, data_len, data);
-    outlet_anything(x->s_outlet, metric, data_len, av);
-    free(timestamps);
-    free(data);
+    t_atom av[num_events];
+    for (int i=0; i<num_events; i++){
+        atom_setfloat(av+i, (events +i)->s_value);
+    }
+    outlet_anything(x->s_outlet, metric, num_events, av);
+    free(events);
 }
 
 

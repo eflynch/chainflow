@@ -18,7 +18,7 @@
 int chain_historical_process(t_chain_site *x){
     t_pseudo_clk *clk = x->s_historical_clk;
     pri_queue q = x->s_historical_pq;
-    int pri;
+    long pri;
     t_chain_event *e;
     while(1){
         if (x->s_play_cancel){
@@ -38,9 +38,9 @@ int chain_historical_process(t_chain_site *x){
             systhread_sleep(PROCESS_SLEEP_TIME);
             continue;
         } else {
-            chain_info("Popped: %d", e->s_time);
-            int err = chain_site_update_sensors(x, e->s_href, e->s_timestamp, e->s_value);
-            chain_free_event(e);
+            chain_info("Popped: %ld", e->s_time);
+            int err = chain_site_update_sensors(x, e);
+            free(e);
             if (err){
                 return 1;
             }
@@ -74,22 +74,18 @@ void chain_historical_lookahead(t_chain_site *x){
         // query list of sensors
         for (int i=0; i < num_records; i++){
             const char *url = db_result_string(db_result, i, 0);
-            long data_len;
-            long *s_times;
-            double *data;
-            chain_get_data(url, (long) start, (long) end, &data, &s_times, &data_len);
-            for (int j=0; j<data_len; j++){
-                long datum = data[j];
-                long s_time = s_times[j];
-                t_chain_event *e = chain_new_event(s_time, url, "NOT IMPLEMENTED", datum);
-                chain_info("Pushed: %d", s_time);
+            long num_events;
+            t_chain_event *events;
+            chain_get_data(url, start, end, &events, &num_events);
+            for (int j=0; j<num_events; j++){
+                // put event on heap
+                t_chain_event *e = malloc(sizeof(*e));
+                memcpy(e, (events + i), sizeof(*e));
                 systhread_mutex_lock(x->s_historical_mutex);
-                priq_push(x->s_historical_pq, (void *)e, (int) s_time);
+                priq_push(x->s_historical_pq, (void *)e, (long) e->s_time);
                 systhread_mutex_unlock(x->s_historical_mutex);
             }
-
-            free(s_times);
-            free(data);
+            free(events);
         }
             
         highest_time_checked = end;

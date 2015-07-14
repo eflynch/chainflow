@@ -20,7 +20,7 @@ pri_queue priq_new(int size)
   return q;
 }
  
-void priq_push(pri_queue q, void *data, int pri)
+void priq_push(pri_queue q, void *data, long pri)
 {
   q_elem_t *b;
   int n, m;
@@ -42,7 +42,7 @@ void priq_push(pri_queue q, void *data, int pri)
 }
  
 /* remove top item. returns 0 if empty. *pri can be null. */
-void *priq_pop(pri_queue q, int *pri)
+void *priq_pop(pri_queue q, long *pri)
 {
   void *out;
   if (q->n == 1) return 0;
@@ -72,7 +72,7 @@ void *priq_pop(pri_queue q, int *pri)
 }
  
 /* get the top element without removing it from queue */
-void* priq_top(pri_queue q, int *pri)
+void* priq_top(pri_queue q, long *pri)
 {
   if (q->n == 1) return 0;
   if (pri) *pri = q->buf[1].pri;

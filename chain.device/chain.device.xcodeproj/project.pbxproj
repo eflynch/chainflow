@@ -13,6 +13,7 @@
 		913342EC1B4C7A78000CB78A /* requests.c in Sources */ = {isa = PBXBuildFile; fileRef = 913342EB1B4C7A78000CB78A /* requests.c */; };
 		913342EE1B4C7A7F000CB78A /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 913342ED1B4C7A7F000CB78A /* libcurl.dylib */; };
 		91674A131B537C2400029E21 /* chainworker.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A121B537C2400029E21 /* chainworker.c */; };
+		91674A3C1B55B0D600029E21 /* chainevent.c in Sources */ = {isa = PBXBuildFile; fileRef = 91674A3B1B55B0D600029E21 /* chainevent.c */; };
 		917AE2CC1B2649590007B529 /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 917AE2CB1B2649590007B529 /* maxmspsdk.xcconfig */; };
 		917AE2CE1B264A2D0007B529 /* chain.device.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2CD1B264A2D0007B529 /* chain.device.c */; };
 		917AE2D01B2748F90007B529 /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2CF1B2748F90007B529 /* commonsyms.c */; };
@@ -28,6 +29,7 @@
 		913342EB1B4C7A78000CB78A /* requests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = requests.c; path = ../common/requests.c; sourceTree = "<group>"; };
 		913342ED1B4C7A7F000CB78A /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		91674A121B537C2400029E21 /* chainworker.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainworker.c; path = ../common/chainworker.c; sourceTree = "<group>"; };
+		91674A3B1B55B0D600029E21 /* chainevent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainevent.c; path = ../common/chainevent.c; sourceTree = "<group>"; };
 		917AE2C11B26494D0007B529 /* chain.device.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.device.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
 		917AE2CB1B2649590007B529 /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
 		917AE2CD1B264A2D0007B529 /* chain.device.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chain.device.c; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 				917AE2CD1B264A2D0007B529 /* chain.device.c */,
 				913342E91B4C7A62000CB78A /* libjansson.a */,
 				917AE2D31B2762240007B529 /* queries.c */,
+				91674A3B1B55B0D600029E21 /* chainevent.c */,
 				9112F5701B39BB2600FBDFCB /* chainlib.c */,
 				913342EB1B4C7A78000CB78A /* requests.c */,
 				91674A121B537C2400029E21 /* chainworker.c */,
@@ -150,6 +153,7 @@
 				917AE2D41B2762240007B529 /* queries.c in Sources */,
 				91674A131B537C2400029E21 /* chainworker.c in Sources */,
 				917AE2D01B2748F90007B529 /* commonsyms.c in Sources */,
+				91674A3C1B55B0D600029E21 /* chainevent.c in Sources */,
 				917AE2D21B27492B0007B529 /* messages.c in Sources */,
 				917AE2CE1B264A2D0007B529 /* chain.device.c in Sources */,
 				913342EC1B4C7A78000CB78A /* requests.c in Sources */,

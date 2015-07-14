@@ -30,8 +30,8 @@
 
 /* Begin PBXFileReference section */
 		9136691A1B4C73C90066E155 /* chainquery.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainquery.c; path = ../common/chainquery.c; sourceTree = "<group>"; };
-		914468C41B3DF4C300B1D910 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../jansson/build/lib/libjansson.a; sourceTree = SOURCE_ROOT; };
-		914468C61B3E012700B1D910 /* libwebsockets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebsockets.a; path = ../libwebsockets/build/lib/libwebsockets.a; sourceTree = SOURCE_ROOT; };
+		914468C41B3DF4C300B1D910 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../jansson/build/lib/libjansson.a; sourceTree = "<group>"; };
+		914468C61B3E012700B1D910 /* libwebsockets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebsockets.a; path = ../libwebsockets/build/lib/libwebsockets.a; sourceTree = "<group>"; };
 		91753D6C1B2B75B00059E455 /* chainwebsocket.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chainwebsocket.c; sourceTree = "<group>"; };
 		91753D761B2B8AD10059E455 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
 		91753D7A1B2B8B760059E455 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };

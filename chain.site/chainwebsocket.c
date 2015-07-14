@@ -1,9 +1,12 @@
 #include "chain.site.h"
 
 #include <string.h>
+#include <time.h>
 #include "libwebsockets.h"
 #include "jansson.h"
 #include "messages.h"
+#include "chainevent.h"
+#include "pseudoclock.h"
 
 static int chain_callback(struct libwebsocket_context *ctx, struct libwebsocket *wsi,
               enum libwebsocket_callback_reasons reason, void *user, void *in, size_t len){
@@ -44,7 +47,11 @@ static int chain_callback(struct libwebsocket_context *ctx, struct libwebsocket 
             d_value = json_real_value(value);
             href_text = json_string_value(href);
 
-            int err = chain_site_update_sensors(x, href_text, timestamp_text, d_value);
+            time_t unix_timestamp = time_from_string(timestamp_text);
+
+            t_chain_event e = chain_new_event(unix_timestamp, href_text, timestamp_text, d_value);
+
+            int err = chain_site_update_sensors(x, &e);
             if (err){
                 json_decref(root);
                 return 1;

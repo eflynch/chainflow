@@ -10,13 +10,14 @@
 #define ____chainevent__
 
 #include <time.h>
+#define URL_SIZE 1024
 
 
 typedef struct chain_event
 {
     time_t s_time;
-    const char *s_href;
-    const char *s_timestamp;
+    char s_href[URL_SIZE];
+    char s_timestamp[40];
     double s_value;
 } t_chain_event;
 
@@ -24,6 +25,4 @@ typedef struct chain_event
 #endif /* defined(____chainevent__) */
 
 
-t_chain_event *chain_new_event(time_t s_time, const char *href, const char *timestamp, double value);
-
-void chain_free_event(t_chain_event *e);
+t_chain_event chain_new_event(time_t s_time, const char *href, const char *timestamp, double value);

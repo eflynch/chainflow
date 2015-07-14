@@ -13,7 +13,6 @@
 #include "chainquery.h"
 #include "chainwebsocket.h"
 #include "chainhistorical.h"
-#include "chainevent.h"
 
 #define URL_SIZE 1024
 
@@ -98,6 +97,8 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
     x->s_play_cancel = false;
     x->s_historical_cancel = false;
     x->s_live = true;
+    x->s_historical_ts = 1.0;
+    x->s_historical_start = 1436877533; //Arbitrary choice
 
     attr_args_process(x, argc, argv);
 
@@ -196,10 +197,10 @@ void chain_site_load(t_chain_site *x)
 
 
 
-int chain_site_update_sensors(t_chain_site *x, const char *href, const char *timestamp, double value)
+int chain_site_update_sensors(t_chain_site *x, t_chain_event *e)
 {
     t_db_result *db_result = NULL;
-    query_update_sensor(x->s_db, href, timestamp, value, &db_result);
+    query_update_sensor(x->s_db, e->s_href, e->s_timestamp, e->s_value, &db_result);
 
     if (!db_result_numrecords(db_result)){
         chain_error("Failed to aquire device name");
@@ -209,7 +210,9 @@ int chain_site_update_sensors(t_chain_site *x, const char *href, const char *tim
 
     t_symbol *device_name_sym;
     device_name_sym = gensym(device_name);
-    object_notify(x, device_name_sym, (void *)href);
+    object_notify(x, device_name_sym, (void *)e->s_href);
+
+    outlet_bang(x->s_outlet);
 
     return 0;
 }

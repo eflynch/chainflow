@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ -1.0, 45.0, 911.0, 970.0 ],
+		"rect" : [ 0.0, 45.0, 911.0, 970.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -1340,14 +1340,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-1",
-					"linecount" : 3,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 21.0, 103.0, 248.0, 49.0 ],
+					"patching_rect" : [ 21.0, 103.0, 338.0, 22.0 ],
 					"style" : "",
-					"text" : "chain.site tidmarsh @url http://chain-api.media.mit.edu/sites/7 @start 1436520285 @scale 1. @live 0"
+					"text" : "chain.site tidmarsh @url http://chain-api.media.mit.edu/sites/7"
 				}
 
 			}
