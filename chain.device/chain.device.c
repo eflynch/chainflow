@@ -94,11 +94,11 @@ void *chain_device_new(t_symbol *s, long argc, t_atom *argv)
 
     chain_worker_new((t_chain_worker *)x, s, argc, argv);
 
-    attr_args_process(x, argc, argv);
-
     x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
     x->s_live_flag = 1;
+
+    attr_args_process(x, argc, argv);
 
     return x;
 }
@@ -316,6 +316,10 @@ void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end
     t_db_result *db_result = NULL;
     query_sensor_href_by_device_name_metric_name(x->s_worker.s_db, x->s_device_name->s_name,
                                                  metric->s_name, &db_result);
+    if(!db_result_numrecords(db_result)){
+        chain_error("Metric not valid for this device");
+        return;
+    }
     const char *sensor_href = db_result_string(db_result, 0, 0);
     double *data;
     long num_events;

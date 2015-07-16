@@ -14,8 +14,8 @@
 #include "chainwebsocket.h"
 
 #define URL_SIZE 1024
-#define LOOKAHEAD_TIME 100
-#define CHUNK_LENGTH 200
+#define LOOKAHEAD_TIME 1000
+#define CHUNK_LENGTH 2000
 #define LOOKAHEAD_SLEEP_TIME 1000
 typedef struct {
     t_chain_site *x;
@@ -303,6 +303,7 @@ void chain_site_schedule_update(t_chain_site *x, t_chain_event *e)
         return;
     }
     long pseudo_now = chain_site_pseudo_now(x);
+    outlet_int(x->s_outlet, pseudo_now);
     long delay = ((long)e->s_time - pseudo_now) * 1000;
 
     if (delay < 0){
