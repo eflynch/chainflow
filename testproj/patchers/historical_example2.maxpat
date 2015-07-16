@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 59.0, 104.0, 1286.0, 643.0 ],
+		"rect" : [ 82.0, 177.0, 882.0, 653.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -163,7 +163,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 531.0, 91.077148, 289.0, 22.0 ],
+					"patching_rect" : [ 531.0, 88.077148, 289.0, 22.0 ],
 					"style" : "",
 					"text" : "chain.site @url http://chain-api.media.mit.edu/sites/7"
 				}
