@@ -31,7 +31,8 @@
 *.hex
 
 # Package folder
-package/
+package/maxchain/externals/
+package/*.zip
 
 
 ###OSX###
