@@ -12,10 +12,16 @@
 #include "queries.h"
 #include "chainquery.h"
 #include "chainwebsocket.h"
-#include "chainhistorical.h"
 
 #define URL_SIZE 1024
-
+#define LOOKAHEAD_TIME 100
+#define CHUNK_LENGTH 200
+#define LOOKAHEAD_SLEEP_TIME 1000
+typedef struct {
+    t_chain_site *x;
+    t_chain_event *e;
+    void *clk;
+} t_chain_site_and_event;
 
 // Create and Destroy
 void *chain_site_new(t_symbol *s, long argc, t_atom *argv);
@@ -34,21 +40,21 @@ void chain_site_set_url(t_chain_site *x, void *attr, long argc, t_atom *argv);
 // Threads
 void *chain_site_load_threadproc(t_chain_site *x);
 void *chain_site_play_threadproc(t_chain_site *x);
-void *chain_site_historical_threadproc(t_chain_site *x);
 
 void chain_site_play_historical(t_chain_site *x);
 void chain_site_play_live(t_chain_site *x);
+void chain_site_clock_method(t_chain_site_and_event *xe);
+void chain_site_free_update(t_chain_site_and_event *xe);
 
 static t_class *s_chain_site_class = NULL;
 
-t_symbol *ps_url, *ps_db, *ps_maxchain, *ps_deprecated;
+t_symbol *ps_url, *ps_db, *ps_maxchain;
 
 int C74_EXPORT main(void)
 {
     ps_url = gensym("url");
     ps_db = gensym("db");
     ps_maxchain = gensym("maxchain");
-    ps_deprecated = gensym("deprecated");
     
     t_class *c;
 
@@ -95,10 +101,10 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
     x->s_systhread_load = NULL;
     x->s_systhread_play = NULL;
     x->s_play_cancel = false;
-    x->s_historical_cancel = false;
     x->s_live = true;
     x->s_historical_ts = 1.0;
     x->s_historical_start = 1436877533; //Arbitrary choice
+    x->s_historical_scheduler = false;
 
     attr_args_process(x, argc, argv);
 
@@ -195,8 +201,6 @@ void chain_site_load(t_chain_site *x)
     }
 }
 
-
-
 int chain_site_update_sensors(t_chain_site *x, t_chain_event *e)
 {
     t_db_result *db_result = NULL;
@@ -211,8 +215,6 @@ int chain_site_update_sensors(t_chain_site *x, t_chain_event *e)
     t_symbol *device_name_sym;
     device_name_sym = gensym(device_name);
     object_notify(x, device_name_sym, (void *)e->s_href);
-
-    outlet_bang(x->s_outlet);
 
     return 0;
 }
@@ -277,45 +279,114 @@ void chain_site_play_live(t_chain_site *x){
     int n = 0;
     while(n>=0){
         n = libwebsocket_service(context, 2000);
+        outlet_int(x->s_outlet, local_now());
         if (x->s_play_cancel)
             break;
     }
 }
 
-// Run through HTTP/JSON .. see chainhistorical.c
-void chain_site_play_historical(t_chain_site *x){
-    if (x->s_historical_pq){
-        free(x->s_historical_pq->buf);
-        free(x->s_historical_pq);
+long chain_site_pseudo_now(t_chain_site *x){
+    if (!x->s_historical_scheduler){
+        return x->s_historical_start;
     }
-    x->s_historical_pq = priq_new(sizeof(t_chain_event));
-    x->s_historical_clk = new_clk(x->s_historical_start, x->s_historical_ts);
-    systhread_mutex_new(&x->s_historical_mutex, 0L);
-
-    if (x->s_systhread_historical == NULL){
-        systhread_create((method) chain_site_historical_threadproc, x, 0, 0, 0, &x->s_systhread_historical);
-    } else {
-        chain_error("Thread already running");
-    }
-
-    chain_historical_process(x);
-
-    unsigned int ret;
-    x->s_historical_cancel = true;
-    systhread_join(x->s_systhread_historical, &ret);
-    x->s_systhread_historical = NULL;
-    x->s_historical_cancel = false;
-
-    systhread_mutex_free(x->s_historical_mutex);
-    free_clk(x->s_historical_clk);
+    long t = gettime();
+    t -= x->s_historical_scheduler;
+    double elapsed_seconds = ((double) t) * x->s_historical_ts / 1000.;
+    return x->s_historical_start + (long)elapsed_seconds;
 }
-// Helper process for HTTP/JSON method
-void *chain_site_historical_threadproc(t_chain_site *x)
-{
-    chain_historical_lookahead(x);
 
-    systhread_exit(0);
-    return NULL;
+void chain_site_schedule_update(t_chain_site *x, t_chain_event *e)
+{
+    if(!x->s_historical_clklist){
+        chain_error("No linked list to take clocks");
+        free(e);
+        return;
+    }
+    long pseudo_now = chain_site_pseudo_now(x);
+    long delay = ((long)e->s_time - pseudo_now) * 1000;
+
+    if (delay < 0){
+        free(e);
+        return;
+    }
+
+    t_chain_site_and_event *xe = malloc(sizeof(*xe));
+    xe->x = x;
+    xe->e = e;
+    xe->clk = clock_new(xe, (method)chain_site_clock_method);
+    clock_delay(xe->clk, delay);
+    linklist_append(x->s_historical_clklist, xe);
+}
+
+void chain_site_clock_method(t_chain_site_and_event *xe){
+    chain_site_update_sensors(xe->x, xe->e);
+    linklist_chuckobject(xe->x->s_historical_clklist, xe);
+    chain_site_free_update(xe);
+}
+
+void chain_site_free_update(t_chain_site_and_event *xe){
+    clock_unset(xe->clk);
+    freeobject((t_object *)xe->clk);
+    free(xe->e);
+    free(xe);
+}
+
+void chain_site_play_historical(t_chain_site *x){
+    // Initialize
+    x->s_historical_scheduler = gettime();
+    x->s_historical_clklist = linklist_new();
+
+    time_t highest_time_checked = x->s_historical_start;
+
+    t_db_result *db_result = NULL;
+    query_list_sensors(x->s_db, &db_result);
+    long num_records = db_result_numrecords(db_result);
+
+    // Loop
+    while(1)
+    {
+        if(x->s_play_cancel){
+            break;
+        }
+        long pseudo_now = chain_site_pseudo_now(x);
+        outlet_int(x->s_outlet, pseudo_now);
+        if (pseudo_now >= local_now()){
+            break;
+        }
+        if (pseudo_now < highest_time_checked - LOOKAHEAD_TIME){
+            systhread_sleep(LOOKAHEAD_SLEEP_TIME);
+            continue;
+        }
+
+        time_t start = highest_time_checked;
+        time_t end = highest_time_checked + CHUNK_LENGTH;
+
+        // For each sensor
+        for (int sensor_idx=0; sensor_idx < num_records; sensor_idx++){
+            if (x->s_play_cancel){
+                break;
+            }
+            const char *url = db_result_string(db_result, sensor_idx, 0);
+            long num_events = 0;
+            t_chain_event *events;
+            chain_get_data(url, start, end, &events, &num_events);
+            for (int datum_idx=0; datum_idx<num_events; datum_idx++){
+                // put event on heap
+                t_chain_event *e = malloc(sizeof(*e));
+                memcpy(e, (events + datum_idx), sizeof(*e));
+
+                // schedule event
+                chain_site_schedule_update(x, e);
+            }
+            free(events);
+        }
+
+        highest_time_checked = end;
+    }
+
+    // Clean up
+    linklist_funall(x->s_historical_clklist, (method)chain_site_free_update, NULL);
+    linklist_chuck(x->s_historical_clklist);
 }
 
 // Play data

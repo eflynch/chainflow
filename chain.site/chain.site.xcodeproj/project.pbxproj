@@ -14,7 +14,6 @@
 		91753D771B2B8AD10059E455 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D761B2B8AD10059E455 /* libssl.dylib */; };
 		91753D7B1B2B8B760059E455 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D7A1B2B8B760059E455 /* libcrypto.dylib */; };
 		91753D7D1B2B8B9C0059E455 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D7C1B2B8B9C0059E455 /* libz.dylib */; };
-		918FD3C31B4DCA8E00B07589 /* chainhistorical.c in Sources */ = {isa = PBXBuildFile; fileRef = 918FD3C21B4DCA8E00B07589 /* chainhistorical.c */; };
 		918FD3C51B4DCABC00B07589 /* pri_queue.c in Sources */ = {isa = PBXBuildFile; fileRef = 918FD3C41B4DCABC00B07589 /* pri_queue.c */; };
 		918FD3C71B4DCAC500B07589 /* pseudoclock.c in Sources */ = {isa = PBXBuildFile; fileRef = 918FD3C61B4DCAC500B07589 /* pseudoclock.c */; };
 		918FD3CB1B4F065900B07589 /* chainevent.c in Sources */ = {isa = PBXBuildFile; fileRef = 918FD3CA1B4F065900B07589 /* chainevent.c */; };
@@ -36,7 +35,6 @@
 		91753D761B2B8AD10059E455 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
 		91753D7A1B2B8B760059E455 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
 		91753D7C1B2B8B9C0059E455 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		918FD3C21B4DCA8E00B07589 /* chainhistorical.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chainhistorical.c; sourceTree = "<group>"; };
 		918FD3C41B4DCABC00B07589 /* pri_queue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pri_queue.c; path = ../common/pri_queue.c; sourceTree = "<group>"; };
 		918FD3C61B4DCAC500B07589 /* pseudoclock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pseudoclock.c; path = ../common/pseudoclock.c; sourceTree = "<group>"; };
 		918FD3CA1B4F065900B07589 /* chainevent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainevent.c; path = ../common/chainevent.c; sourceTree = "<group>"; };
@@ -87,7 +85,6 @@
 				91CF9E031B20CC66001D45FA /* queries.c */,
 				9136691A1B4C73C90066E155 /* chainquery.c */,
 				918FD3CA1B4F065900B07589 /* chainevent.c */,
-				918FD3C21B4DCA8E00B07589 /* chainhistorical.c */,
 				91753D6C1B2B75B00059E455 /* chainwebsocket.c */,
 				91B64A881B0E345B00777B9A /* commonsyms.c */,
 				91ABCC0F1B39DA100085CC66 /* chainlib.c */,
@@ -176,7 +173,6 @@
 				91B64A891B0E345B00777B9A /* commonsyms.c in Sources */,
 				918FD3C51B4DCABC00B07589 /* pri_queue.c in Sources */,
 				91B64A851B0D0C2600777B9A /* chain.site.c in Sources */,
-				918FD3C31B4DCA8E00B07589 /* chainhistorical.c in Sources */,
 				91CF9DF71B1F6212001D45FA /* requests.c in Sources */,
 				91ABCC101B39DA100085CC66 /* chainlib.c in Sources */,
 				9136691B1B4C73C90066E155 /* chainquery.c in Sources */,

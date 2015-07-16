@@ -25,7 +25,6 @@ typedef struct chain_site
     t_systhread s_systhread_load;
     t_systhread s_systhread_play;
     t_systhread s_systhread_historical;
-    t_systhread_mutex s_historical_mutex;
     int s_play_cancel;
     int s_historical_cancel;
     int s_live;
@@ -37,10 +36,10 @@ typedef struct chain_site
     t_dictionary *s_dictionary;
     t_database *s_db;
     void *s_reg_ptr;
-    t_pseudo_clk *s_historical_clk;
     float s_historical_ts;
     long s_historical_start;
-    pri_queue s_historical_pq;
+    long s_historical_scheduler;
+    t_linklist *s_historical_clklist;
 } t_chain_site;
 
 #endif /* defined(____chain_site__) */

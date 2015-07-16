@@ -83,7 +83,6 @@ void chain_get_data(const char *url, time_t start, time_t end, t_chain_event **e
 
         // Create event
         t_chain_event e = chain_new_event(unix_timestamp, url, timestamp_text, value_double);
-
         memcpy(*events + i, &e, sizeof(t_chain_event));
     }
 

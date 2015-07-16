@@ -63,6 +63,9 @@ void *chain_worker_find_site_threadproc(t_chain_worker *x)
             object_detach(cws_maxchain, x->s_site_name, x);
             break;
         }
+        if (x->s_find_site_cancel){
+            break;
+        }
     }
     while(1){
         if (x->s_find_site_cancel){
