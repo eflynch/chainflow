@@ -40,6 +40,30 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-19",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 456.0, 688.0, 150.0, 18.0 ],
+					"style" : "",
+					"text" : "data outlet"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 621.0, 688.0, 150.0, 18.0 ],
+					"style" : "",
+					"text" : "metadata outlet"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-14",
 					"maxclass" : "message",
 					"numinlets" : 2,
@@ -503,11 +527,13 @@
 										"styles" : [ 											{
 												"name" : "maxchain",
 												"default" : 												{
-													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
 													"fontname" : [ "Courier" ],
 													"textjustification" : [ 0 ],
+													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+													"fontface" : [ 0 ],
+													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 													"bgfillcolor" : 													{
 														"type" : "color",
 														"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -518,10 +544,8 @@
 														"autogradient" : 0
 													}
 ,
-													"fontface" : [ 0 ],
-													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ]
+													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -539,8 +563,8 @@
 , 											{
 												"name" : "maxchain-subtitle",
 												"default" : 												{
-													"fontsize" : [ 20.0 ],
-													"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
+													"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
+													"fontsize" : [ 20.0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -549,10 +573,10 @@
 , 											{
 												"name" : "maxchain-title",
 												"default" : 												{
-													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 													"fontname" : [ "Courier Bold" ],
+													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 													"fontsize" : [ 48.0 ],
-													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -629,7 +653,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 443.0, 697.0, 147.0, 20.0 ],
+					"patching_rect" : [ 443.0, 716.0, 147.0, 20.0 ],
 					"style" : "",
 					"text" : "print data @popup 1"
 				}
@@ -641,7 +665,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 685.0, 756.0, 176.0, 20.0 ],
+					"patching_rect" : [ 685.0, 771.0, 176.0, 20.0 ],
 					"style" : "",
 					"text" : "print metadata @popup 1"
 				}
@@ -679,7 +703,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 600.0, 781.0, 176.0, 20.0 ],
+					"patching_rect" : [ 600.0, 796.0, 176.0, 20.0 ],
 					"style" : "",
 					"text" : "s devicehelp-metriclist"
 				}
@@ -688,7 +712,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-48",
-					"items" : [ "charge", ",", "charging", ",", "overdischarge_voltage", ",", "battery_full_voltage", ",", "battery_overload", ",", "overload", ",", "load_on", ",", "battery_full", ",", "pv_voltage", ",", "over_discharge", ",", "charge_current", ",", "battery_temperature", ",", "load_current", ",", "battery_voltage", ",", "load_short" ],
+					"items" : [ "version", ",", "bmp_temperature", ",", "sht_temperature", ",", "illuminance", ",", "battery_voltage", ",", "bmp_pressure", ",", "sht_humidity" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -702,13 +726,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-44",
-					"linecount" : 3,
+					"linecount" : 4,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 600.0, 142.0, 422.0, 42.0 ],
+					"patching_rect" : [ 600.0, 136.0, 451.0, 54.0 ],
 					"style" : "",
-					"text" : "metrics     - output list of metrics this device carries\nlocation    - output device location in Unity meters\ngeoLocation - output device location in GPS"
+					"text" : "Methods:\n    metrics     - output list of metrics this device carries\n    location    - output device location in Unity meters\n    geoLocation - output device location in GPS"
 				}
 
 			}
@@ -719,7 +743,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 600.0, 729.0, 104.0, 20.0 ],
+					"patching_rect" : [ 600.0, 744.0, 104.0, 20.0 ],
 					"style" : "",
 					"text" : "route metrics"
 				}
@@ -1157,11 +1181,13 @@
 										"styles" : [ 											{
 												"name" : "maxchain",
 												"default" : 												{
-													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
 													"fontname" : [ "Courier" ],
 													"textjustification" : [ 0 ],
+													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+													"fontface" : [ 0 ],
+													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 													"bgfillcolor" : 													{
 														"type" : "color",
 														"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -1172,10 +1198,8 @@
 														"autogradient" : 0
 													}
 ,
-													"fontface" : [ 0 ],
-													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ]
+													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -1193,8 +1217,8 @@
 , 											{
 												"name" : "maxchain-subtitle",
 												"default" : 												{
-													"fontsize" : [ 20.0 ],
-													"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
+													"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
+													"fontsize" : [ 20.0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -1203,10 +1227,10 @@
 , 											{
 												"name" : "maxchain-title",
 												"default" : 												{
-													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 													"fontname" : [ "Courier Bold" ],
+													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 													"fontsize" : [ 48.0 ],
-													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -1317,11 +1341,13 @@
 						"styles" : [ 							{
 								"name" : "maxchain",
 								"default" : 								{
-									"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-									"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-									"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+									"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+									"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
 									"fontname" : [ "Courier" ],
 									"textjustification" : [ 0 ],
+									"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+									"fontface" : [ 0 ],
+									"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 									"bgfillcolor" : 									{
 										"type" : "color",
 										"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -1332,10 +1358,8 @@
 										"autogradient" : 0
 									}
 ,
-									"fontface" : [ 0 ],
-									"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-									"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-									"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ]
+									"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+									"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 								}
 ,
 								"parentstyle" : "",
@@ -1948,11 +1972,13 @@
 		"styles" : [ 			{
 				"name" : "maxchain",
 				"default" : 				{
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
 					"fontname" : [ "Courier" ],
 					"textjustification" : [ 0 ],
+					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"fontface" : [ 0 ],
+					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -1963,10 +1989,8 @@
 						"autogradient" : 0
 					}
 ,
-					"fontface" : [ 0 ],
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ]
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -1984,8 +2008,8 @@
 , 			{
 				"name" : "maxchain-subtitle",
 				"default" : 				{
-					"fontsize" : [ 20.0 ],
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
+					"fontsize" : [ 20.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -1994,10 +2018,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 					"fontname" : [ "Courier Bold" ],
+					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"fontsize" : [ 48.0 ],
-					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
 				}
 ,
 				"parentstyle" : "",

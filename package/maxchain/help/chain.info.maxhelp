@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 270.0, 82.0, 927.0, 779.0 ],
+		"rect" : [ 26.0, 79.0, 927.0, 779.0 ],
 		"bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
 		"editing_bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
 		"bglocked" : 0,
@@ -40,6 +40,32 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-9",
+					"maxclass" : "toggle",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 304.0, 272.0, 24.0, 24.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 304.0, 244.0, 29.5, 20.0 ],
+					"style" : "",
+					"text" : "1"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-48",
 					"linecount" : 4,
 					"maxclass" : "comment",
@@ -47,7 +73,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 591.0, 200.0, 300.0, 54.0 ],
 					"style" : "",
-					"text" : "nearest [x] [z] [n]\n       outputs list of [n] devices that\n       are nearest point (x,z)\n       **(in Unity meters)"
+					"text" : "nearest [x] [z] [n]\n       outputs list of n devices that\n       are nearest point (x,z)\n       **(in Unity meters)"
 				}
 
 			}
@@ -81,7 +107,7 @@
 							"modernui" : 1
 						}
 ,
-						"rect" : [ 1010.0, 176.0, 640.0, 480.0 ],
+						"rect" : [ 1006.0, 176.0, 640.0, 480.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -742,7 +768,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-36",
-					"items" : [ "`0x8146`", ",", "`0x8128`", ",", "`0x8156`" ],
+					"items" : [ "`0x8146`", ",", "`0x8128`", ",", "`0x8156`", ",", "`0x8169`", ",", "`0x8153`" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -829,7 +855,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 69.0, 277.0, 242.0, 54.0 ],
+					"patching_rect" : [ 69.0, 313.0, 242.0, 54.0 ],
 					"style" : "",
 					"text" : "metrics\n        outputs list of metrics\ndevices\n        outputs list of devices"
 				}
@@ -1177,6 +1203,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"midpoints" : [ 351.5, 237.5, 313.5, 237.5 ],
+					"source" : [ "obj-47", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -1191,6 +1227,15 @@
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-49", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-5", 0 ]
 				}
 
 			}
@@ -1218,10 +1263,13 @@
 		"styles" : [ 			{
 				"name" : "maxchain",
 				"default" : 				{
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"fontname" : [ "Courier" ],
+					"textjustification" : [ 0 ],
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"fontface" : [ 0 ],
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -1232,11 +1280,8 @@
 						"autogradient" : 0
 					}
 ,
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"fontname" : [ "Courier" ],
-					"textjustification" : [ 0 ]
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -1254,8 +1299,8 @@
 , 			{
 				"name" : "maxchain-subtitle",
 				"default" : 				{
-					"fontsize" : [ 20.0 ],
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
+					"fontsize" : [ 20.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -1264,10 +1309,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
-					"fontsize" : [ 48.0 ],
+					"fontname" : [ "Courier Bold" ],
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"fontname" : [ "Courier Bold" ]
+					"fontsize" : [ 48.0 ],
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
 				}
 ,
 				"parentstyle" : "",

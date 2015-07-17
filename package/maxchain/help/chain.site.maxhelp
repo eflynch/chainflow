@@ -40,12 +40,92 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"bgcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"fontface" : 1,
+					"fontname" : "Courier",
+					"fontsize" : 30.0,
+					"id" : "obj-29",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 558.0, 148.0, 28.0, 36.0 ],
+					"style" : "",
+					"text" : "3",
+					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-27",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 703.0, 247.0, 147.0, 20.0 ],
+					"style" : "",
+					"text" : "r sitehelp-loadlate"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-25",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 703.0, 271.0, 29.5, 20.0 ],
+					"style" : "",
+					"text" : "1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-19",
+					"maxclass" : "toggle",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 703.0, 298.0, 24.0, 24.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 649.0, 302.0, 150.0, 18.0 ],
+					"style" : "",
+					"text" : "Loaded"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 513.0, 614.0, 147.0, 20.0 ],
+					"style" : "",
+					"text" : "s sitehelp-loadlate"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-30",
 					"maxclass" : "button",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 135.0, 415.0, 24.0, 24.0 ],
+					"patching_rect" : [ 135.0, 436.0, 24.0, 24.0 ],
 					"style" : ""
 				}
 
@@ -57,7 +137,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 69.0, 173.0, 24.0, 24.0 ],
+					"patching_rect" : [ 69.0, 194.0, 24.0, 24.0 ],
 					"style" : ""
 				}
 
@@ -69,7 +149,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 599.0, 175.0, 24.0, 24.0 ],
+					"patching_rect" : [ 599.0, 196.0, 24.0, 24.0 ],
 					"style" : ""
 				}
 
@@ -81,7 +161,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 307.0, 173.0, 24.0, 24.0 ],
+					"patching_rect" : [ 307.0, 194.0, 24.0, 24.0 ],
 					"style" : ""
 				}
 
@@ -96,9 +176,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 94.0, 387.0, 28.0, 36.0 ],
+					"patching_rect" : [ 94.0, 408.0, 28.0, 36.0 ],
 					"style" : "",
-					"text" : "4",
+					"text" : "5",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
 
@@ -113,9 +193,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 266.0, 132.0, 28.0, 36.0 ],
+					"patching_rect" : [ 266.0, 153.0, 28.0, 36.0 ],
 					"style" : "",
-					"text" : "3",
+					"text" : "4",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
 				}
 
@@ -130,7 +210,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 504.0, 526.0, 28.0, 36.0 ],
+					"patching_rect" : [ 504.0, 547.0, 28.0, 36.0 ],
 					"style" : "",
 					"text" : "2",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
@@ -147,7 +227,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 30.0, 132.0, 28.0, 36.0 ],
+					"patching_rect" : [ 30.0, 153.0, 28.0, 36.0 ],
 					"style" : "",
 					"text" : "1",
 					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
@@ -161,7 +241,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 135.0, 397.0, 150.0, 30.0 ],
+					"patching_rect" : [ 135.0, 418.0, 150.0, 30.0 ],
 					"style" : "",
 					"text" : "stop\n     stop clock"
 				}
@@ -174,7 +254,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 135.0, 454.0, 39.0, 20.0 ],
+					"patching_rect" : [ 135.0, 475.0, 39.0, 20.0 ],
 					"style" : "",
 					"text" : "stop"
 				}
@@ -183,13 +263,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-10",
-					"linecount" : 6,
+					"linecount" : 8,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 433.5, 606.0, 448.5, 78.0 ],
+					"patching_rect" : [ 433.5, 663.0, 465.0, 102.0 ],
 					"style" : "",
-					"text" : "Current Limitations:\n1 - update events are dropped for the first 60 or so\n    seconds upon starting the historical update clock\n    while the buffer fills (querying each sensor for\n    historical data takes a long time).\n2 - timestamp output is non-periodic"
+					"text" : "Current IMPORTANT Limitations:\n1 - update events are dropped for the first 60 or so\n    seconds upon starting the historical update clock\n    while the buffer fills (querying each sensor for\n    historical data takes a long time).\n2 - timestamp output from left is non-periodic, use\n    chain.info's historical_now and now methods for\n    consistent timestamps."
 				}
 
 			}
@@ -200,9 +280,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 298.0, 152.0, 249.0, 66.0 ],
+					"patching_rect" : [ 298.0, 173.0, 256.0, 66.0 ],
 					"style" : "",
-					"text" : "start [startime] [scale]\n      start historical update\n      clock from time [startime]\n      at rate [scale] historical\n      seconds per second"
+					"text" : "start [starttime] [scale]\n      start historical update\n      clock from time [starttime]\n      at rate [scale] historical\n      seconds per second"
 				}
 
 			}
@@ -213,7 +293,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 591.0, 152.0, 179.0, 42.0 ],
+					"patching_rect" : [ 591.0, 173.0, 179.0, 42.0 ],
 					"style" : "",
 					"text" : "start\n      start realtime\n      update clock"
 				}
@@ -226,7 +306,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 599.0, 332.0, 47.0, 20.0 ],
+					"patching_rect" : [ 599.0, 353.0, 47.0, 20.0 ],
 					"style" : "",
 					"text" : "start"
 				}
@@ -239,7 +319,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 307.0, 303.0, 75.0, 20.0 ],
+					"patching_rect" : [ 307.0, 324.0, 75.0, 20.0 ],
 					"style" : "",
 					"text" : "pack i 1."
 				}
@@ -256,7 +336,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 1,
-					"patching_rect" : [ 482.0, 263.0, 50.0, 20.0 ],
+					"patching_rect" : [ 482.0, 284.0, 50.0, 20.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
 							"parameter_longname" : "number",
@@ -281,7 +361,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 307.0, 229.0, 263.0, 20.0 ],
+					"patching_rect" : [ 307.0, 250.0, 263.0, 20.0 ],
 					"style" : "",
 					"text" : "parse 2015-07-04T00:00:00.000+00:00"
 				}
@@ -294,7 +374,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "" ],
-					"patching_rect" : [ 307.0, 263.0, 147.0, 20.0 ],
+					"patching_rect" : [ 307.0, 284.0, 147.0, 20.0 ],
 					"style" : "",
 					"text" : "chain.time sitehelp"
 				}
@@ -307,7 +387,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 307.0, 332.0, 90.0, 20.0 ],
+					"patching_rect" : [ 307.0, 353.0, 90.0, 20.0 ],
 					"style" : "",
 					"text" : "start $1 $2"
 				}
@@ -320,7 +400,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 176.0, 526.0, 265.0, 30.0 ],
+					"patching_rect" : [ 176.0, 547.0, 265.0, 30.0 ],
 					"style" : "",
 					"text" : "int\n    clock's current timestamp"
 				}
@@ -334,7 +414,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 69.0, 526.0, 105.0, 20.0 ],
+					"patching_rect" : [ 69.0, 547.0, 105.0, 20.0 ],
 					"style" : ""
 				}
 
@@ -346,7 +426,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 12.5, 606.0, 419.0, 114.0 ],
+					"patching_rect" : [ 12.5, 627.0, 419.0, 114.0 ],
 					"style" : "",
 					"text" : "Arguments:\n[chain.site name]\n    name - optional argument shared by all chain objects\n           which associates each worker object with a\n           chain.site manager. No two chain.sites can\n           share a name.\n\nAttributes:\n    url  - url for chainAPI site to connect to"
 				}
@@ -359,7 +439,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 545.0, 548.0, 24.0, 24.0 ],
+					"patching_rect" : [ 570.0, 559.0, 24.0, 24.0 ],
 					"style" : ""
 				}
 
@@ -371,7 +451,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 566.0, 526.0, 232.0, 66.0 ],
+					"patching_rect" : [ 577.5, 538.0, 232.0, 66.0 ],
 					"style" : "",
 					"text" : "bang\n     bang when load is done\n     you should wait for\n     this bang before starting\n     a clock"
 				}
@@ -384,7 +464,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 69.0, 152.0, 190.0, 54.0 ],
+					"patching_rect" : [ 69.0, 173.0, 190.0, 54.0 ],
 					"style" : "",
 					"text" : "load\n     retrieve list of\n     devices and sensors\n     from site summary"
 				}
@@ -397,7 +477,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 69.0, 235.0, 39.0, 20.0 ],
+					"patching_rect" : [ 69.0, 256.0, 39.0, 20.0 ],
 					"style" : "",
 					"text" : "load"
 				}
@@ -410,7 +490,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 69.0, 497.0, 495.0, 20.0 ],
+					"patching_rect" : [ 69.0, 518.0, 495.0, 20.0 ],
 					"style" : "",
 					"text" : "chain.site sitehelp @url http://chain-api.media.mit.edu/sites/7"
 				}
@@ -443,13 +523,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-12",
-					"linecount" : 3,
+					"linecount" : 4,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.5, 85.0, 465.0, 42.0 ],
+					"patching_rect" : [ 0.5, 85.0, 465.0, 54.0 ],
 					"style" : "",
-					"text" : "The chain.site object manages a connection to a chainAPI site. This is the rest of the description here. I don't have much more to say about it at the moment, but here it is. Yeah!"
+					"text" : "The chain.site object manages a connection to a chainAPI site. It functions as a sync-engine to retrieve sensor update events\nand store the most recent value for each sensor. This can be done live, or as a play-through of historical data."
 				}
 
 			}
@@ -486,7 +566,7 @@
 					"destination" : [ "obj-47", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 144.5, 484.0, 78.5, 484.0 ],
+					"midpoints" : [ 144.5, 505.0, 78.5, 505.0 ],
 					"source" : [ "obj-14", 0 ]
 				}
 
@@ -496,7 +576,7 @@
 					"destination" : [ "obj-76", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 316.5, 319.5, 316.5, 319.5 ],
+					"midpoints" : [ 316.5, 340.5, 316.5, 340.5 ],
 					"source" : [ "obj-2", 0 ]
 				}
 
@@ -512,10 +592,28 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-19", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-25", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-26", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-27", 0 ]
 				}
 
 			}
@@ -542,8 +640,18 @@
 					"destination" : [ "obj-47", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 608.5, 373.0, 78.5, 373.0 ],
+					"midpoints" : [ 608.5, 394.0, 78.5, 394.0 ],
 					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"midpoints" : [ 554.5, 606.5, 522.5, 606.5 ],
+					"source" : [ "obj-47", 1 ]
 				}
 
 			}
@@ -552,6 +660,7 @@
 					"destination" : [ "obj-63", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
+					"midpoints" : [ 554.5, 548.0, 579.5, 548.0 ],
 					"source" : [ "obj-47", 1 ]
 				}
 
@@ -579,7 +688,7 @@
 					"destination" : [ "obj-47", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 316.5, 373.0, 78.5, 373.0 ],
+					"midpoints" : [ 316.5, 394.0, 78.5, 394.0 ],
 					"source" : [ "obj-76", 0 ]
 				}
 
@@ -607,7 +716,7 @@
 					"destination" : [ "obj-2", 1 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 491.5, 295.0, 372.5, 295.0 ],
+					"midpoints" : [ 491.5, 316.0, 372.5, 316.0 ],
 					"source" : [ "obj-88", 0 ]
 				}
 
@@ -630,11 +739,13 @@
 		"styles" : [ 			{
 				"name" : "maxchain",
 				"default" : 				{
-					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
 					"fontname" : [ "Courier" ],
 					"textjustification" : [ 0 ],
+					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"fontface" : [ 0 ],
+					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -645,10 +756,8 @@
 						"autogradient" : 0
 					}
 ,
-					"fontface" : [ 0 ],
 					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ]
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -676,10 +785,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 					"fontname" : [ "Courier Bold" ],
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"fontsize" : [ 48.0 ]
+					"fontsize" : [ 48.0 ],
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
 				}
 ,
 				"parentstyle" : "",

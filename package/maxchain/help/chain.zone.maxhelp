@@ -321,6 +321,65 @@
 								}
 
 							}
+ ],
+						"styles" : [ 							{
+								"name" : "maxchain",
+								"default" : 								{
+									"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+									"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+									"fontname" : [ "Courier" ],
+									"textjustification" : [ 0 ],
+									"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+									"fontface" : [ 0 ],
+									"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+									"bgfillcolor" : 									{
+										"type" : "color",
+										"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
+										"color1" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+										"color2" : [ 0.0, 0.0, 0.0, 1.0 ],
+										"angle" : 270.0,
+										"proportion" : 0.39,
+										"autogradient" : 0
+									}
+,
+									"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+									"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+								}
+,
+								"parentstyle" : "",
+								"multi" : 0
+							}
+, 							{
+								"name" : "maxchain-subsubtitle",
+								"default" : 								{
+									"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+								}
+,
+								"parentstyle" : "",
+								"multi" : 0
+							}
+, 							{
+								"name" : "maxchain-subtitle",
+								"default" : 								{
+									"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
+									"fontsize" : [ 20.0 ]
+								}
+,
+								"parentstyle" : "",
+								"multi" : 0
+							}
+, 							{
+								"name" : "maxchain-title",
+								"default" : 								{
+									"fontname" : [ "Courier Bold" ],
+									"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+									"fontsize" : [ 48.0 ],
+									"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
+								}
+,
+								"parentstyle" : "",
+								"multi" : 0
+							}
  ]
 					}
 ,
@@ -341,7 +400,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-36",
-					"items" : [ "`0x8163`", ",", "`0x8164`", ",", "`0x815A`", ",", "`0x815C`", ",", "`0x8160`", ",", "`0x8145`", ",", "`0x814F`", ",", "`0x816B`", ",", "`0x8154`" ],
+					"items" : [ "`0x8137`", ",", "`0x8128`", ",", "`0x8169`", ",", "`0x8153`" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -557,7 +616,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 2.5, 87.0, 487.0, 114.0 ],
 					"style" : "",
-					"text" : "The chain.zone object is for maintaining a list of devices near a moving point. When the a device that was not previously in the list comes within @enter meters of @pos, it gets added. When a device that was previously in the list goes outside of @exit meters of @pos, it gets removed.\n\nThis object is useful if you want to poly~ over a dynamic, small list of near devices while reallocating devices minimally. Separate exit and enter thresholds provide debounce."
+					"text" : "The chain.zone object is for maintaining a list of devices near a moving point. When a device that was not previously in the list comes within @enter meters of @pos, it gets added. When a device that was previously in the list goes outside of @exit meters of @pos, it gets removed.\n\nThis object is useful if you want to poly~ over a dynamic, small list of near devices while reallocating devices minimally. Separate exit and enter thresholds provide debounce."
 				}
 
 			}
@@ -733,10 +792,13 @@
 		"styles" : [ 			{
 				"name" : "maxchain",
 				"default" : 				{
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"fontname" : [ "Courier" ],
+					"textjustification" : [ 0 ],
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"fontface" : [ 0 ],
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -747,11 +809,8 @@
 						"autogradient" : 0
 					}
 ,
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"fontname" : [ "Courier" ],
-					"textjustification" : [ 0 ]
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -769,8 +828,8 @@
 , 			{
 				"name" : "maxchain-subtitle",
 				"default" : 				{
-					"fontsize" : [ 20.0 ],
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
+					"fontsize" : [ 20.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -779,10 +838,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
-					"fontsize" : [ 48.0 ],
+					"fontname" : [ "Courier Bold" ],
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"fontname" : [ "Courier Bold" ]
+					"fontsize" : [ 48.0 ],
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
 				}
 ,
 				"parentstyle" : "",
