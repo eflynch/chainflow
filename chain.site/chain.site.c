@@ -31,6 +31,8 @@ void chain_site_free(t_chain_site *x);
 void chain_site_load(t_chain_site *x);
 void chain_site_bang(t_chain_site *x);
 void chain_site_int(t_chain_site *x, long n);
+void chain_site_start(t_chain_site *x, t_symbol *s, long argc, t_atom *argv);
+void chain_site_stop(t_chain_site *x);
 
 // Attibute Setters
 void chain_site_release_site(t_chain_site *x);
@@ -64,13 +66,10 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_site_load, "load", 0);
     class_addmethod(c, (method)chain_site_int, "int", A_LONG, 0);
     class_addmethod(c, (method)chain_site_bang, "bang", 0);
+    class_addmethod(c, (method)chain_site_start, "start", A_GIMME, 0);
+    class_addmethod(c, (method)chain_site_stop, "stop", 0);
 
     CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_site, s_site_name);
-
-    CLASS_ATTR_LONG(c, "live", 0, t_chain_site, s_live);
-
-    CLASS_ATTR_LONG(c, "start", 0, t_chain_site, s_historical_start);
-    CLASS_ATTR_FLOAT(c, "scale", 0, t_chain_site, s_historical_ts);
 
     CLASS_ATTR_SYM(c, "url", 0, t_chain_site, s_url);
     CLASS_ATTR_ACCESSORS(c, "url", NULL, chain_site_set_url);
@@ -101,7 +100,6 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
     x->s_systhread_load = NULL;
     x->s_systhread_play = NULL;
     x->s_play_cancel = false;
-    x->s_live = true;
     x->s_historical_ts = 1.0;
     x->s_historical_start = 1436877533; //Arbitrary choice
     x->s_historical_scheduler = false;
@@ -194,7 +192,6 @@ void chain_site_load(t_chain_site *x)
         return;
     }
     if (x->s_systhread_load == NULL){
-        outlet_int(x->s_outlet_busy, 1);
         systhread_create((method) chain_site_load_threadproc, x, 0, 0, 0, &x->s_systhread_load);
     } else {
         chain_error("BUSY");
@@ -225,6 +222,10 @@ void chain_site_bang(t_chain_site *x)
 
 void chain_site_int(t_chain_site *x, long n)
 {
+}
+
+void chain_site_start(t_chain_site *x, t_symbol *s, long argc, t_atom *argv)
+{
     if(!x->s_db){
         chain_error("database not open");
         return;
@@ -233,19 +234,51 @@ void chain_site_int(t_chain_site *x, long n)
         chain_error("no url set");
         return;
     }
+    if (x->s_systhread_play != NULL){
+        chain_site_stop(x);
+    }
+
+    // Set up play environment
+    if (argc == 0){
+        x->s_live = 1;
+        chain_info("Starting live");
+    } else if (argc == 1){
+        if(atom_gettype(argv) != A_LONG){
+            chain_error("Bad start time");
+            return;
+        }
+        x->s_live = 0;
+        x->s_historical_start = atom_getlong(argv);
+        x->s_historical_ts = 1.0;
+        chain_info("Starting historical from %ld", atom_getlong(argv));
+    } else if (argc == 2){
+        if(atom_gettype(argv) != A_LONG){
+            chain_error("Bad start time");
+            return;
+        }
+        if(atom_gettype(argv + 1) != A_FLOAT){
+            chain_error("Bad time scale factor");
+            return;
+        }
+        x->s_live = 0;
+        x->s_historical_start = atom_getlong(argv);
+        x->s_historical_ts = atom_getfloat(argv + 1);
+        chain_info("Starting historical from %ld at %f", atom_getlong(argv), atom_getfloat(argv+1));
+    } else {
+        chain_error("start expected with no more than 2 arguments, got %ld", argc);
+        return;
+    }
+    systhread_create((method) chain_site_play_threadproc, x, 0, 0, 0, &x->s_systhread_play);
+}
+
+void chain_site_stop(t_chain_site *x)
+{
     unsigned int ret;
-    if (x->s_systhread_play != NULL && n == 0){
+    if (x->s_systhread_play != NULL){
         x->s_play_cancel = true;
         systhread_join(x->s_systhread_play, &ret);
         x->s_systhread_play = NULL;
         x->s_play_cancel = false;
-        return;
-    }
-
-    if (x->s_systhread_play == NULL){
-        systhread_create((method) chain_site_play_threadproc, x, 0, 0, 0, &x->s_systhread_play);
-    } else {
-        chain_error("Already playing");
     }
 }
 
@@ -254,7 +287,7 @@ void *chain_site_load_threadproc(t_chain_site *x)
     const char *wshref;
     chain_load_summary(x->s_url->s_name, x->s_db); 
     chain_get_websocket(x->s_url->s_name, &wshref);
-    outlet_int(x->s_outlet_busy, 0);
+    outlet_bang(x->s_outlet_busy);
 
     if(!wshref){
         chain_error("Could not get websocket address.");
@@ -270,6 +303,12 @@ void *chain_site_load_threadproc(t_chain_site *x)
 
 // Run through websocket .. see chainwebsocket.c
 void chain_site_play_live(t_chain_site *x){
+    while (!x->s_wshref){
+        if (x->s_play_cancel){
+            return;
+        }
+        systhread_sleep(1000);
+    }
     struct libwebsocket_context *context = chain_websocket_connect(x);
 
     if(!context){
@@ -393,10 +432,6 @@ void chain_site_play_historical(t_chain_site *x){
 // Play data
 void *chain_site_play_threadproc(t_chain_site *x)
 {
-    while (!x->s_wshref){
-        systhread_sleep(1000);
-    }
-
     if (x->s_live){
         chain_site_play_live(x);
     } else {

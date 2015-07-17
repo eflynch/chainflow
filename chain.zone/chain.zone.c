@@ -22,8 +22,9 @@ typedef struct chain_zone
 {
     t_chain_worker s_worker;
     void *s_outlet;
-    void *s_outlet2;
-    float s_pos[3];
+    float s_pos_x;
+    float s_pos_y;
+    float s_pos_z;
     float s_enter_threshold;
     float s_exit_threshold;
     t_hashtab *s_current_devices;
@@ -44,7 +45,10 @@ void chain_zone_int(t_chain_zone *x, long n);
 void chain_zone_bang(t_chain_zone *x);
 
 //Atributes
-void chain_zone_set_pos(t_chain_zone *x, void *attr, long argc, t_atom *argv);
+void chain_zone_set_pos(t_chain_zone *x, float pos_x, float pos_y, float pos_z);
+void chain_zone_set_pos_x(t_chain_zone *x, void *attr, long argc, t_atom *argv);
+void chain_zone_set_pos_y(t_chain_zone *x, void *attr, long argc, t_atom *argv);
+void chain_zone_set_pos_z(t_chain_zone *x, void *attr, long argc, t_atom *argv);
 void chain_zone_set_enter(t_chain_zone *x, void *attr, long argc, t_atom *argv);
 void chain_zone_set_exit(t_chain_zone *x, void *attr, long argc, t_atom *argv);
 
@@ -68,11 +72,16 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_zone_bang, "bang", 0);
     class_addmethod(c, (method)chain_zone_int, "int", A_LONG, 0);
     class_addmethod(c, (method)chain_zone_notify, "notify", A_CANT, 0);
+    class_addmethod(c, (method)chain_zone_notify, "pos", A_FLOAT, A_FLOAT, A_FLOAT, 0);
     
     CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_zone, s_worker.s_site_name);
 
-    CLASS_ATTR_FLOAT(c, "pos", 0, t_chain_zone, s_pos);
-    CLASS_ATTR_ACCESSORS(c, "pos", NULL, chain_zone_set_pos);
+    CLASS_ATTR_FLOAT(c, "pos_x", 0, t_chain_zone, s_pos_x);
+    CLASS_ATTR_ACCESSORS(c, "pos_x", NULL, chain_zone_set_pos_x);
+    CLASS_ATTR_FLOAT(c, "pos_y", 0, t_chain_zone, s_pos_y);
+    CLASS_ATTR_ACCESSORS(c, "pos_y", NULL, chain_zone_set_pos_y);
+    CLASS_ATTR_FLOAT(c, "pos_z", 0, t_chain_zone, s_pos_z);
+    CLASS_ATTR_ACCESSORS(c, "pos_z", NULL, chain_zone_set_pos_z);
     CLASS_ATTR_FLOAT(c, "enter", 0, t_chain_zone, s_enter_threshold);
     CLASS_ATTR_ACCESSORS(c, "enter", NULL, chain_zone_set_enter);
     CLASS_ATTR_FLOAT(c, "exit", 0, t_chain_zone, s_exit_threshold);
@@ -102,7 +111,6 @@ void *chain_zone_new(t_symbol *s, long argc, t_atom *argv)
 
     attr_args_process(x, argc, argv);
 
-    x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
     x->s_current_devices = hashtab_new(0);
 
@@ -120,20 +128,34 @@ void chain_zone_notify(t_chain_zone *x, t_symbol *s, t_symbol *msg, void *sender
     chain_worker_notify((t_chain_worker *) x, s, msg, sender, data);
 }
 
-void chain_zone_set_pos(t_chain_zone *x, void *attr, long argc, t_atom *argv){
-    if (argc != 3){
-        chain_error("Zone position requires 3 arguments not %ld", argc);
-        return;
-    }
-    float f_x = atom_getfloat(argv);
-    float f_y = atom_getfloat(argv+1);
-    float f_z = atom_getfloat(argv+2);
-    x->s_pos[0] = f_x;
-    x->s_pos[1] = f_y;
-    x->s_pos[2] = f_z;
+
+void chain_zone_set_pos(t_chain_zone *x, float pos_x, float pos_y, float pos_z){
+    x->s_pos_x = pos_x;
+    x->s_pos_y = pos_y;
+    x->s_pos_z = pos_z;
 
     chain_zone_update(x);
 }
+
+void chain_zone_set_pos_x(t_chain_zone *x, void *attr, long argc, t_atom *argv){
+    float f_x = atom_getfloat(argv);
+    x->s_pos_x = f_x;
+    chain_zone_update(x);
+}
+
+void chain_zone_set_pos_y(t_chain_zone *x, void *attr, long argc, t_atom *argv){
+    float f_y = atom_getfloat(argv);
+    x->s_pos_y = f_y;
+    chain_zone_update(x);
+}
+
+
+void chain_zone_set_pos_z(t_chain_zone *x, void *attr, long argc, t_atom *argv){
+    float f_z = atom_getfloat(argv);
+    x->s_pos_z = f_z;
+    chain_zone_update(x);
+}
+
 
 void chain_zone_set_enter(t_chain_zone *x, void *attr, long argc, t_atom *argv){
     float enter_threshold = atom_getfloat(argv);
@@ -162,7 +184,7 @@ void chain_zone_update(t_chain_zone *x)
 
     t_db_result *db_result = NULL;
 
-    query_list_devices_near_point(x->s_worker.s_db, x->s_pos[0], x->s_pos[2], x->s_enter_threshold, &db_result);
+    query_list_devices_near_point(x->s_worker.s_db, x->s_pos_x, x->s_pos_z, x->s_enter_threshold, &db_result);
 
     long numrecords = db_result_numrecords(db_result);
     for (int i=0; i<numrecords; i++){
@@ -197,15 +219,15 @@ void chain_zone_exit_handler(t_hashtab_entry *e, void *arg)
     t_symbol *device_name = e->key;// chuck if outside of exit threshold and output
     t_symobject *value = (t_symobject *)e->value;
     t_ordered_triple *value_point = value->thing;
-    float f_d = (value_point->s_x - x->s_pos[0]) * (value_point->s_x - x->s_pos[0]);
-    f_d += (value_point->s_z - x->s_pos[2]) * (value_point->s_z - x->s_pos[2]);
+    float f_d = (value_point->s_x - x->s_pos_x) * (value_point->s_x - x->s_pos_x);
+    f_d += (value_point->s_z - x->s_pos_z) * (value_point->s_z - x->s_pos_z);
     if (f_d > x->s_exit_threshold * x->s_exit_threshold)
     {
         hashtab_chuckkey(x->s_current_devices, device_name);
         free(value_point);
         t_atom av[1];
         atom_setsym(av, device_name);
-        outlet_anything(x->s_outlet2, ps_removed, 1, av);
+        outlet_anything(x->s_outlet, ps_removed, 1, av);
     }
 }
 

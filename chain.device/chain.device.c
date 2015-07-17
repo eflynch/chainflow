@@ -20,7 +20,7 @@ typedef struct chain_device
 {
     t_chain_worker s_worker;
     t_symbol *s_device_name;
-    long s_live_flag;
+    long s_autoupdate;
     void *s_outlet;
     void *s_outlet2;
 } t_chain_device;
@@ -36,7 +36,7 @@ void chain_device_set_device_name(t_chain_device *x, void *attr, long argc, t_at
 void chain_device_int(t_chain_device *x, long n);
 void chain_device_bang(t_chain_device *x);
 void chain_device_metric(t_chain_device *x, t_symbol *metric);
-void chain_device_sensors(t_chain_device *x);
+void chain_device_metrics(t_chain_device *x);
 void chain_device_geoLocation(t_chain_device *x);
 void chain_device_location(t_chain_device *x);
 void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end);
@@ -51,7 +51,7 @@ void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg, void *se
 
 static t_class *s_chain_device_class = NULL;
 
-t_symbol *ps_name, *ps_location, *ps_geoLocation, *ps_sensors;
+t_symbol *ps_name, *ps_location, *ps_geoLocation, *ps_metrics;
 
 
 int C74_EXPORT main(void)
@@ -65,7 +65,7 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_device_int, "int", A_LONG, 0);
     class_addmethod(c, (method)chain_device_metric, "metric", A_SYM, 0);
     class_addmethod(c, (method)chain_device_notify, "notify", A_CANT, 0);
-    class_addmethod(c, (method)chain_device_sensors, "sensors", 0);
+    class_addmethod(c, (method)chain_device_metrics, "metrics", 0);
     class_addmethod(c, (method)chain_device_geoLocation, "geoLocation", 0);
     class_addmethod(c, (method)chain_device_location, "location", 0);
     class_addmethod(c, (method)chain_device_data, "data", A_SYM, A_LONG, A_LONG);
@@ -75,13 +75,13 @@ int C74_EXPORT main(void)
     CLASS_ATTR_SYM(c, "device_name", 0, t_chain_device, s_device_name);
     CLASS_ATTR_ACCESSORS(c, "device_name", NULL, (method)chain_device_set_device_name);
 
-    CLASS_ATTR_LONG(c, "live", 0, t_chain_device, s_live_flag);
+    CLASS_ATTR_LONG(c, "autoupdate", 0, t_chain_device, s_autoupdate);
     
     class_register(CLASS_BOX, c);
     s_chain_device_class = c;
 
     ps_name = gensym("name");
-    ps_sensors = gensym("sensors");
+    ps_metrics = gensym("metrics");
     ps_location = gensym("location");
     ps_geoLocation = gensym("geoLocation");
     
@@ -96,7 +96,7 @@ void *chain_device_new(t_symbol *s, long argc, t_atom *argv)
 
     x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
-    x->s_live_flag = 1;
+    x->s_autoupdate = 1;
 
     attr_args_process(x, argc, argv);
 
@@ -111,7 +111,7 @@ void chain_device_free(t_chain_device *x)
 void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg,
                          void *sender, void *data)
 {
-    if (s == x->s_worker.s_site_name && x->s_live_flag && msg == x->s_device_name) {
+    if (s == x->s_worker.s_site_name && x->s_autoupdate && msg == x->s_device_name) {
         const char *href = (const char *)data;
         chain_device_send_sensor(x, href);
     }
@@ -232,7 +232,7 @@ void chain_device_metric(t_chain_device *x, t_symbol *metric)
     chain_device_send_metric(x, metric);
 }
 
-void chain_device_sensors(t_chain_device *x)
+void chain_device_metrics(t_chain_device *x)
 {
     if(!x->s_worker.s_db){
         chain_error("No DB!");
@@ -249,7 +249,7 @@ void chain_device_sensors(t_chain_device *x)
 
     numrecords = db_result_numrecords(db_result);
     if(!numrecords){
-        chain_error("No sensors were found!");
+        chain_error("No metrics were found!");
         return;
     }
 
@@ -260,7 +260,7 @@ void chain_device_sensors(t_chain_device *x)
         atom_setsym(av+i, gensym(name));
     }
 
-    outlet_anything(x->s_outlet2, ps_sensors, numrecords, av);
+    outlet_anything(x->s_outlet2, ps_metrics, numrecords, av);
 }
 
 void chain_device_geoLocation(t_chain_device *x)
