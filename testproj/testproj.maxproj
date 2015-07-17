@@ -2,7 +2,7 @@
 	"name" : "testproj",
 	"version" : 1,
 	"creationdate" : -777052294,
-	"modificationdate" : -775251324,
+	"modificationdate" : -774967491,
 	"viewrect" : [ 1077.0, 73.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -34,6 +34,10 @@
 			}
 ,
 			"historical_example.maxpat" : 			{
+				"kind" : "patcher"
+			}
+,
+			"nthbang.maxpat" : 			{
 				"kind" : "patcher"
 			}
 

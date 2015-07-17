@@ -94,9 +94,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 35.0, 331.0, 53.0, 22.0 ],
+					"patching_rect" : [ 35.0, 331.0, 49.0, 22.0 ],
 					"style" : "",
-					"text" : "sensors"
+					"text" : "metrics"
 				}
 
 			}
@@ -138,9 +138,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 143.0, 404.0, 83.0, 22.0 ],
+					"patching_rect" : [ 143.0, 404.0, 80.0, 22.0 ],
 					"style" : "",
-					"text" : "route sensors"
+					"text" : "route metrics"
 				}
 
 			}
@@ -189,7 +189,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
-					"outlettype" : [ "bang" ],
+					"outlettype" : [ "" ],
 					"patcher" : 					{
 						"fileversion" : 1,
 						"appversion" : 						{

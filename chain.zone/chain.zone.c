@@ -43,9 +43,9 @@ void chain_zone_free(t_chain_zone *x);
 // Methods
 void chain_zone_int(t_chain_zone *x, long n);
 void chain_zone_bang(t_chain_zone *x);
+void chain_zone_pos(t_chain_zone *x, t_symbol *s, long argc, t_atom *argv);
 
 //Atributes
-void chain_zone_set_pos(t_chain_zone *x, float pos_x, float pos_y, float pos_z);
 void chain_zone_set_pos_x(t_chain_zone *x, void *attr, long argc, t_atom *argv);
 void chain_zone_set_pos_y(t_chain_zone *x, void *attr, long argc, t_atom *argv);
 void chain_zone_set_pos_z(t_chain_zone *x, void *attr, long argc, t_atom *argv);
@@ -72,7 +72,7 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_zone_bang, "bang", 0);
     class_addmethod(c, (method)chain_zone_int, "int", A_LONG, 0);
     class_addmethod(c, (method)chain_zone_notify, "notify", A_CANT, 0);
-    class_addmethod(c, (method)chain_zone_notify, "pos", A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(c, (method)chain_zone_pos, "pos", A_GIMME, 0);
     
     CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_zone, s_worker.s_site_name);
 
@@ -129,10 +129,17 @@ void chain_zone_notify(t_chain_zone *x, t_symbol *s, t_symbol *msg, void *sender
 }
 
 
-void chain_zone_set_pos(t_chain_zone *x, float pos_x, float pos_y, float pos_z){
-    x->s_pos_x = pos_x;
-    x->s_pos_y = pos_y;
-    x->s_pos_z = pos_z;
+void chain_zone_pos(t_chain_zone *x, t_symbol *s, long argc, t_atom *argv){
+    if (argc != 3){
+        chain_error("chain.zone: pos got %ld args, expected 3.", argc);
+        return;
+    }
+    float f_x = atom_getfloat(argv);
+    float f_y = atom_getfloat(argv+1);
+    float f_z = atom_getfloat(argv+2);
+    x->s_pos_x = f_x;
+    x->s_pos_y = f_y;
+    x->s_pos_z = f_z;
 
     chain_zone_update(x);
 }
