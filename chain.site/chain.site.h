@@ -38,7 +38,7 @@ typedef struct chain_site
     void *s_reg_ptr;
     float s_historical_ts;
     long s_historical_start;
-    long s_historical_scheduler;
+    t_pseudo_clk *s_historical_clk;
     t_linklist *s_historical_clklist;
 } t_chain_site;
 

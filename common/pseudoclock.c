@@ -6,6 +6,25 @@ time_t local_now(void){
     return rawtime;
 }
 
+time_t pseudo_now(t_pseudo_clk *clk){
+    long t = gettime();
+    t -= clk->local_start;
+    double elapsed_seconds = ((double ) t) * clk->scale / 1000.;
+    return clk->pseudo_start + (long)elapsed_seconds;
+}
+
+t_pseudo_clk *new_clk(time_t start, float scale){
+    t_pseudo_clk *clk = malloc(sizeof(t_pseudo_clk));
+    clk->local_start = gettime();
+    clk->pseudo_start = start;
+    clk->scale = scale;
+    return clk;
+}
+
+void free_clk(t_pseudo_clk *clk){
+    free(clk);
+};
+
 /*
     Accept strings of the following formats:
 
@@ -56,20 +75,3 @@ char *string_from_time(time_t rawtime){
     strftime(buffer, 40, "%FT%T+00:00", gmtime(&rawtime));
     return buffer;
 }
-
-time_t pseudo_now(t_pseudo_clk *clk){
-    int pseudo_elapsed_time = (int)((float)(local_now() - clk->local_start) * clk->scale);
-    return clk->pseudo_start + pseudo_elapsed_time;
-}
-
-t_pseudo_clk *new_clk(time_t start, float scale){
-    t_pseudo_clk *clk = malloc(sizeof(t_pseudo_clk));
-    clk->local_start = local_now();
-    clk->pseudo_start = start;
-    clk->scale = scale;
-    return clk;
-}
-
-void free_clk(t_pseudo_clk *clk){
-    free(clk);
-};

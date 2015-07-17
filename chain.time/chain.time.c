@@ -32,11 +32,14 @@ void chain_time_bang(t_chain_time *x);
 void chain_time_parse(t_chain_time *x, t_symbol *t);
 void chain_time_format(t_chain_time *x, long timestamp);
 void chain_time_now(t_chain_time *x);
+void chain_time_historical_now(t_chain_time *x);
 
 // Notify
 void chain_time_notify(t_chain_time *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
 
 static t_class *s_chain_time_class = NULL;
+
+t_symbol *ps_clk;
 
 int C74_EXPORT main(void)
 {
@@ -51,11 +54,14 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_time_parse, "parse", A_SYM, 0);
     class_addmethod(c, (method)chain_time_format, "format", A_LONG, 0);
     class_addmethod(c, (method)chain_time_now, "now", 0);
-    
+    class_addmethod(c, (method)chain_time_historical_now, "historical_now", 0);
+
     CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_time, s_worker.s_site_name);
     
     class_register(CLASS_BOX, c);
     s_chain_time_class = c;
+
+    ps_clk = gensym("clk");
     
     return 0;
 }
@@ -109,6 +115,22 @@ void chain_time_format(t_chain_time *x, long timestamp)
 void chain_time_now(t_chain_time *x)
 {
     time_t timestamp = local_now();
+    char *buffer = string_from_time(timestamp);
+    outlet_int(x->s_outlet, (long) timestamp);
+    outlet_anything(x->s_outlet2, gensym(buffer), 0, NULL);
+    free(buffer);
+}
+
+void chain_time_historical_now(t_chain_time *x)
+{
+    t_object *obj = NULL;
+    dictionary_getobject(x->s_worker.s_dictionary, ps_clk, &obj);
+    if (!obj){
+        return;
+    }
+    t_pseudo_clk *clk = (t_pseudo_clk *)obj;
+
+    time_t timestamp = pseudo_now(clk);
     char *buffer = string_from_time(timestamp);
     outlet_int(x->s_outlet, (long) timestamp);
     outlet_anything(x->s_outlet2, gensym(buffer), 0, NULL);

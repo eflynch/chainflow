@@ -5,8 +5,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include "messages.h"
+#include "ext.h"
 
 typedef struct pseudo_clk {
+    t_object obj;
     time_t local_start;
     time_t pseudo_start;
     float scale;

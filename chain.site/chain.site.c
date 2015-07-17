@@ -50,12 +50,13 @@ void chain_site_free_update(t_chain_site_and_event *xe);
 
 static t_class *s_chain_site_class = NULL;
 
-t_symbol *ps_url, *ps_db, *ps_maxchain;
+t_symbol *ps_url, *ps_db, *ps_clk, *ps_maxchain;
 
 int C74_EXPORT main(void)
 {
     ps_url = gensym("url");
     ps_db = gensym("db");
+    ps_clk = gensym("clk");
     ps_maxchain = gensym("maxchain");
     
     t_class *c;
@@ -102,7 +103,6 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
     x->s_play_cancel = false;
     x->s_historical_ts = 1.0;
     x->s_historical_start = 1436877533; //Arbitrary choice
-    x->s_historical_scheduler = false;
 
     attr_args_process(x, argc, argv);
 
@@ -324,16 +324,6 @@ void chain_site_play_live(t_chain_site *x){
     }
 }
 
-long chain_site_pseudo_now(t_chain_site *x){
-    if (!x->s_historical_scheduler){
-        return x->s_historical_start;
-    }
-    long t = gettime();
-    t -= x->s_historical_scheduler;
-    double elapsed_seconds = ((double) t) * x->s_historical_ts / 1000.;
-    return x->s_historical_start + (long)elapsed_seconds;
-}
-
 void chain_site_schedule_update(t_chain_site *x, t_chain_event *e)
 {
     if(!x->s_historical_clklist){
@@ -341,9 +331,9 @@ void chain_site_schedule_update(t_chain_site *x, t_chain_event *e)
         free(e);
         return;
     }
-    long pseudo_now = chain_site_pseudo_now(x);
-    outlet_int(x->s_outlet, pseudo_now);
-    long delay = ((long)e->s_time - pseudo_now) * 1000;
+    time_t now = pseudo_now(x->s_historical_clk);
+    outlet_int(x->s_outlet, now);
+    long delay = ((long)e->s_time - now) * 1000;
 
     if (delay < 0){
         free(e);
@@ -373,8 +363,11 @@ void chain_site_free_update(t_chain_site_and_event *xe){
 
 void chain_site_play_historical(t_chain_site *x){
     // Initialize
-    x->s_historical_scheduler = gettime();
+    x->s_historical_clk = new_clk(x->s_historical_start, x->s_historical_ts);
     x->s_historical_clklist = linklist_new();
+
+    // Put clk in dictionary
+    dictionary_appendobject(x->s_dictionary, ps_clk, (t_object *)x->s_historical_clk);
 
     time_t highest_time_checked = x->s_historical_start;
 
@@ -388,12 +381,12 @@ void chain_site_play_historical(t_chain_site *x){
         if(x->s_play_cancel){
             break;
         }
-        long pseudo_now = chain_site_pseudo_now(x);
-        outlet_int(x->s_outlet, pseudo_now);
-        if (pseudo_now >= local_now()){
+        long now = pseudo_now(x->s_historical_clk);
+        outlet_int(x->s_outlet, now);
+        if (now >= local_now()){
             break;
         }
-        if (pseudo_now < highest_time_checked - LOOKAHEAD_TIME){
+        if (now < highest_time_checked - LOOKAHEAD_TIME){
             systhread_sleep(LOOKAHEAD_SLEEP_TIME);
             continue;
         }
@@ -427,6 +420,8 @@ void chain_site_play_historical(t_chain_site *x){
     // Clean up
     linklist_funall(x->s_historical_clklist, (method)chain_site_free_update, NULL);
     linklist_chuck(x->s_historical_clklist);
+    dictionary_chuckentry(x->s_dictionary, ps_clk);
+    free_clk(x->s_historical_clk);
 }
 
 // Play data

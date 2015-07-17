@@ -40,14 +40,87 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-29",
-					"linecount" : 8,
+					"bgcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"fontface" : 1,
+					"fontname" : "Courier",
+					"fontsize" : 30.0,
+					"id" : "obj-22",
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 296.0, 180.0, 365.0, 102.0 ],
+					"patching_rect" : [ 276.0, 205.0, 28.0, 36.0 ],
 					"style" : "",
-					"text" : "parse [timestamp]\n      convert [timestamp] into unix time long\n\nformat [unix]\n      convert [unix] long into string timestamp\n\nnow\n      output live current time"
+					"text" : "3",
+					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"fontface" : 1,
+					"fontname" : "Courier",
+					"fontsize" : 30.0,
+					"id" : "obj-21",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 480.0, 341.0, 28.0, 36.0 ],
+					"style" : "",
+					"text" : "2",
+					"textcolor" : [ 1.0, 1.0, 1.0, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-15",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 480.0, 383.0, 147.0, 20.0 ],
+					"style" : "",
+					"text" : "start 1437169839 1."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 480.0, 415.0, 227.0, 20.0 ],
+					"style" : "",
+					"text" : "chain.site timehelp @url dummy"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 276.0, 251.0, 111.0, 20.0 ],
+					"style" : "",
+					"text" : "historical_now"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-29",
+					"linecount" : 13,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 389.0, 167.0, 357.0, 162.0 ],
+					"style" : "",
+					"text" : "parse [timestamp]\n      convert [timestamp] into unix time long\n      where [timestamp] is formatted as\n      YYYY-MM-DDTHH:MM:SS.nnnnn±HH:MM\n\nformat [unix]\n      convert [unix] long into string timestamp\n\nnow\n      output live current time\n\nhistorical_now\n      output historical current time if exists"
 				}
 
 			}
@@ -58,7 +131,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 54.0, 180.0, 191.0, 20.0 ],
+					"patching_rect" : [ 24.0, 188.0, 191.0, 20.0 ],
 					"style" : "",
 					"text" : "2015-07-17T21:08:04+00:00"
 				}
@@ -71,7 +144,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 144.0, 205.0, 83.0, 20.0 ],
+					"patching_rect" : [ 114.0, 213.0, 83.0, 20.0 ],
 					"style" : "",
 					"text" : "1437167257"
 				}
@@ -84,7 +157,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 248.0, 243.0, 32.0, 20.0 ],
+					"patching_rect" : [ 218.0, 251.0, 32.0, 20.0 ],
 					"style" : "",
 					"text" : "now"
 				}
@@ -96,7 +169,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 215.0, 349.0, 183.0, 20.0 ],
+					"patching_rect" : [ 185.0, 357.0, 183.0, 20.0 ],
 					"style" : "",
 					"text" : "print timestamp @popup 1"
 				}
@@ -108,7 +181,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 54.0, 349.0, 147.0, 20.0 ],
+					"patching_rect" : [ 24.0, 357.0, 147.0, 20.0 ],
 					"style" : "",
 					"text" : "print unix @popup 1"
 				}
@@ -121,7 +194,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 144.0, 243.0, 75.0, 20.0 ],
+					"patching_rect" : [ 114.0, 251.0, 75.0, 20.0 ],
 					"style" : "",
 					"text" : "format $1"
 				}
@@ -134,7 +207,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 54.0, 243.0, 68.0, 20.0 ],
+					"patching_rect" : [ 24.0, 251.0, 68.0, 20.0 ],
 					"style" : "",
 					"text" : "parse $1"
 				}
@@ -147,9 +220,9 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "" ],
-					"patching_rect" : [ 54.0, 289.0, 83.0, 20.0 ],
+					"patching_rect" : [ 24.0, 297.0, 147.0, 20.0 ],
 					"style" : "",
-					"text" : "chain.time"
+					"text" : "chain.time timehelp"
 				}
 
 			}
@@ -173,13 +246,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-65",
-					"linecount" : 6,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 14.5, 418.0, 419.0, 78.0 ],
+					"patching_rect" : [ 14.5, 418.0, 419.0, 66.0 ],
 					"style" : "",
-					"text" : "Arguments:\n[chain.info name]\n    name - optional argument shared by all chain objects\n           which associates each worker object with a\n           chain.site manager. At the moment, chain.time\n           functions independently of it's manager site."
+					"text" : "Arguments:\n[chain.info name]\n    name - optional argument shared by all chain objects\n           which associates each worker object with a\n           chain.site manager."
 				}
 
 			}
@@ -262,7 +335,7 @@
 					"destination" : [ "obj-7", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 127.5, 328.5, 224.5, 328.5 ],
+					"midpoints" : [ 161.5, 336.5, 194.5, 336.5 ],
 					"source" : [ "obj-1", 1 ]
 				}
 
@@ -272,8 +345,17 @@
 					"destination" : [ "obj-1", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 257.5, 275.5, 63.5, 275.5 ],
+					"midpoints" : [ 227.5, 283.5, 33.5, 283.5 ],
 					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-15", 0 ]
 				}
 
 			}
@@ -309,7 +391,17 @@
 					"destination" : [ "obj-1", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 153.5, 275.5, 63.5, 275.5 ],
+					"midpoints" : [ 285.5, 283.5, 33.5, 283.5 ],
+					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"midpoints" : [ 123.5, 283.5, 33.5, 283.5 ],
 					"source" : [ "obj-5", 0 ]
 				}
 
@@ -317,6 +409,10 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "chain.time.mxo",
+				"type" : "iLaX"
+			}
+, 			{
+				"name" : "chain.site.mxo",
 				"type" : "iLaX"
 			}
  ],
@@ -328,7 +424,7 @@
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"fontname" : [ "Courier" ],
-					"textjustification" : [ 0 ],
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -339,10 +435,10 @@
 						"autogradient" : 0
 					}
 ,
+					"textjustification" : [ 0 ],
 					"fontface" : [ 0 ],
 					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ]
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -370,8 +466,8 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 					"fontname" : [ "Courier Bold" ],
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 					"fontsize" : [ 48.0 ],
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
