@@ -218,13 +218,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-65",
-					"linecount" : 10,
+					"linecount" : 12,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 14.5, 609.0, 419.0, 126.0 ],
+					"patching_rect" : [ 14.5, 609.0, 419.0, 150.0 ],
 					"style" : "",
-					"text" : "Arguments:\n[chain.map name]\n    name - optional argument shared by all chain objects\n           which associates each worker object with a\n           chain.site manager.\n\nAttributes:\n    pos_x [f]     - center position of zone x-coord\n    pos_y [f]     - center position of zone y-coord\n    pos_z [f]     - center position of zone z-coord"
+					"text" : "Arguments:\n[chain.map name]\n    name - optional argument shared by all chain objects\n           which associates each worker object with a\n           chain.site manager.\n\nAttributes:\n    pos_x [f]     - listener position x-coord\n    pos_y [f]     - listener position y-coord (not rep.)\n    pos_z [f]     - listener position z-coord\n    ang_azi [f]   - listener azimuthal angle\n    ang_ele [f]   - listener elevation angle (not rep.)"
 				}
 
 			}
