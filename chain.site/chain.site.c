@@ -282,6 +282,36 @@ void chain_site_stop(t_chain_site *x)
     }
 }
 
+void chain_site_set_site_bounds(t_chain_site *x)
+{
+    long i;
+    t_db_result *db_result = NULL;
+    query_list_devices(x->s_db, &db_result);
+
+    long numrecords = db_result_numrecords(db_result);
+    double x_max = 0.0, x_min = 1000000000, z_max = 0.0, z_min = 1000000000;
+    for (i=0; i<numrecords; i++){
+        double f_x = db_result_float(db_result, i, 1);
+        double f_z = db_result_float(db_result, i, 2);
+        if (x_max < f_x && f_x < 1000){
+            x_max = f_x;
+        }
+        if (x_min > f_x && f_x >= 0){
+            x_min = f_x;
+        }
+        if (z_max < f_z && f_z < 1000){
+            z_max = f_z;
+        }
+        if (z_min > f_z && f_z >= 0){
+            z_min = f_z;
+        }
+    }
+    dictionary_appendfloat(x->s_dictionary, gensym("xmin"), x_min);
+    dictionary_appendfloat(x->s_dictionary, gensym("xmax"), x_max);    
+    dictionary_appendfloat(x->s_dictionary, gensym("zmin"), z_min);
+    dictionary_appendfloat(x->s_dictionary, gensym("zmax"), z_max);
+}
+
 void *chain_site_load_threadproc(t_chain_site *x)
 {
     const char *wshref;
@@ -295,6 +325,10 @@ void *chain_site_load_threadproc(t_chain_site *x)
         x->s_wshref = gensym(wshref);
         free((void *)wshref);
     }
+
+    chain_site_set_site_bounds(x);
+
+    object_notify(x, gensym("siteload"), NULL);
 
     x->s_systhread_load = NULL;
     systhread_exit(0);

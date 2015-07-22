@@ -77,7 +77,7 @@ static const char *list_devices_near_point = \
 
 static const char *list_metrics = "SELECT name FROM metrics";
 
-static const char *list_devices = "SELECT name FROM devices";
+static const char *list_devices = "SELECT name, x, z FROM devices";
 
 static const char *get_metric = "SELECT name FROM metrics WHERE metric_id=%ld";
 

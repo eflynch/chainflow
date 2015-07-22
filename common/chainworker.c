@@ -1,9 +1,43 @@
 #include "chainworker.h"
 #include "messages.h"
+#include "ext_dictobj.h"
 
-t_symbol *cws_maxchain, *cws_db, *cws_free, *cws_willfree, *cws_deprecated;
+t_symbol *cws_maxchain, *cws_db, *cws_free, *cws_willfree, *cws_deprecated, *cws_name;
+
+static void chain_worker_prenew(t_chain_worker *x){
+    cws_maxchain = gensym("maxchain");
+    cws_db = gensym("db");
+    cws_free = gensym("free");
+    cws_willfree = gensym("willfree");
+    cws_deprecated = gensym("deprecated");
+    cws_name = gensym("name");
+}
+
+static void chain_worker_postnew(t_chain_worker *x, t_symbol *site_name){
+    x->s_find_site_cancel = false;
+    x->s_site_name = site_name;
+    x->s_site_ptr = NULL;
+    chain_worker_find_site(x); 
+}
+
+void chain_worker_new_dict(t_chain_worker *x, t_symbol *s, long argc, t_atom *argv){
+    chain_worker_prenew(x);
+    t_dictionary *d = NULL;
+
+    if (!(d = object_dictionaryarg(argc, argv)))
+        return;
+
+    if(!dictionary_hasentry(d, cws_name))
+        return;
+
+    t_symbol *site_name = NULL;
+
+    dictionary_getsym(d, cws_name, &site_name);
+    chain_worker_postnew(x, site_name);
+}
 
 void chain_worker_new(t_chain_worker *x, t_symbol *s, long argc, t_atom *argv){
+    chain_worker_prenew(x);
     long attrstart = attr_args_offset(argc, argv);
     t_symbol *site_name = NULL;
 
@@ -12,19 +46,11 @@ void chain_worker_new(t_chain_worker *x, t_symbol *s, long argc, t_atom *argv){
     }
 
     if (!site_name){
+        chain_info("No sitename set");
         site_name = gensym("default_site");
     }
 
-    x->s_find_site_cancel = false;
-    cws_maxchain = gensym("maxchain");
-    cws_db = gensym("db");
-    cws_free = gensym("free");
-    cws_willfree = gensym("willfree");
-    cws_deprecated = gensym("deprecated");
-
-    x->s_site_name = site_name;
-    x->s_site_ptr = NULL;
-    chain_worker_find_site(x);
+    chain_worker_postnew(x, site_name);
 }
 
 void chain_worker_free(t_chain_worker *x){

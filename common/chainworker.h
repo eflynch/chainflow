@@ -10,7 +10,7 @@
 
 typedef struct
 {
-    t_object s_obj;
+    union {t_object s_obj; t_jbox s_box;};
     t_systhread s_systhread_find_site;
     int s_find_site_cancel;
     t_symbol *s_site_name;
@@ -19,6 +19,7 @@ typedef struct
     t_database *s_db;
 } t_chain_worker;
 
+void chain_worker_new_dict(t_chain_worker *x, t_symbol *s, long argc, t_atom *argv);
 void chain_worker_new(t_chain_worker *x, t_symbol *s, long argc, t_atom *argv);
 void chain_worker_free(t_chain_worker *x);
 void chain_worker_release_site(t_chain_worker *x);
