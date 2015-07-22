@@ -422,13 +422,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-65",
-					"linecount" : 9,
+					"linecount" : 12,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 12.5, 627.0, 419.0, 114.0 ],
+					"patching_rect" : [ 12.5, 627.0, 422.0, 150.0 ],
 					"style" : "",
-					"text" : "Arguments:\n[chain.site name]\n    name - optional argument shared by all chain objects\n           which associates each worker object with a\n           chain.site manager. No two chain.sites can\n           share a name.\n\nAttributes:\n    url  - url for chainAPI site to connect to"
+					"text" : "Arguments:\n[chain.site name]\n    name - optional argument shared by all chain objects\n           which associates each worker object with a\n           chain.site manager. No two chain.sites can\n           share a name.\n\nAttributes:\n    url  - url for chainAPI site to connect to\n    include_nonactive - set to 1 to include devices that\n                        are not currently active in the\n                        database."
 				}
 
 			}
@@ -739,13 +739,9 @@
 		"styles" : [ 			{
 				"name" : "maxchain",
 				"default" : 				{
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"fontname" : [ "Courier" ],
-					"textjustification" : [ 0 ],
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-					"fontface" : [ 0 ],
 					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+					"fontname" : [ "Courier" ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -756,6 +752,10 @@
 						"autogradient" : 0
 					}
 ,
+					"fontface" : [ 0 ],
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"textjustification" : [ 0 ],
 					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
 					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
@@ -775,8 +775,8 @@
 , 			{
 				"name" : "maxchain-subtitle",
 				"default" : 				{
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
-					"fontsize" : [ 20.0 ]
+					"fontsize" : [ 20.0 ],
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -785,10 +785,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 					"fontname" : [ "Courier Bold" ],
-					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"fontsize" : [ 48.0 ],
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
+					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
