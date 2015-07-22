@@ -28,6 +28,7 @@ typedef struct chain_site
     int s_play_cancel;
     int s_historical_cancel;
     int s_live;
+    int s_include_nonactive;
     void *s_outlet_busy;
     void *s_outlet;
     t_symbol *s_site_name;

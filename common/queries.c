@@ -85,6 +85,14 @@ static const char *get_device_by_name = "SELECT device_id FROM devices WHERE nam
 
 static const char *list_sensors = "SELECT href FROM sensors";
 
+static const char *delete_device = \
+"DELETE FROM devices WHERE "
+"device_id=%ld";
+
+static const char *delete_sensors_by_device = \
+"DELETE FROM sensors WHERE "
+"device_id=%ld";
+
 static const char *get_device_location = \
 "SELECT latitude, longitude, elevation, x, z "
 "FROM devices WHERE name=\"%s\"";
@@ -303,4 +311,17 @@ void query_sensor_href_by_device_name_metric_name(t_database *db, const char *de
     err = db_query(db, db_result, get_sensor_href_by_device_name_metric_name, device_name, metric_name);
     if (err)
         chain_error("Error getting sensor href");
+}
+
+void query_delete_device(t_database *db, long device_id){
+    t_max_err err = MAX_ERR_NONE;
+    t_db_result *db_result = NULL;
+
+    err = db_query(db, &db_result, delete_device, device_id);
+    if (err)
+        chain_error("Error deleting device");
+
+    err = db_query(db, &db_result, delete_sensors_by_device, device_id);
+    if (err)
+        chain_error("Error deleting sensors");
 }

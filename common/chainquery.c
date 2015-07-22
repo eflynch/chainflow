@@ -106,7 +106,7 @@ void chain_get_websocket(const char *url, const char **wstext){
     json_decref(root);
 }
 
-void chain_load_summary(const char *url, t_database *db){
+void chain_load_summary(const char *url, t_database *db, long include_nonactive){
     json_t *root;
 
     char summary_url[1024];
@@ -166,6 +166,11 @@ void chain_load_summary(const char *url, t_database *db){
 
         device_id = query_insert_device(db, name_text, href_text, lat, lon, ele);
 
+        int found_data = false;
+        if (include_nonactive){
+            found_data = true;
+        }
+
         sensor_array = json_object_get(device, "sensors");
         for (int j=0; j < json_array_size(sensor_array); j++){
             json_t *sensor, *metric, *href, *unit, *sensor_type, *data_type, *data_array;
@@ -208,6 +213,7 @@ void chain_load_summary(const char *url, t_database *db){
                 timestamp_text = json_string_value(timestamp);
                 value = json_object_get(data, "value");
                 d_value = json_real_value(value);
+                found_data = true;
             } else { 
                 timestamp_text = NULL;
                 d_value = 0;
@@ -215,6 +221,10 @@ void chain_load_summary(const char *url, t_database *db){
 
             sensor_id = query_insert_sensor(db, metric_id, device_id, href_text, unit_text,
                                             sensor_type_text, data_type_text, d_value, timestamp_text);
+        }
+
+        if (!found_data){
+            query_delete_device(db, device_id);
         }
     }
     json_decref(root);

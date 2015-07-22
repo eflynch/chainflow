@@ -75,6 +75,8 @@ int C74_EXPORT main(void)
     CLASS_ATTR_SYM(c, "url", 0, t_chain_site, s_url);
     CLASS_ATTR_ACCESSORS(c, "url", NULL, chain_site_set_url);
 
+    CLASS_ATTR_LONG(c, "include_nonactive", 0, t_chain_site, s_include_nonactive);
+
     class_register(CLASS_BOX, c);
     
     s_chain_site_class = c;
@@ -102,6 +104,7 @@ void *chain_site_new(t_symbol *s, long argc, t_atom *argv)
     x->s_systhread_play = NULL;
     x->s_play_cancel = false;
     x->s_historical_ts = 1.0;
+    x->s_include_nonactive = 0;
     x->s_historical_start = 1436877533; //Arbitrary choice
 
     attr_args_process(x, argc, argv);
@@ -315,7 +318,7 @@ void chain_site_set_site_bounds(t_chain_site *x)
 void *chain_site_load_threadproc(t_chain_site *x)
 {
     const char *wshref;
-    chain_load_summary(x->s_url->s_name, x->s_db); 
+    chain_load_summary(x->s_url->s_name, x->s_db, x->s_include_nonactive); 
     chain_get_websocket(x->s_url->s_name, &wshref);
     outlet_bang(x->s_outlet_busy);
 
