@@ -75,6 +75,8 @@ static const char *list_devices_near_point = \
 "FROM devices WHERE distance <= %lf * %lf "
 "ORDER BY distance";
 
+
+
 static const char *list_metrics = "SELECT name FROM metrics";
 
 static const char *list_devices = "SELECT name, x, z FROM devices";
@@ -114,6 +116,23 @@ static const char *get_data_by_device_name_metric_name = \
 "sensors.metric_id=metrics.metric_id AND "
 "devices.name=(\"%s\") AND "
 "metrics.name=(\"%s\")";
+
+static const char *get_near_data_by_metric_name = \
+"SELECT sensors.value, devices.x, devices.z, "
+"(((devices.x - %lf) * (devices.x - %lf)) + ((devices.z - %lf) * (devices.z - %lf))) AS distance "
+"FROM sensors, devices, metrics WHERE "
+"distance <= %lf * %lf AND"
+"sensors.device_id=devices.device_id AND "
+"sensors.metric_id=metrics.metric_id AND "
+"metrics.name=(\"%s\") "
+"ORDER BY distance";
+
+static const char *get_data_by_metric_name = \
+"SELECT sensors.value, devices.x, devices.z "
+"FROM sensors, devices, metrics WHERE "
+"sensors.device_id=devices.device_id AND "
+"sensors.metric_id=metrics.metric_id AND "
+"metrics.name=(\"%s\") ";
 
 static const char *get_sensor_href_by_device_name_metric_name = \
 "SELECT sensors.href FROM sensors, devices, metrics "
@@ -324,4 +343,21 @@ void query_delete_device(t_database *db, long device_id){
     err = db_query(db, &db_result, delete_sensors_by_device, device_id);
     if (err)
         chain_error("Error deleting sensors");
+}
+
+void query_near_data_by_metric_name(t_database *db, double x, double z, double s,
+                                    const char *metric, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, get_near_data_by_metric_name, x, x, z, z, s, s, metric);
+    if (err)
+        chain_error("Error getting data");
+}
+
+void query_data_by_metric_name(t_database *db, const char *metric, t_db_result **db_result){
+    t_max_err err = MAX_ERR_NONE;
+
+    err = db_query(db, db_result, get_data_by_metric_name, metric);
+    if (err)
+        chain_error("Error getting data");
 }

@@ -21,10 +21,14 @@ void query_list_metrics_by_device_name(t_database *db, const char *device_name, 
 
 void query_get_device_location(t_database *db, const char *device_name, t_db_result **db_result);
 long query_device_by_name(t_database *db, const char *device_name);
+
 void query_data_by_device_name(t_database *db, const char *device_name, t_db_result **db_result);
 void query_data_by_sensor_href(t_database *db, const char *sensor_href, t_db_result **db_result);
 void query_data_by_device_name_metric_name(t_database *db, const char *device_name,
                                            const char *metric_name, t_db_result **db_result);
+void query_near_data_by_metric_name(t_database *db, double x, double z, double s,
+                                    const char *metric, t_db_result **db_result);
+void query_data_by_metric_name(t_database *db, const char *metric, t_db_result **db_result);
 void query_sensor_href_by_device_name_metric_name(t_database *db, const char *device_name,
                                                   const char *metric_name, t_db_result **db_result);
-   
+

@@ -25,8 +25,11 @@ typedef struct chain_metric
     t_systhread s_systhread_setup;
     int s_setup_cancel;
     void *s_outlet;
-    t_symbol *s_site_name;
     t_symbol *s_metric_name;
-    t_dictionary *s_dictionary;
-    t_database *s_db;
+    t_symbol *s_measure;
+    t_symbol *s_interp;
+    float s_pos_x;
+    float s_pos_y;
+    float s_pos_z;
+    float s_radius;
 } t_chain_metric;
