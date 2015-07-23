@@ -15,12 +15,15 @@
 #include "chainlib.h"
 #include "chainevent.h"
 #include "chainworker.h"
+#include "chainmath.h"
+#include "chainquery.h"
 
 typedef struct chain_device
 {
     t_chain_worker s_worker;
     t_symbol *s_device_name;
     long s_autoupdate;
+    long s_deviation;
     void *s_outlet;
     void *s_outlet2;
 } t_chain_device;
@@ -76,6 +79,7 @@ int C74_EXPORT main(void)
     CLASS_ATTR_ACCESSORS(c, "device_name", NULL, (method)chain_device_set_device_name);
 
     CLASS_ATTR_LONG(c, "autoupdate", 0, t_chain_device, s_autoupdate);
+    CLASS_ATTR_LONG(c, "deviation", 0, t_chain_device, s_deviation);
     
     class_register(CLASS_BOX, c);
     s_chain_device_class = c;
@@ -97,6 +101,7 @@ void *chain_device_new(t_symbol *s, long argc, t_atom *argv)
     x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
     x->s_autoupdate = 1;
+    x->s_deviation = 0;
 
     attr_args_process(x, argc, argv);
 
@@ -154,6 +159,23 @@ void chain_device_send_sensor(t_chain_device *x, const char *href){
     outlet_list(x->s_outlet, 0L, ac, av);
 }
 
+double chain_device_compute_deviation(t_chain_device *x, t_symbol *metric,
+                                      double value)
+{
+    t_db_result *db_result = NULL;
+    query_data_by_metric_name(x->s_worker.s_db, metric->s_name, &db_result);
+
+    long numrecords = db_result_numrecords(db_result);
+    double values[numrecords];
+    for (long i=0; i<numrecords; i++){
+        values[i] = db_result_float(db_result, i, 0);
+    }
+    double mean = chain_mean(values, numrecords);
+    double std = chain_std(values, numrecords);
+
+    return (value - mean) / std;
+}
+
 void chain_device_send_metric(t_chain_device *x, t_symbol *metric){
     if(!x->s_worker.s_db){
         chain_error("No DB!");
@@ -176,6 +198,10 @@ void chain_device_send_metric(t_chain_device *x, t_symbol *metric){
 
     double value = db_result_float(db_result, 0, 0);
     const char *timestamp = db_result_string(db_result, 0, 1);
+
+    if (x->s_deviation){
+       value = chain_device_compute_deviation(x, metric, value); 
+    }
 
     t_atom av[2];
     short ac = 2;
@@ -208,10 +234,15 @@ void chain_device_send_all(t_chain_device *x){
         timestamp = db_result_string(db_result, i, 1);
         value = db_result_float(db_result, i, 0);
         metric_name = db_result_string(db_result, i, 2);
+        t_symbol *metric = gensym(metric_name);
+
+        if (x->s_deviation){
+            value = chain_device_compute_deviation(x, metric, value);
+        }
 
         t_atom av[2];
         short ac = 2;
-        atom_setsym(av, gensym(metric_name));
+        atom_setsym(av, metric);
         atom_setfloat(av+1, value);
 
         outlet_list(x->s_outlet, 0L, ac, av);
@@ -328,7 +359,11 @@ void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end
 
     t_atom av[num_events];
     for (int i=0; i<num_events; i++){
-        atom_setfloat(av+i, (events +i)->s_value);
+        double value = (events +i)->s_value;
+        if (x->s_deviation){
+            value = chain_device_compute_deviation(x, metric, value);
+        }
+        atom_setfloat(av+i, value);
     }
     outlet_anything(x->s_outlet, metric, num_events, av);
     free(events);

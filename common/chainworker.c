@@ -46,7 +46,6 @@ void chain_worker_new(t_chain_worker *x, t_symbol *s, long argc, t_atom *argv){
     }
 
     if (!site_name){
-        chain_info("No sitename set");
         site_name = gensym("default_site");
     }
 

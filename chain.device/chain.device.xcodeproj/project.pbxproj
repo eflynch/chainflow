@@ -20,6 +20,7 @@
 		917AE2D21B27492B0007B529 /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2D11B27492B0007B529 /* messages.c */; };
 		917AE2D41B2762240007B529 /* queries.c in Sources */ = {isa = PBXBuildFile; fileRef = 917AE2D31B2762240007B529 /* queries.c */; };
 		918FD3C91B4DE0DD00B07589 /* pseudoclock.c in Sources */ = {isa = PBXBuildFile; fileRef = 918FD3C81B4DE0DD00B07589 /* pseudoclock.c */; };
+		91CA22E91B6175C70030B3F0 /* chainmath.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CA22E81B6175C70030B3F0 /* chainmath.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		917AE2D11B27492B0007B529 /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
 		917AE2D31B2762240007B529 /* queries.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queries.c; path = ../common/queries.c; sourceTree = "<group>"; };
 		918FD3C81B4DE0DD00B07589 /* pseudoclock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pseudoclock.c; path = ../common/pseudoclock.c; sourceTree = "<group>"; };
+		91CA22E81B6175C70030B3F0 /* chainmath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainmath.c; path = ../common/chainmath.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				917AE2D31B2762240007B529 /* queries.c */,
 				91674A3B1B55B0D600029E21 /* chainevent.c */,
 				9112F5701B39BB2600FBDFCB /* chainlib.c */,
+				91CA22E81B6175C70030B3F0 /* chainmath.c */,
 				913342EB1B4C7A78000CB78A /* requests.c */,
 				91674A121B537C2400029E21 /* chainworker.c */,
 				918FD3C81B4DE0DD00B07589 /* pseudoclock.c */,
@@ -155,6 +158,7 @@
 				917AE2D01B2748F90007B529 /* commonsyms.c in Sources */,
 				91674A3C1B55B0D600029E21 /* chainevent.c in Sources */,
 				917AE2D21B27492B0007B529 /* messages.c in Sources */,
+				91CA22E91B6175C70030B3F0 /* chainmath.c in Sources */,
 				917AE2CE1B264A2D0007B529 /* chain.device.c in Sources */,
 				913342EC1B4C7A78000CB78A /* requests.c in Sources */,
 			);

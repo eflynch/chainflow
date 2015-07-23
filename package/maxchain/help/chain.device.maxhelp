@@ -40,6 +40,32 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-23",
+					"maxclass" : "toggle",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 1042.0, 204.0, 24.0, 24.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-20",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1042.0, 246.0, 97.0, 20.0 ],
+					"style" : "",
+					"text" : "deviation $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-19",
 					"maxclass" : "comment",
 					"numinlets" : 1,
@@ -361,6 +387,19 @@
 										"subpatcher_template" : "",
 										"boxes" : [ 											{
 												"box" : 												{
+													"id" : "obj-1",
+													"maxclass" : "newobj",
+													"numinlets" : 1,
+													"numoutlets" : 1,
+													"outlettype" : [ "bang" ],
+													"patching_rect" : [ 257.0, 105.0, 60.0, 22.0 ],
+													"style" : "",
+													"text" : "loadbang"
+												}
+
+											}
+, 											{
+												"box" : 												{
 													"id" : "obj-4",
 													"maxclass" : "newobj",
 													"numinlets" : 2,
@@ -452,6 +491,15 @@
  ],
 										"lines" : [ 											{
 												"patchline" : 												{
+													"destination" : [ "obj-37", 0 ],
+													"disabled" : 0,
+													"hidden" : 0,
+													"source" : [ "obj-1", 0 ]
+												}
+
+											}
+, 											{
+												"patchline" : 												{
 													"destination" : [ "obj-4", 0 ],
 													"disabled" : 0,
 													"hidden" : 0,
@@ -527,13 +575,7 @@
 										"styles" : [ 											{
 												"name" : "maxchain",
 												"default" : 												{
-													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-													"fontname" : [ "Courier" ],
-													"textjustification" : [ 0 ],
-													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-													"fontface" : [ 0 ],
-													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 													"bgfillcolor" : 													{
 														"type" : "color",
 														"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -544,8 +586,14 @@
 														"autogradient" : 0
 													}
 ,
+													"fontname" : [ "Courier" ],
+													"textjustification" : [ 0 ],
 													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+													"fontface" : [ 0 ],
+													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ]
 												}
 ,
 												"parentstyle" : "",
@@ -573,10 +621,10 @@
 , 											{
 												"name" : "maxchain-title",
 												"default" : 												{
+													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 													"fontname" : [ "Courier Bold" ],
 													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-													"fontsize" : [ 48.0 ],
-													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
+													"fontsize" : [ 48.0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -1181,13 +1229,7 @@
 										"styles" : [ 											{
 												"name" : "maxchain",
 												"default" : 												{
-													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-													"fontname" : [ "Courier" ],
-													"textjustification" : [ 0 ],
-													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-													"fontface" : [ 0 ],
-													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 													"bgfillcolor" : 													{
 														"type" : "color",
 														"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -1198,8 +1240,14 @@
 														"autogradient" : 0
 													}
 ,
+													"fontname" : [ "Courier" ],
+													"textjustification" : [ 0 ],
 													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+													"fontface" : [ 0 ],
+													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ]
 												}
 ,
 												"parentstyle" : "",
@@ -1227,10 +1275,10 @@
 , 											{
 												"name" : "maxchain-title",
 												"default" : 												{
+													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 													"fontname" : [ "Courier Bold" ],
 													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-													"fontsize" : [ 48.0 ],
-													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
+													"fontsize" : [ 48.0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -1341,13 +1389,7 @@
 						"styles" : [ 							{
 								"name" : "maxchain",
 								"default" : 								{
-									"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-									"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-									"fontname" : [ "Courier" ],
-									"textjustification" : [ 0 ],
-									"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-									"fontface" : [ 0 ],
-									"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+									"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 									"bgfillcolor" : 									{
 										"type" : "color",
 										"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -1358,8 +1400,14 @@
 										"autogradient" : 0
 									}
 ,
+									"fontname" : [ "Courier" ],
+									"textjustification" : [ 0 ],
 									"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-									"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+									"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+									"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+									"fontface" : [ 0 ],
+									"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+									"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ]
 								}
 ,
 								"parentstyle" : "",
@@ -1397,7 +1445,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-36",
-					"items" : [ "`0x0005`", ",", "`0x0006`", ",", "`0x111E`", ",", "`0x1150`", ",", "`0x115F`", ",", "`0x810A`", ",", "`0x810B`", ",", "`0x810D`", ",", "`0x8110`", ",", "`0x8112`", ",", "`0x8113`", ",", "`0x8114`", ",", "`0x8115`", ",", "`0x8116`", ",", "`0x8117`", ",", "`0x811B`", ",", "`0x811F`", ",", "`0x8124`", ",", "`0x8126`", ",", "`0x8128`", ",", "`0x812A`", ",", "`0x812B`", ",", "`0x812E`", ",", "`0x8133`", ",", "`0x8135`", ",", "`0x8136`", ",", "`0x8137`", ",", "`0x8138`", ",", "`0x8139`", ",", "`0x813B`", ",", "`0x813D`", ",", "`0x8140`", ",", "`0x8141`", ",", "`0x8143`", ",", "`0x8144`", ",", "`0x8145`", ",", "`0x8146`", ",", "`0x8147`", ",", "`0x8148`", ",", "`0x8149`", ",", "`0x814B`", ",", "`0x814C`", ",", "`0x814D`", ",", "`0x814F`", ",", "`0x8151`", ",", "`0x8152`", ",", "`0x8153`", ",", "`0x8154`", ",", "`0x8155`", ",", "`0x8156`", ",", "`0x8157`", ",", "`0x8158`", ",", "`0x8159`", ",", "`0x815A`", ",", "`0x815B`", ",", "`0x815C`", ",", "`0x815E`", ",", "`0x8160`", ",", "`0x8161`", ",", "`0x8162`", ",", "`0x8163`", ",", "`0x8164`", ",", "`0x8165`", ",", "`0x8167`", ",", "`0x8168`", ",", "`0x8169`", ",", "`0x816A`", ",", "`0x816B`", ",", "`0x816C`", ",", "`0x816E`", ",", "`0x8172`", ",", "`bogaudio2`", ",", "`clanton`", ",", "`liveobjects01`", ",", "`lwmcell4`", ",", "`tidbase4`" ],
+					"items" : [ "`0x115F`", ",", "`0x8110`", ",", "`0x8114`", ",", "`0x8115`", ",", "`0x8116`", ",", "`0x8117`", ",", "`0x811B`", ",", "`0x8124`", ",", "`0x8128`", ",", "`0x812A`", ",", "`0x812B`", ",", "`0x812E`", ",", "`0x8133`", ",", "`0x8135`", ",", "`0x8136`", ",", "`0x8137`", ",", "`0x8138`", ",", "`0x8139`", ",", "`0x813B`", ",", "`0x813D`", ",", "`0x8140`", ",", "`0x8141`", ",", "`0x8144`", ",", "`0x8145`", ",", "`0x8146`", ",", "`0x8147`", ",", "`0x8148`", ",", "`0x8149`", ",", "`0x814B`", ",", "`0x814C`", ",", "`0x814D`", ",", "`0x814F`", ",", "`0x8151`", ",", "`0x8152`", ",", "`0x8153`", ",", "`0x8154`", ",", "`0x8155`", ",", "`0x8156`", ",", "`0x8157`", ",", "`0x8158`", ",", "`0x8159`", ",", "`0x815A`", ",", "`0x815B`", ",", "`0x815C`", ",", "`0x8160`", ",", "`0x8161`", ",", "`0x8162`", ",", "`0x8163`", ",", "`0x8164`", ",", "`0x8165`", ",", "`0x8167`", ",", "`0x8168`", ",", "`0x8169`", ",", "`0x816A`", ",", "`0x816B`", ",", "`0x816E`", ",", "`0x8172`", ",", "`liveobjects01`", ",", "`tidbase4`" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -1493,13 +1541,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-65",
-					"linecount" : 10,
+					"linecount" : 13,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 18.5, 337.0, 405.0, 126.0 ],
+					"patching_rect" : [ 14.5, 337.0, 419.0, 162.0 ],
 					"style" : "",
-					"text" : "Arguments:\n[chain.device name]\n    name - optional argument shared by all chain\n           objects which associates each worker object\n           with a chain.site manager.\n\nAttributes:\n    device_name [s] - name of device\n    autoupdate [i]  - device outputs update events\n                      on update"
+					"text" : "Arguments:\n[chain.device name]\n    name - optional argument shared by all chain\n           objects which associates each worker object\n           with a chain.site manager.\n\nAttributes:\n    device_name [s] - name of device\n    autoupdate [i]  - device outputs update events\n                      on update\n    deviation [i] - device outputs difference from mean\n                    mean in terms of std. of dev. rather\n                    than absolute measurements"
 				}
 
 			}
@@ -1634,10 +1682,29 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"midpoints" : [ 1051.5, 286.5, 452.5, 286.5 ],
+					"source" : [ "obj-20", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-36", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-21", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-20", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-23", 0 ]
 				}
 
 			}
@@ -1972,13 +2039,7 @@
 		"styles" : [ 			{
 				"name" : "maxchain",
 				"default" : 				{
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"fontname" : [ "Courier" ],
-					"textjustification" : [ 0 ],
-					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-					"fontface" : [ 0 ],
-					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -1989,8 +2050,14 @@
 						"autogradient" : 0
 					}
 ,
+					"fontname" : [ "Courier" ],
+					"textjustification" : [ 0 ],
 					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"fontface" : [ 0 ],
+					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ]
 				}
 ,
 				"parentstyle" : "",
@@ -2018,10 +2085,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 					"fontname" : [ "Courier Bold" ],
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"fontsize" : [ 48.0 ],
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
+					"fontsize" : [ 48.0 ]
 				}
 ,
 				"parentstyle" : "",
