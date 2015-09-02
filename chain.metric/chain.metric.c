@@ -33,7 +33,7 @@ void chain_metric_send_median(t_chain_metric *x);
 static t_class *s_chain_metric_class = NULL;
 
 t_symbol *ps_url, *ps_db;
-t_symbol *ps_mean, *ps_std, *ps_deviation, *ps_interpolation, *ps_max, *ps_min, *ps_median;
+t_symbol *ps_mean, *ps_std, *ps_deviation, *ps_interpolation, *ps_max, *ps_min, *ps_median, *ps_proximal;
 t_symbol *ps_bilinear;
 
 int C74_EXPORT main(void)
@@ -73,6 +73,7 @@ int C74_EXPORT main(void)
     ps_median = gensym("median");
 
     ps_bilinear = gensym("bilinear");
+    ps_proximal = gensym("proximal");
 
     s_chain_metric_class = c;
 
@@ -91,7 +92,7 @@ void *chain_metric_new(t_symbol *s, long argc, t_atom *argv)
     x->s_pos_z = 0.0;
 
     x->s_measure = ps_mean;
-    x->s_interp = ps_bilinear;
+    x->s_interp = ps_proximal;
 
     attr_args_process(x, argc, argv);
 
@@ -190,12 +191,59 @@ void chain_metric_send_std(t_chain_metric *x)
     free(argv);
 }
 
+
 void chain_metric_send_deviation(t_chain_metric *x){
-    chain_error("Unimplemented");
+    if (x->s_interp == ps_bilinear){
+        chain_error("Unimplemented");
+        return;
+    } else if (x->s_interp == ps_proximal){
+        t_db_result *db_result = NULL;
+
+        // This is basically a hack ... TODO: make this not a hack
+        double radius = x->s_radius;
+        if (radius <= 0.0){
+            radius = 1000000.0;
+        }
+
+        query_near_data_by_metric_name(x->s_worker.s_db, x->s_pos_x,
+                                       x->s_pos_z, radius, x->s_metric_name->s_name, &db_result);
+        double *argv;
+        long argc;
+        chain_metric_unpack_values(db_result, &argv, &argc);
+        if (argc < 1){
+            chain_error("No data returned for interpolation");
+            return;
+        }
+        outlet_float(x->s_outlet, (*argv - chain_mean(argv,argc)) / chain_std(argv,argc));
+        free(argv);
+    }
 }
 
 void chain_metric_send_interpolation(t_chain_metric *x){
-    chain_error("Unimplemented");
+    if (x->s_interp == ps_bilinear){
+        chain_error("Unimplemented");
+        return;
+    } else if (x->s_interp == ps_proximal){
+        t_db_result *db_result = NULL;
+
+        // This is basically a hack ... TODO: make this not a hack
+        double radius = x->s_radius;
+        if (radius <= 0.0){
+            radius = 1000000.0;
+        }
+
+        query_near_data_by_metric_name(x->s_worker.s_db, x->s_pos_x,
+                                       x->s_pos_z, radius, x->s_metric_name->s_name, &db_result);
+        double *argv;
+        long argc;
+        chain_metric_unpack_values(db_result, &argv, &argc);
+        if (argc < 1){
+            chain_error("No data returned for interpolation");
+            return;
+        }
+        outlet_float(x->s_outlet, *argv);
+        free(argv);
+    }
 }
 
 void chain_metric_send_max(t_chain_metric *x){

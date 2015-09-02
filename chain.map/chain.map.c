@@ -151,6 +151,7 @@ int C74_EXPORT main(void)
     CLASS_ATTR_ACCESSORS(c, "ang_ele", NULL, chain_map_set_ang_ele);
 
     CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_map, s_worker.s_site_name);
+    CLASS_ATTR_SAVE(c, "name", ATTR_SET_OPAQUE_USER);
 
     CLASS_ATTR_CHAR(c, "trackmouse", 0, t_chain_map, s_trackmouse);
     CLASS_ATTR_STYLE_LABEL(c, "trackmouse", 0, "onoff", "Track Mouse");

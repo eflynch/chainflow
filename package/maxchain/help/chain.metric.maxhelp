@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 41.0, 82.0, 1103.0, 652.0 ],
+		"rect" : [ 41.0, 82.0, 886.0, 652.0 ],
 		"bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
 		"editing_bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
 		"bglocked" : 0,
@@ -40,6 +40,46 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 799.25, 112.0, 68.0, 20.0 ],
+					"style" : "",
+					"text" : "loadbang"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-20",
+					"items" : [ "bilinear", ",", "proximal" ],
+					"maxclass" : "umenu",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "int", "", "" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 799.25, 145.0, 123.5, 20.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 851.5, 227.0, 75.0, 20.0 ],
+					"style" : "",
+					"text" : "interp $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-31",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -53,10 +93,11 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-30",
+					"linecount" : 3,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 859.0, 187.0, 177.0, 18.0 ],
+					"patching_rect" : [ 950.0, 169.0, 85.0, 42.0 ],
 					"style" : "",
 					"text" : "bang - outputs measure"
 				}
@@ -390,7 +431,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-19",
-					"items" : "<empty>",
+					"items" : [ "health", ",", "solar_voltage", ",", "battery_voltage", ",", "charge_flags_charge", ",", "charge_flags_fault", ",", "sht_humidity", ",", "bmp_pressure", ",", "accel_z", ",", "accel_x", ",", "accel_y", ",", "illuminance", ",", "sht_temperature", ",", "bmp_temperature", ",", "wind_speed", ",", "soil_moisture", ",", "soil_moisture_deep", ",", "wind_direction", ",", "analog", ",", "charge_flags", ",", "version", ",", "soil_vwc2", ",", "soil_vwc", ",", "sla_flags", ",", "lipo_state", ",", "sla_full_voltage", ",", "sla_voltage", ",", "sla_temperature", ",", "sla_charge", ",", "sla_flags_charging", ",", "sla_flags_full", ",", "sla_flags_battery_overload", ",", "sla_flags_overload", ",", "sla_flags_load_on", ",", "sla_flags_overdischarge", ",", "sla_flags_short", ",", "lipo_current", ",", "lipo_state_charging", ",", "lipo_state_power_good", ",", "sla_overdischarge_voltage", ",", "sla_charge_current", ",", "sla_load_current", ",", "lipo_charge", ",", "pv_voltage", ",", "lipo_voltage", ",", "lipo_charge_capacity", ",", "battery_current", ",", "panel_voltage", ",", "discharge_current", ",", "charge_current", ",", "charging", ",", "overdischarge_voltage", ",", "battery_full_voltage", ",", "battery_overload", ",", "overload", ",", "load_on", ",", "battery_full", ",", "over_discharge", ",", "battery_temperature", ",", "load_current", ",", "load_short", ",", "charge", ",", "Test" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -662,6 +703,15 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-20", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-11", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-47", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -676,6 +726,15 @@
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-19", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-20", 1 ]
 				}
 
 			}
@@ -775,6 +834,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"midpoints" : [ 861.0, 261.5, 542.0, 261.5 ],
+					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-5", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -809,6 +878,7 @@
 		"styles" : [ 			{
 				"name" : "maxchain",
 				"default" : 				{
+					"fontname" : [ "Courier" ],
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"bgfillcolor" : 					{
@@ -821,13 +891,12 @@
 						"autogradient" : 0
 					}
 ,
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-					"fontname" : [ "Courier" ],
 					"textjustification" : [ 0 ],
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"fontface" : [ 0 ],
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -845,8 +914,8 @@
 , 			{
 				"name" : "maxchain-subtitle",
 				"default" : 				{
-					"fontsize" : [ 20.0 ],
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
+					"fontsize" : [ 20.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -855,10 +924,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"fontsize" : [ 48.0 ],
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"fontname" : [ "Courier Bold" ],
 					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
-					"fontname" : [ "Courier Bold" ]
+					"fontsize" : [ 48.0 ]
 				}
 ,
 				"parentstyle" : "",

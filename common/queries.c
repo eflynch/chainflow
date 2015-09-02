@@ -121,7 +121,7 @@ static const char *get_near_data_by_metric_name = \
 "SELECT sensors.value, devices.x, devices.z, "
 "(((devices.x - %lf) * (devices.x - %lf)) + ((devices.z - %lf) * (devices.z - %lf))) AS distance "
 "FROM sensors, devices, metrics WHERE "
-"distance <= %lf * %lf AND"
+"distance <= %lf * %lf AND "
 "sensors.device_id=devices.device_id AND "
 "sensors.metric_id=metrics.metric_id AND "
 "metrics.name=(\"%s\") "
