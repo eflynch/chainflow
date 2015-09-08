@@ -40,11 +40,11 @@ typedef struct chain_map
     t_jrgba s_listenercolor;
     t_jfont *s_font;
     t_jtextlayout *s_layout;
-    float s_pos_x;
-    float s_pos_y;
-    float s_pos_z;
-    float s_ang_azi;
-    float s_ang_ele;
+    double s_pos_x;
+    double s_pos_y;
+    double s_pos_z;
+    double s_ang_azi;
+    double s_ang_ele;
     void *s_outlet;
 } t_chain_map;
 

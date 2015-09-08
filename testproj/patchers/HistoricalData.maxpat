@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 34.0, 79.0, 1085.0, 705.0 ],
+		"rect" : [ 34.0, 79.0, 1078.0, 705.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -259,7 +259,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 796.0, 253.5, 101.0, 22.0 ],
+					"patching_rect" : [ 796.0, 268.5, 101.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 493.0, 168.5, 101.0, 22.0 ],
 					"style" : "",
@@ -518,7 +518,7 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 255.0, 225.0, 195.0, 22.0 ],
 					"style" : "",
-					"text" : "2015-07-17T22:46:06+00:00"
+					"text" : "2015-09-08T17:50:33+00:00"
 				}
 
 			}
@@ -559,7 +559,7 @@
 					"id" : "obj-38",
 					"lockeddragscroll" : 0,
 					"maxclass" : "bpatcher",
-					"name" : "databrowser.maxpat",
+					"name" : "chain.browser.maxpat",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"offset" : [ 0.0, 0.0 ],
@@ -582,7 +582,7 @@
 					"id" : "obj-37",
 					"lockeddragscroll" : 0,
 					"maxclass" : "bpatcher",
-					"name" : "databrowser.maxpat",
+					"name" : "chain.browser.maxpat",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"offset" : [ 0.0, 0.0 ],
@@ -754,7 +754,7 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 13.0, 225.0, 194.0, 22.0 ],
 					"style" : "",
-					"text" : "2015-07-16T22:46:05+00:00"
+					"text" : "2015-09-07T17:50:33+00:00"
 				}
 
 			}
@@ -1259,9 +1259,9 @@
 		}
 ,
 		"dependency_cache" : [ 			{
-				"name" : "databrowser.maxpat",
-				"bootpath" : "~/things/maxchain/testproj/patchers",
-				"patcherrelativepath" : ".",
+				"name" : "chain.browser.maxpat",
+				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"patcherrelativepath" : "../../package/maxchain/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}

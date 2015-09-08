@@ -2,15 +2,15 @@
 	"name" : "testproj",
 	"version" : 1,
 	"creationdate" : -777052294,
-	"modificationdate" : -774967491,
-	"viewrect" : [ 1077.0, 73.0, 300.0, 500.0 ],
-	"autoorganize" : 1,
+	"modificationdate" : -770394051,
+	"viewrect" : [ 1201.0, 72.0, 300.0, 500.0 ],
+	"autoorganize" : 0,
 	"hideprojectwindow" : 0,
 	"showdependencies" : 1,
 	"autolocalize" : 0,
 	"contents" : 	{
 		"patchers" : 		{
-			"testproj.maxpat" : 			{
+			"NumberSpeaker.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
@@ -29,12 +29,18 @@
 				"kind" : "patcher"
 			}
 ,
-			"databrowser.maxpat" : 			{
+			"chain.player.maxpat" : 			{
 				"kind" : "patcher"
 			}
 ,
-			"historical_example.maxpat" : 			{
-				"kind" : "patcher"
+			"chain.browser.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"HistoricalData.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
 			}
 ,
 			"nthbang.maxpat" : 			{
@@ -301,6 +307,10 @@
 				"kind" : "object"
 			}
 ,
+			"OSC-route.mxo" : 			{
+				"kind" : "object"
+			}
+,
 			"chain.info.mxo" : 			{
 				"kind" : "object"
 			}
@@ -313,17 +323,31 @@
 				"kind" : "object",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/things/maxchain/testproj/patchers",
-					"projectrelativepath" : "./patchers"
+					"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+					"projectrelativepath" : "../package/maxchain/patchers"
 				}
 
 			}
 ,
-			"OSC-route.mxo" : 			{
-				"kind" : "object"
+			"hoa.pi.mxo" : 			{
+				"kind" : "object",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+					"projectrelativepath" : "../package/maxchain/patchers"
+				}
+
 			}
 ,
 			"chain.zone.mxo" : 			{
+				"kind" : "object"
+			}
+,
+			"chain.map.mxo" : 			{
+				"kind" : "object"
+			}
+,
+			"chain.time.mxo" : 			{
 				"kind" : "object"
 			}
 ,
@@ -331,18 +355,8 @@
 				"kind" : "object",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/things/maxchain/testproj/patchers",
-					"projectrelativepath" : "./patchers"
-				}
-
-			}
-,
-			"hoa.map.mxo" : 			{
-				"kind" : "object",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/things/maxchain/testproj/patchers",
-					"projectrelativepath" : "./patchers"
+					"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+					"projectrelativepath" : "../package/maxchain/patchers"
 				}
 
 			}
