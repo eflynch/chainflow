@@ -39,6 +39,37 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"floatoutput" : 1,
+					"id" : "obj-3",
+					"maxclass" : "slider",
+					"mult" : 0.1,
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"parameter_enable" : 1,
+					"patching_rect" : [ 713.0, 30.0, 20.0, 140.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 238.0, 38.0, 20.0, 212.0 ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_longname" : "slider",
+							"parameter_shortname" : "slider",
+							"parameter_type" : 3,
+							"parameter_initial_enable" : 1,
+							"parameter_initial" : [ 50.0 ],
+							"parameter_invisible" : 1
+						}
+
+					}
+,
+					"size" : 100.0,
+					"style" : "",
+					"varname" : "slider"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"floatoutput" : 1,
 					"id" : "obj-12",
 					"maxclass" : "dial",
 					"mult" : 0.5,
@@ -81,19 +112,6 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 54.75, 374.0, 30.0, 30.0 ],
 					"style" : ""
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-27",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 368.5, 211.0, 75.0, 22.0 ],
-					"style" : "",
-					"text" : "loadmess 0."
 				}
 
 			}
@@ -319,8 +337,7 @@
 					"destination" : [ "obj-71", 1 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 378.0, 248.5, 378.5, 248.5 ],
-					"source" : [ "obj-27", 0 ]
+					"source" : [ "obj-3", 0 ]
 				}
 
 			}
@@ -455,6 +472,10 @@
 
 			}
  ],
+		"parameters" : 		{
+			"obj-3" : [ "slider", "slider", 0 ]
+		}
+,
 		"dependency_cache" : [ 			{
 				"name" : "OSC-route.mxo",
 				"type" : "iLaX"
