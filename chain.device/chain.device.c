@@ -132,6 +132,27 @@ void chain_device_set_device_name(t_chain_device *x, void *attr, long argc, t_at
     }
 }
 
+double chain_device_compute_deviation(t_chain_device *x, t_symbol *metric,
+                                      double value)
+{
+    t_db_result *db_result = NULL;
+    query_data_by_metric_name(x->s_worker.s_db, metric->s_name, &db_result);
+
+    long numrecords = db_result_numrecords(db_result);
+    double values[numrecords];
+    for (long i=0; i<numrecords; i++){
+        values[i] = db_result_float(db_result, i, 0);
+    }
+    double mean = chain_mean(values, numrecords);
+    double std = chain_std(values, numrecords);
+
+    if (std == 0.0){
+        return 0.0;
+    }
+
+    return (value - mean) / std;
+}
+
 void chain_device_send_sensor(t_chain_device *x, const char *href){
     if(!x->s_worker.s_db){
         chain_error("No DB!");
@@ -151,29 +172,16 @@ void chain_device_send_sensor(t_chain_device *x, const char *href){
     const char *timestamp = db_result_string(db_result, 0, 1);
     const char *metric_name = db_result_string(db_result, 0, 2);
 
+    if (x->s_deviation){
+       value = chain_device_compute_deviation(x, gensym(metric_name), value); 
+    }
+
     t_atom av[2];
     short ac = 2;
     atom_setsym(av, gensym(metric_name));
     atom_setfloat(av+1, value);
 
     outlet_list(x->s_outlet, 0L, ac, av);
-}
-
-double chain_device_compute_deviation(t_chain_device *x, t_symbol *metric,
-                                      double value)
-{
-    t_db_result *db_result = NULL;
-    query_data_by_metric_name(x->s_worker.s_db, metric->s_name, &db_result);
-
-    long numrecords = db_result_numrecords(db_result);
-    double values[numrecords];
-    for (long i=0; i<numrecords; i++){
-        values[i] = db_result_float(db_result, i, 0);
-    }
-    double mean = chain_mean(values, numrecords);
-    double std = chain_std(values, numrecords);
-
-    return (value - mean) / std;
 }
 
 void chain_device_send_metric(t_chain_device *x, t_symbol *metric){
