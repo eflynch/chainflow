@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F313BF58AD01FBAD7BC8970A98185CE896BD9271",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "43DDD4A1012A81E5C2F5DA96FCA0DABF5263B8FC" : 0,
+    "F313BF58AD01FBAD7BC8970A98185CE896BD9271" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "700DFEBC-65A0-41BC-909C-88D1DE72E3D8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "43DDD4A1012A81E5C2F5DA96FCA0DABF5263B8FC" : "maxchainmax6-sdk",
+    "F313BF58AD01FBAD7BC8970A98185CE896BD9271" : "maxchain"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "chain.info",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "chain.info\/chain.info.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Cycling74\/max6-sdk",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "43DDD4A1012A81E5C2F5DA96FCA0DABF5263B8FC"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:eflynch\/maxchain.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F313BF58AD01FBAD7BC8970A98185CE896BD9271"
+    }
+  ]
+}

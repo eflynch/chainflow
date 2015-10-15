@@ -47,7 +47,8 @@ static int chain_callback(struct libwebsocket_context *ctx, struct libwebsocket 
             d_value = json_real_value(value);
             href_text = json_string_value(href);
 
-            time_t unix_timestamp = time_from_string(timestamp_text);
+            float fracsecs;
+            time_t unix_timestamp = time_from_string(timestamp_text, &fracsecs);
 
             t_chain_event e = chain_new_event(unix_timestamp, href_text, timestamp_text, d_value);
 

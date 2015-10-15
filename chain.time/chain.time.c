@@ -101,7 +101,8 @@ void chain_time_bang(t_chain_time *x)
 
 void chain_time_parse(t_chain_time *x, t_symbol *t)
 {
-    time_t timestamp = time_from_string(t->s_name);
+    float fracsecs;
+    time_t timestamp = time_from_string(t->s_name, &fracsecs);
     outlet_int(x->s_outlet, (long) timestamp);
 }
 

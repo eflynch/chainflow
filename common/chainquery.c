@@ -75,7 +75,8 @@ void chain_get_data(const char *url, time_t start, time_t end, t_chain_event **e
         value = json_object_get(data_point, "value");
         double value_double = json_real_value(value);
         const char *timestamp_text = json_string_value(timestamp);
-        time_t unix_timestamp = time_from_string(timestamp_text);
+        float fracsecs;
+        time_t unix_timestamp = time_from_string(timestamp_text, &fracsecs);
 
         if (unix_timestamp <= 0){
             chain_error("Received a wonky timestamp: %s", timestamp_text);

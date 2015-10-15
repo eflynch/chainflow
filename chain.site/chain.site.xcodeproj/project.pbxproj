@@ -11,18 +11,17 @@
 		914468C51B3DF4C300B1D910 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 914468C41B3DF4C300B1D910 /* libjansson.a */; };
 		914468C71B3E012700B1D910 /* libwebsockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 914468C61B3E012700B1D910 /* libwebsockets.a */; };
 		91753D6D1B2B75B00059E455 /* chainwebsocket.c in Sources */ = {isa = PBXBuildFile; fileRef = 91753D6C1B2B75B00059E455 /* chainwebsocket.c */; };
-		91753D771B2B8AD10059E455 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D761B2B8AD10059E455 /* libssl.dylib */; };
-		91753D7B1B2B8B760059E455 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D7A1B2B8B760059E455 /* libcrypto.dylib */; };
-		91753D7D1B2B8B9C0059E455 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D7C1B2B8B9C0059E455 /* libz.dylib */; };
+		91753D771B2B8AD10059E455 /* libssl.0.9.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D761B2B8AD10059E455 /* libssl.0.9.8.dylib */; };
+		91753D7B1B2B8B760059E455 /* libcrypto.0.9.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D7A1B2B8B760059E455 /* libcrypto.0.9.8.dylib */; };
+		91753D7D1B2B8B9C0059E455 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91753D7C1B2B8B9C0059E455 /* libz.1.dylib */; };
 		918FD3C51B4DCABC00B07589 /* pri_queue.c in Sources */ = {isa = PBXBuildFile; fileRef = 918FD3C41B4DCABC00B07589 /* pri_queue.c */; };
 		918FD3C71B4DCAC500B07589 /* pseudoclock.c in Sources */ = {isa = PBXBuildFile; fileRef = 918FD3C61B4DCAC500B07589 /* pseudoclock.c */; };
 		918FD3CB1B4F065900B07589 /* chainevent.c in Sources */ = {isa = PBXBuildFile; fileRef = 918FD3CA1B4F065900B07589 /* chainevent.c */; };
 		91ABCC101B39DA100085CC66 /* chainlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 91ABCC0F1B39DA100085CC66 /* chainlib.c */; };
 		91B64A851B0D0C2600777B9A /* chain.site.c in Sources */ = {isa = PBXBuildFile; fileRef = 91B64A841B0D0C2600777B9A /* chain.site.c */; };
-		91B64A871B0D0C4B00777B9A /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */; };
 		91B64A891B0E345B00777B9A /* commonsyms.c in Sources */ = {isa = PBXBuildFile; fileRef = 91B64A881B0E345B00777B9A /* commonsyms.c */; };
 		91CF9DF71B1F6212001D45FA /* requests.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9DF61B1F6212001D45FA /* requests.c */; };
-		91CF9DF91B1F667B001D45FA /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91CF9DF81B1F667B001D45FA /* libcurl.dylib */; };
+		91CF9DF91B1F667B001D45FA /* libcurl.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91CF9DF81B1F667B001D45FA /* libcurl.4.dylib */; };
 		91CF9E021B1F7678001D45FA /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9E011B1F7678001D45FA /* messages.c */; };
 		91CF9E041B20CC66001D45FA /* queries.c in Sources */ = {isa = PBXBuildFile; fileRef = 91CF9E031B20CC66001D45FA /* queries.c */; };
 /* End PBXBuildFile section */
@@ -32,9 +31,9 @@
 		914468C41B3DF4C300B1D910 /* libjansson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjansson.a; path = ../jansson/build/lib/libjansson.a; sourceTree = "<group>"; };
 		914468C61B3E012700B1D910 /* libwebsockets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebsockets.a; path = ../libwebsockets/build/lib/libwebsockets.a; sourceTree = "<group>"; };
 		91753D6C1B2B75B00059E455 /* chainwebsocket.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chainwebsocket.c; sourceTree = "<group>"; };
-		91753D761B2B8AD10059E455 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
-		91753D7A1B2B8B760059E455 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
-		91753D7C1B2B8B9C0059E455 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		91753D761B2B8AD10059E455 /* libssl.0.9.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.0.9.8.dylib; path = ../../../../../../../../../usr/lib/libssl.0.9.8.dylib; sourceTree = SDKROOT; };
+		91753D7A1B2B8B760059E455 /* libcrypto.0.9.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.0.9.8.dylib; path = ../../../../../../../../../usr/lib/libcrypto.0.9.8.dylib; sourceTree = SDKROOT; };
+		91753D7C1B2B8B9C0059E455 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../../../../../../usr/lib/libz.1.dylib; sourceTree = SDKROOT; };
 		918FD3C41B4DCABC00B07589 /* pri_queue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pri_queue.c; path = ../common/pri_queue.c; sourceTree = "<group>"; };
 		918FD3C61B4DCAC500B07589 /* pseudoclock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pseudoclock.c; path = ../common/pseudoclock.c; sourceTree = "<group>"; };
 		918FD3CA1B4F065900B07589 /* chainevent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainevent.c; path = ../common/chainevent.c; sourceTree = "<group>"; };
@@ -45,7 +44,7 @@
 		91B64A881B0E345B00777B9A /* commonsyms.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = commonsyms.c; path = "../max6-sdk/c74support/max-includes/common/commonsyms.c"; sourceTree = "<group>"; };
 		91C579F41B38869D005686FD /* chain.site.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = chain.site.h; sourceTree = "<group>"; };
 		91CF9DF61B1F6212001D45FA /* requests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = requests.c; path = ../common/requests.c; sourceTree = "<group>"; };
-		91CF9DF81B1F667B001D45FA /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
+		91CF9DF81B1F667B001D45FA /* libcurl.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.4.dylib; path = ../../../../../../../../../usr/lib/libcurl.4.dylib; sourceTree = SDKROOT; };
 		91CF9E011B1F7678001D45FA /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
 		91CF9E031B20CC66001D45FA /* queries.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queries.c; path = ../common/queries.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,11 +54,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91753D7D1B2B8B9C0059E455 /* libz.dylib in Frameworks */,
-				91753D7B1B2B8B760059E455 /* libcrypto.dylib in Frameworks */,
-				91753D771B2B8AD10059E455 /* libssl.dylib in Frameworks */,
+				91753D7D1B2B8B9C0059E455 /* libz.1.dylib in Frameworks */,
+				91753D7B1B2B8B760059E455 /* libcrypto.0.9.8.dylib in Frameworks */,
+				91753D771B2B8AD10059E455 /* libssl.0.9.8.dylib in Frameworks */,
 				914468C51B3DF4C300B1D910 /* libjansson.a in Frameworks */,
-				91CF9DF91B1F667B001D45FA /* libcurl.dylib in Frameworks */,
+				91CF9DF91B1F667B001D45FA /* libcurl.4.dylib in Frameworks */,
 				914468C71B3E012700B1D910 /* libwebsockets.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,10 +70,10 @@
 			isa = PBXGroup;
 			children = (
 				91C579F41B38869D005686FD /* chain.site.h */,
-				91753D7C1B2B8B9C0059E455 /* libz.dylib */,
-				91753D7A1B2B8B760059E455 /* libcrypto.dylib */,
-				91753D761B2B8AD10059E455 /* libssl.dylib */,
-				91CF9DF81B1F667B001D45FA /* libcurl.dylib */,
+				91753D7C1B2B8B9C0059E455 /* libz.1.dylib */,
+				91753D7A1B2B8B760059E455 /* libcrypto.0.9.8.dylib */,
+				91753D761B2B8AD10059E455 /* libssl.0.9.8.dylib */,
+				91CF9DF81B1F667B001D45FA /* libcurl.4.dylib */,
 				914468C41B3DF4C300B1D910 /* libjansson.a */,
 				914468C61B3E012700B1D910 /* libwebsockets.a */,
 				91B64A861B0D0C4B00777B9A /* maxmspsdk.xcconfig */,
@@ -127,7 +126,7 @@
 		91B64A721B0D0C0200777B9A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Evan Lynch";
 				TargetAttributes = {
 					91B64A791B0D0C0200777B9A = {
@@ -157,7 +156,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91B64A871B0D0C4B00777B9A /* maxmspsdk.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

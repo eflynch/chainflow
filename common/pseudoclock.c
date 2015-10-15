@@ -30,7 +30,7 @@ void free_clk(t_pseudo_clk *clk){
 
     YYYY-MM-DDTHH:MM:SS{.n+}*[+-](hhmm|hh:mm)
 */
-time_t time_from_string(const char *string){
+time_t time_from_string(const char *string, float *fracsec){
     char s[40];
     char *idx = s;
 
@@ -45,9 +45,11 @@ time_t time_from_string(const char *string){
 
     // deal with fractional seconds
     if (*(string + 19) == '.'){
-        long frac;
+        float frac;
         char *frac_end;
-        frac = strtol(string + 20, &frac_end, 10);
+        frac = strtof(string + 19, &frac_end);
+        *fracsec = frac;
+
     }
 
     // Deal with timezone

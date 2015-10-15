@@ -19,7 +19,7 @@ typedef struct pseudo_clk {
 
 time_t local_now(void);
 
-time_t time_from_string(const char *string);
+time_t time_from_string(const char *string, float *fracsecs);
 
 char *string_from_time(time_t rawtime);
 

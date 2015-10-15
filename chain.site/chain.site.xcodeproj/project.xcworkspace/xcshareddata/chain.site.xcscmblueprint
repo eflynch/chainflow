@@ -1,0 +1,44 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F313BF58AD01FBAD7BC8970A98185CE896BD9271",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "F313BF58AD01FBAD7BC8970A98185CE896BD9271" : 0,
+    "6EFF068F440D8BC3A7A7B0D056F49B6CDE818782" : 0,
+    "43DDD4A1012A81E5C2F5DA96FCA0DABF5263B8FC" : 0,
+    "DAF0552197E3AB68DCC15C28A891877C0D0E6981" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "50019947-985A-461B-B0CF-9D5056D25EDB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "F313BF58AD01FBAD7BC8970A98185CE896BD9271" : "maxchain",
+    "6EFF068F440D8BC3A7A7B0D056F49B6CDE818782" : "maxchain\/jansson",
+    "43DDD4A1012A81E5C2F5DA96FCA0DABF5263B8FC" : "maxchainmax6-sdk",
+    "DAF0552197E3AB68DCC15C28A891877C0D0E6981" : "maxchain\/libwebsockets"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "chain.site",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "chain.site\/chain.site.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Cycling74\/max6-sdk",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "43DDD4A1012A81E5C2F5DA96FCA0DABF5263B8FC"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:akheron\/jansson",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6EFF068F440D8BC3A7A7B0D056F49B6CDE818782"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "git:\/\/git.libwebsockets.org\/libwebsockets",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DAF0552197E3AB68DCC15C28A891877C0D0E6981"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:eflynch\/maxchain.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F313BF58AD01FBAD7BC8970A98185CE896BD9271"
+    }
+  ]
+}
