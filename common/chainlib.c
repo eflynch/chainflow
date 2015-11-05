@@ -1,3 +1,4 @@
+/* This file is hardcoded to Tidmarsh Unity */
 
 #define X_SCALE 83459.2085
 #define Z_SCALE 109938.8055

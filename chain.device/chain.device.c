@@ -17,6 +17,7 @@
 #include "chainworker.h"
 #include "chainmath.h"
 #include "chainquery.h"
+#include "pseudoclock.h"
 
 typedef struct chain_device
 {
@@ -24,8 +25,11 @@ typedef struct chain_device
     t_symbol *s_device_name;
     long s_autoupdate;
     long s_deviation;
+    double s_historical_interval;
+    t_symbol *s_historical_downsample_rule;
     void *s_outlet;
     void *s_outlet2;
+    void *s_outlet3;
 } t_chain_device;
 
 // Create + Destroy
@@ -54,7 +58,7 @@ void chain_device_notify(t_chain_device *x, t_symbol *s, t_symbol *msg, void *se
 
 static t_class *s_chain_device_class = NULL;
 
-t_symbol *ps_name, *ps_location, *ps_geoLocation, *ps_metrics;
+t_symbol *ps_name, *ps_location, *ps_geoLocation, *ps_metrics, *ps_mean, *ps_first;
 
 
 int C74_EXPORT main(void)
@@ -80,6 +84,8 @@ int C74_EXPORT main(void)
 
     CLASS_ATTR_LONG(c, "autoupdate", 0, t_chain_device, s_autoupdate);
     CLASS_ATTR_LONG(c, "deviation", 0, t_chain_device, s_deviation);
+    CLASS_ATTR_FLOAT(c, "historical_interval", 0, t_chain_device, s_historical_interval);
+    CLASS_ATTR_SYM(c, "historical_downsample_rule", 0, t_chain_device, s_historical_downsample_rule);
     
     class_register(CLASS_BOX, c);
     s_chain_device_class = c;
@@ -88,6 +94,8 @@ int C74_EXPORT main(void)
     ps_metrics = gensym("metrics");
     ps_location = gensym("location");
     ps_geoLocation = gensym("geoLocation");
+    ps_mean = gensym("mean");
+    ps_first = gensym("first");
     
     return 0;
 }
@@ -98,10 +106,13 @@ void *chain_device_new(t_symbol *s, long argc, t_atom *argv)
 
     chain_worker_new((t_chain_worker *)x, s, argc, argv);
 
+    x->s_outlet3 = outlet_new(x, NULL);
     x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
     x->s_autoupdate = 1;
     x->s_deviation = 0;
+    x->s_historical_interval = 0.0;
+    x->s_historical_downsample_rule = ps_mean;
 
     attr_args_process(x, argc, argv);
 
@@ -299,7 +310,7 @@ void chain_device_metrics(t_chain_device *x)
         atom_setsym(av+i, gensym(name));
     }
 
-    outlet_anything(x->s_outlet2, ps_metrics, numrecords, av);
+    outlet_anything(x->s_outlet3, ps_metrics, numrecords, av);
 }
 
 void chain_device_geoLocation(t_chain_device *x)
@@ -323,7 +334,7 @@ void chain_device_geoLocation(t_chain_device *x)
     short ac = 2;
     atom_setfloat(av, lat);
     atom_setfloat(av+1, lon);
-    outlet_anything(x->s_outlet2, ps_geoLocation, ac, av);
+    outlet_anything(x->s_outlet3, ps_geoLocation, ac, av);
 }
 
 void chain_device_location(t_chain_device *x)
@@ -346,10 +357,22 @@ void chain_device_location(t_chain_device *x)
     short ac = 2;
     atom_setfloat(av, f_x);
     atom_setfloat(av+1, f_z);
-    outlet_anything(x->s_outlet2, ps_location, ac, av);
+    outlet_anything(x->s_outlet3, ps_location, ac, av);
 }
 
+/*
+input message: data [metric symbol] [start unix] [end unix]
+output message: [metric symbol] [start unix] [end unix] ([timestamp] [value])*
 
+If s_historical_interval > 0:
+    then we only want to take at most 1 value from each interval of size s_historical_interval
+    we either take the first or the average value in each interval based on
+    the value of s_historical_downsample_rule 
+
+    Note: this will only return values for intervals that fall completely in the specified range!
+    i.e. if the start is 0 and end is 10 with interval 1.5, this will return at most 6 data points
+    corresponding to the intervals 0-1.5, 1.5-3.0, 3.0-4.5, 4.5-6.0, 6.0-7.5, 7.5-9.0
+*/
 void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end)
 {
     t_db_result *db_result = NULL;
@@ -359,21 +382,123 @@ void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end
         chain_error("Metric not valid for this device");
         return;
     }
+
+    // Query all relevent data
     const char *sensor_href = db_result_string(db_result, 0, 0);
-    double *data;
     long num_events;
     t_chain_event *events;
     chain_get_data(sensor_href, start, end, &events, &num_events);
 
-    t_atom av[num_events];
-    for (int i=0; i<num_events; i++){
-        double value = (events +i)->s_value;
-        if (x->s_deviation){
-            value = chain_device_compute_deviation(x, metric, value);
+    // Handle case where historical_interval is 0 (all data used)
+    if (x->s_historical_interval == 0.0){
+         t_atom av[num_events * 2 + 2];
+        // Set start and end unix atom
+        atom_setlong(av, start);
+        atom_setlong(av+1, end);
+
+        // Set two atoms per event (timestamp, value)
+        for (int i=0; i<num_events; i++){
+            t_chain_event *this_event = events + i;
+            double d_value = this_event->s_value;
+            float fracsec;
+            time_t wholesec = time_from_string(this_event->s_timestamp, &fracsec);
+            double d_time = (double) (wholesec - start) + (double)fracsec;
+            if (x->s_deviation){
+                d_value = chain_device_compute_deviation(x, metric, d_value);
+            }
+            atom_setfloat(av + 2*i + 2, d_time);
+            atom_setfloat(av + 2*i + 3, d_value);
         }
-        atom_setfloat(av+i, value);
+
+        outlet_anything(x->s_outlet2, metric, num_events * 2 + 2, av);
+        free(events);
+        return;
     }
-    outlet_anything(x->s_outlet, metric, num_events, av);
+
+    // Handle case where historical_interval > 0
+
+    long num_intervals = floor((end - start) / x->s_historical_interval);
+    t_atom av[2 + 2 * num_intervals];
+    long ac = 0;
+    
+    // set start unix atom
+    atom_setlong(av, start);
+    ac++;
+    atom_setlong(av+1, end);
+    ac++;
+
+
+    // set two or 0 atoms per interval
+    long event_idx = 0;
+    long atom_idx = 2;
+
+    // loop through intervals until we reach the end
+    for (long i=0; i<num_intervals; i++){
+        double interval_start = start + i * x->s_historical_interval;
+        double interval_end = interval_start + x->s_historical_interval;
+ 
+        long num_events_registered = 0;
+        double sum_events_registered = 0.0;
+        double d_time_events_registered = interval_start - start;
+        // set atoms
+        while(true){
+            // exit loop if we run out of events
+            if (event_idx >= num_events){
+                break;
+            }
+
+            float fracsec;
+            t_chain_event *this_event = events + event_idx;
+            time_t wholesec = time_from_string(this_event->s_timestamp, &fracsec);
+
+            // If current event is before interval, skip it
+            if (wholesec < interval_start){
+                event_idx++;
+                continue;
+            }
+
+            // If current event is after interval, break (we are done with this interval)
+            if (wholesec >= interval_end){
+                break;
+            }
+
+            // Otherwise register event
+            num_events_registered++;
+
+            double d_value = this_event->s_value;
+            double d_time = (double) (wholesec - start) + (double)fracsec;
+            if (x->s_deviation){
+                d_value = chain_device_compute_deviation(x, metric, d_value);
+            }
+
+            sum_events_registered += d_value;
+            num_events_registered += 1;
+            event_idx++;
+
+            // If downsample rule is "first" we take only the first event
+            // and use it's timestamp
+            if (x->s_historical_downsample_rule == ps_first){
+                d_time_events_registered = d_time;
+                break;
+            }
+        }
+
+        // If events were registered for this interval, format them for output
+        if (num_events_registered){
+            atom_setfloat(av + atom_idx, d_time_events_registered);
+            atom_setfloat(av + atom_idx + 1, sum_events_registered / num_events_registered); 
+            ac += 2;
+            atom_idx += 2;
+        }
+       
+
+        // exit loop if we run out of events
+        if (event_idx >= num_events){
+            break;
+        }
+    }
+
+    outlet_anything(x->s_outlet2, metric, ac, av);
     free(events);
 }
 

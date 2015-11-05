@@ -423,13 +423,13 @@ void chain_site_play_historical(t_chain_site *x){
         if (now >= local_now()){
             break;
         }
-        if (now < highest_time_checked - LOOKAHEAD_TIME){
+        if (now < highest_time_checked - (LOOKAHEAD_TIME * x->s_historical_ts)){
             systhread_sleep(LOOKAHEAD_SLEEP_TIME);
             continue;
         }
 
         time_t start = highest_time_checked;
-        time_t end = highest_time_checked + CHUNK_LENGTH;
+        time_t end = highest_time_checked + (CHUNK_LENGTH * x->s_historical_ts);
 
         // For each sensor
         for (int sensor_idx=0; sensor_idx < num_records; sensor_idx++){

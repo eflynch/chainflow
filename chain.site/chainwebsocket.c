@@ -104,6 +104,7 @@ struct libwebsocket_context *chain_websocket_connect(t_chain_site *x){
 
 
     int port = 80;
+    // int port = 8000;
     int use_ssl = 0;
     struct libwebsocket_context *context;
     struct libwebsocket *wsi;
@@ -114,7 +115,9 @@ struct libwebsocket_context *chain_websocket_connect(t_chain_site *x){
 
     // TODO: Get this from url by parsing rather than hardcoding!!
     const char *address = "chain-api.media.mit.edu";
+    // const cha
     const char *path = "/ws/site-7";
+    // const char *path = "/";
     const char *host = address;
     const char *origin = address;
     wsi = libwebsocket_client_connect(context, address, port, use_ssl, path,
