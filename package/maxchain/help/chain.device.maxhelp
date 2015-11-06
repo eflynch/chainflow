@@ -40,6 +40,18 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 606.5, 716.0, 191.0, 20.0 ],
+					"style" : "",
+					"text" : "print historical @popup 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-33",
 					"items" : [ "first", ",", "mean" ],
 					"maxclass" : "umenu",
@@ -123,9 +135,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 456.0, 688.0, 150.0, 18.0 ],
+					"patching_rect" : [ 452.0, 691.0, 150.0, 18.0 ],
 					"style" : "",
-					"text" : "data outlet"
+					"text" : "data outlets"
 				}
 
 			}
@@ -135,7 +147,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 621.0, 688.0, 150.0, 18.0 ],
+					"patching_rect" : [ 791.0, 684.0, 150.0, 18.0 ],
 					"style" : "",
 					"text" : "metadata outlet"
 				}
@@ -630,8 +642,6 @@
 												"default" : 												{
 													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
-													"textjustification" : [ 0 ],
-													"fontname" : [ "Courier" ],
 													"bgfillcolor" : 													{
 														"type" : "color",
 														"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -642,11 +652,13 @@
 														"autogradient" : 0
 													}
 ,
-													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-													"fontface" : [ 0 ],
+													"fontname" : [ "Courier" ],
 													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+													"textjustification" : [ 0 ],
 													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+													"fontface" : [ 0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -674,9 +686,9 @@
 , 											{
 												"name" : "maxchain-title",
 												"default" : 												{
-													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 													"fontname" : [ "Courier Bold" ],
+													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 													"fontsize" : [ 48.0 ]
 												}
 ,
@@ -766,7 +778,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 685.0, 771.0, 176.0, 20.0 ],
+					"patching_rect" : [ 855.0, 797.0, 176.0, 20.0 ],
 					"style" : "",
 					"text" : "print metadata @popup 1"
 				}
@@ -804,7 +816,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 600.0, 796.0, 176.0, 20.0 ],
+					"patching_rect" : [ 770.0, 822.0, 176.0, 20.0 ],
 					"style" : "",
 					"text" : "s devicehelp-metriclist"
 				}
@@ -813,7 +825,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-48",
-					"items" : [ "version", ",", "bmp_temperature", ",", "sht_temperature", ",", "illuminance", ",", "battery_voltage", ",", "bmp_pressure", ",", "sht_humidity" ],
+					"items" : "<empty>",
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -844,7 +856,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 600.0, 744.0, 104.0, 20.0 ],
+					"patching_rect" : [ 770.0, 770.0, 104.0, 20.0 ],
 					"style" : "",
 					"text" : "route metrics"
 				}
@@ -1306,8 +1318,6 @@
 												"default" : 												{
 													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
-													"textjustification" : [ 0 ],
-													"fontname" : [ "Courier" ],
 													"bgfillcolor" : 													{
 														"type" : "color",
 														"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -1318,11 +1328,13 @@
 														"autogradient" : 0
 													}
 ,
-													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-													"fontface" : [ 0 ],
+													"fontname" : [ "Courier" ],
 													"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+													"textjustification" : [ 0 ],
 													"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+													"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+													"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+													"fontface" : [ 0 ]
 												}
 ,
 												"parentstyle" : "",
@@ -1350,9 +1362,9 @@
 , 											{
 												"name" : "maxchain-title",
 												"default" : 												{
-													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 													"fontname" : [ "Courier Bold" ],
+													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 													"fontsize" : [ 48.0 ]
 												}
 ,
@@ -1466,8 +1478,6 @@
 								"default" : 								{
 									"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 									"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
-									"textjustification" : [ 0 ],
-									"fontname" : [ "Courier" ],
 									"bgfillcolor" : 									{
 										"type" : "color",
 										"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -1478,11 +1488,13 @@
 										"autogradient" : 0
 									}
 ,
-									"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-									"fontface" : [ 0 ],
+									"fontname" : [ "Courier" ],
 									"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+									"textjustification" : [ 0 ],
 									"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-									"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+									"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+									"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+									"fontface" : [ 0 ]
 								}
 ,
 								"parentstyle" : "",
@@ -1520,7 +1532,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-36",
-					"items" : [ "`0x115F`", ",", "`0x8107`", ",", "`0x8110`", ",", "`0x8114`", ",", "`0x8115`", ",", "`0x8116`", ",", "`0x8117`", ",", "`0x8119`", ",", "`0x8120`", ",", "`0x8124`", ",", "`0x8128`", ",", "`0x812A`", ",", "`0x812B`", ",", "`0x812C`", ",", "`0x812E`", ",", "`0x8133`", ",", "`0x8135`", ",", "`0x8136`", ",", "`0x8137`", ",", "`0x8138`", ",", "`0x8139`", ",", "`0x813B`", ",", "`0x813D`", ",", "`0x8140`", ",", "`0x8141`", ",", "`0x8144`", ",", "`0x8145`", ",", "`0x8146`", ",", "`0x8147`", ",", "`0x8148`", ",", "`0x8149`", ",", "`0x814B`", ",", "`0x814C`", ",", "`0x814D`", ",", "`0x814F`", ",", "`0x8151`", ",", "`0x8152`", ",", "`0x8153`", ",", "`0x8154`", ",", "`0x8155`", ",", "`0x8156`", ",", "`0x8157`", ",", "`0x8158`", ",", "`0x8159`", ",", "`0x815A`", ",", "`0x815B`", ",", "`0x815C`", ",", "`0x8160`", ",", "`0x8161`", ",", "`0x8162`", ",", "`0x8163`", ",", "`0x8164`", ",", "`0x8165`", ",", "`0x8167`", ",", "`0x8168`", ",", "`0x8169`", ",", "`0x816A`", ",", "`0x816B`", ",", "`0x816E`", ",", "`0x8172`", ",", "`0x817D`", ",", "`tidbase4`" ],
+					"items" : "<empty>",
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -1588,9 +1600,9 @@
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 443.0, 666.0, 176.0, 20.0 ],
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ 443.0, 666.0, 346.0, 20.0 ],
 					"style" : "",
 					"text" : "chain.device devicehelp"
 				}
@@ -1720,10 +1732,19 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-42", 0 ],
+					"destination" : [ "obj-4", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-1", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-42", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-1", 2 ]
 				}
 
 			}
@@ -2154,8 +2175,6 @@
 				"default" : 				{
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
-					"textjustification" : [ 0 ],
-					"fontname" : [ "Courier" ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -2166,11 +2185,13 @@
 						"autogradient" : 0
 					}
 ,
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-					"fontface" : [ 0 ],
+					"fontname" : [ "Courier" ],
 					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"textjustification" : [ 0 ],
 					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"fontface" : [ 0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -2198,9 +2219,9 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 					"fontname" : [ "Courier Bold" ],
+					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"fontsize" : [ 48.0 ]
 				}
 ,

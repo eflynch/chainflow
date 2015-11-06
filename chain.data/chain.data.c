@@ -41,6 +41,10 @@ void chain_data_bang(t_chain_data *x);
 void chain_data_clear(t_chain_data *x);
 void chain_data_set(t_chain_data *x, t_symbol *s, long argc, t_atom *argv);
 
+// Helpers
+void chain_data_output_resampled_list(t_chain_data *x);
+void chain_data_output_resampled_interleaved_list(t_chain_data *x);
+
 // Attribute Setters
 void chain_data_set_site_name(t_chain_data *x, void *attr, long argc, t_atom *argv);
 
@@ -62,11 +66,11 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_data_int, "int", A_LONG, 0);
     class_addmethod(c, (method)chain_data_notify, "notify", A_CANT, 0);
     class_addmethod(c, (method)chain_data_set, "set", A_GIMME, 0);
-    class_addmethod(c (method)chain_data_clear, "clear", 0);
+    class_addmethod(c, (method)chain_data_clear, "clear", 0);
    
     CLASS_ATTR_SYM(c, "savefile", 0L, t_chain_data, s_savefile);
     CLASS_ATTR_LONG(c, "normalize", 0L, t_chain_data, s_normalize);
-    CLASS_ATTR_FLOAT(c, "interval", 0L, t_chain_data, s_interval);
+    CLASS_ATTR_DOUBLE(c, "interval", 0, t_chain_data, s_interval);
     CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_data, s_worker.s_site_name);
 
     class_register(CLASS_BOX, c);
@@ -85,8 +89,8 @@ void *chain_data_new(t_symbol *s, long argc, t_atom *argv)
     chain_worker_new((t_chain_worker *)x, s, argc, argv);
 
     x->s_interval = 0.0;
-    x->normalize = 0;
-    x->savefile = NULL;
+    x->s_normalize = 0;
+    x->s_savefile = NULL;
 
     // Initialize data storage
     x->s_offsets = NULL;
@@ -132,7 +136,7 @@ void chain_data_output_resampled_list(t_chain_data *x)
 {
     if (!x->s_values || !x->s_offsets || !x->s_num_samples){
         // Fail silently
-        chain_debug("No data.");
+        chain_error("No data.");
         return;
     }
 
@@ -166,7 +170,7 @@ void chain_data_output_resampled_list(t_chain_data *x)
         // if before_offset is after interval_offset, then we've screwed up the implementation
         if (offset_before_interval > interval_offset){
             chain_error("before_interval surpassed interval_offset");
-            return;
+            break;
         }
 
         // ensure after_offset is not before interval_offset
@@ -183,10 +187,10 @@ void chain_data_output_resampled_list(t_chain_data *x)
                 break;
             } else {
                 offset_before_interval = x->s_offsets[after_idx];
-                value_before_interval = x->s_offsets[after_idx];
+                value_before_interval = x->s_values[after_idx];
                 after_idx++;
                 offset_after_interval = x->s_offsets[after_idx];
-                value_after_interval = x->s_offsets[after_idx];
+                value_after_interval = x->s_values[after_idx];
             }
         }
 
@@ -201,7 +205,7 @@ void chain_data_output_resampled_list(t_chain_data *x)
             double end_point_difference = (value_after_interval - value_before_interval);
             double end_point_distance = (offset_after_interval - offset_before_interval);
             double interval_distance = (interval_offset - offset_before_interval);
-            interval_value = value_before_interval + end_point_difference * interval_distance / end_point_distance;
+            interval_value = value_before_interval + end_point_difference * (interval_distance / end_point_distance);
         }
 
         atom_setfloat(av+i, interval_value);

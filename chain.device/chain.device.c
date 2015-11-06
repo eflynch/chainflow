@@ -84,7 +84,7 @@ int C74_EXPORT main(void)
 
     CLASS_ATTR_LONG(c, "autoupdate", 0, t_chain_device, s_autoupdate);
     CLASS_ATTR_LONG(c, "deviation", 0, t_chain_device, s_deviation);
-    CLASS_ATTR_FLOAT(c, "historical_interval", 0, t_chain_device, s_historical_interval);
+    CLASS_ATTR_DOUBLE(c, "historical_interval", 0, t_chain_device, s_historical_interval);
     CLASS_ATTR_SYM(c, "historical_downsample_rule", 0, t_chain_device, s_historical_downsample_rule);
     
     class_register(CLASS_BOX, c);

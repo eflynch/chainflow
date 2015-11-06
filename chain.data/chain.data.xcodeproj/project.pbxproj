@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		914346FF1BD029400033452C /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 914346FE1BD029400033452C /* maxmspsdk.xcconfig */; settings = {ASSET_TAGS = (); }; };
-		914347011BD029EC0033452C /* chain.data.c in Sources */ = {isa = PBXBuildFile; fileRef = 914347001BD029EC0033452C /* chain.data.c */; settings = {ASSET_TAGS = (); }; };
-		914347031BD02A470033452C /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 914347021BD02A470033452C /* messages.c */; settings = {ASSET_TAGS = (); }; };
-		914347051BD02A530033452C /* chainworker.c in Sources */ = {isa = PBXBuildFile; fileRef = 914347041BD02A530033452C /* chainworker.c */; settings = {ASSET_TAGS = (); }; };
+		914346FF1BD029400033452C /* maxmspsdk.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 914346FE1BD029400033452C /* maxmspsdk.xcconfig */; };
+		914347011BD029EC0033452C /* chain.data.c in Sources */ = {isa = PBXBuildFile; fileRef = 914347001BD029EC0033452C /* chain.data.c */; };
+		914347031BD02A470033452C /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 914347021BD02A470033452C /* messages.c */; };
+		914347051BD02A530033452C /* chainworker.c in Sources */ = {isa = PBXBuildFile; fileRef = 914347041BD02A530033452C /* chainworker.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		914346FE1BD029400033452C /* maxmspsdk.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = maxmspsdk.xcconfig; path = ../maxmspsdk.xcconfig; sourceTree = "<group>"; };
-		914347001BD029EC0033452C /* chain.data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chain.data.c; path = chain.data/chain.data.c; sourceTree = "<group>"; };
+		914347001BD029EC0033452C /* chain.data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chain.data.c; sourceTree = "<group>"; };
 		914347021BD02A470033452C /* messages.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = messages.c; path = ../common/messages.c; sourceTree = "<group>"; };
 		914347041BD02A530033452C /* chainworker.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chainworker.c; path = ../common/chainworker.c; sourceTree = "<group>"; };
 		91DEF4DA1BD028CD00EBF3F8 /* chain.data.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chain.data.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
