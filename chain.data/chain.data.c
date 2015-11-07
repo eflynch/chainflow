@@ -20,6 +20,7 @@ typedef struct chain_data
     void *s_outlet;
     void *s_outlet2;
     t_symbol *s_savefile;
+    long s_autosave;
     long s_normalize;
     double s_interval;
     // Data storage
@@ -81,6 +82,7 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_data_write, "write", A_DEFSYM, 0);
    
     CLASS_ATTR_SYM(c, "savefile", 0L, t_chain_data, s_savefile);
+    CLASS_ATTR_LONG(c, "autosave", 0L, t_chain_data, s_autosave);
     CLASS_ATTR_LONG(c, "normalize", 0L, t_chain_data, s_normalize);
     CLASS_ATTR_DOUBLE(c, "interval", 0, t_chain_data, s_interval);
     CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_data, s_worker.s_site_name);
@@ -116,6 +118,11 @@ void *chain_data_new(t_symbol *s, long argc, t_atom *argv)
     
     x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
+
+    // Load from savefile if listed
+    if (x->s_savefile){
+        chain_data_doread(x, x->s_savefile);
+    }
     
     return x;
 }
@@ -123,8 +130,8 @@ void *chain_data_new(t_symbol *s, long argc, t_atom *argv)
 void chain_data_free(t_chain_data *x)
 {
     chain_worker_release_site((t_chain_worker *)x);
+    chain_data_clear(x);
 }
-
 
 void chain_data_notify(t_chain_data *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
@@ -229,14 +236,7 @@ void chain_data_openfile(t_chain_data *x, char *filename, short path){
     x->s_end = strtol(token, NULL, 10);
 
 
-    if (x->s_values){
-        free(x->s_values);
-        x->s_values = NULL;
-    }
-    if (x->s_offsets){
-        free(x->s_offsets);
-        x->s_offsets = NULL;
-    }
+    chain_data_clear(x);
 
     x->s_values = malloc(num_samples * sizeof(*(x->s_values)));
     x->s_offsets = malloc(num_samples * sizeof(*(x->s_offsets)));
@@ -334,6 +334,9 @@ void chain_data_output_resampled_list(t_chain_data *x)
     double offset_before_interval = 0.0;
     double value_before_interval = x->s_values[0];
 
+    double max = x->s_values[0];
+    double min = x->s_values[0];
+
     // Initialize first after point at offsets[0] values[0]
     double offset_after_interval = x->s_offsets[0];
     double value_after_interval = x->s_values[0];
@@ -384,7 +387,20 @@ void chain_data_output_resampled_list(t_chain_data *x)
             interval_value = value_before_interval + end_point_difference * (interval_distance / end_point_distance);
         }
 
+        if (x->s_normalize){
+            if (interval_value > max){max = interval_value;}
+            if (interval_value < min){min = interval_value;}
+        }
+
         atom_setfloat(av+i, interval_value);
+    }
+
+    if (x->s_normalize){
+        for (int i=0; i < ac; i++){
+            double v = atom_getfloat(av+i);
+            v = (v - min) / (max - min);
+            atom_setfloat(av+i, v);
+        }
     }
 
     outlet_anything(x->s_outlet, ps_list, ac, av);
@@ -402,9 +418,11 @@ void chain_data_output_resampled_interleaved_list(t_chain_data *x)
 void chain_data_clear(t_chain_data *x){
     if (x->s_values){
         free(x->s_values);
+        x->s_values = NULL;
     }
     if (x->s_offsets){
         free(x->s_offsets);
+        x->s_offsets = NULL;
     }
     x->s_num_samples = 0;
 }
@@ -446,5 +464,10 @@ void chain_data_set(t_chain_data *x, t_symbol *s, long argc, t_atom *argv)
 
         *(x->s_offsets + i) = d_time_delta;
         *(x->s_values + i) = d_value;
+    }
+
+    // If autosave, save file
+    if (x->s_autosave && x->s_savefile){
+        chain_data_dowrite(x, x->s_savefile);
     }
 }

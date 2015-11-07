@@ -4,12 +4,12 @@
 		"appversion" : 		{
 			"major" : 7,
 			"minor" : 0,
-			"revision" : 3,
+			"revision" : 6,
 			"architecture" : "x86",
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 91.0, 86.0, 981.0, 800.0 ],
+		"rect" : [ 100.0, 100.0, 981.0, 800.0 ],
 		"bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
 		"editing_bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
 		"bglocked" : 0,
@@ -147,14 +147,22 @@
 			}
 , 			{
 				"box" : 				{
+					"args" : [ "maphelp" ],
+					"bgmode" : 0,
+					"border" : 0,
+					"clickthrough" : 0,
+					"enablehscroll" : 0,
+					"enablevscroll" : 0,
 					"id" : "obj-2",
-					"maxclass" : "newobj",
+					"lockeddragscroll" : 0,
+					"maxclass" : "bpatcher",
+					"name" : "chain.browser.maxpat",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 314.0, 540.0, 155.0, 20.0 ],
-					"style" : "",
-					"text" : "chain.device maphelp"
+					"numoutlets" : 4,
+					"offset" : [ 0.0, 0.0 ],
+					"outlettype" : [ "", "", "", "" ],
+					"patching_rect" : [ 314.0, 500.0, 198.0, 107.0 ],
+					"viewvisibility" : 1
 				}
 
 			}
@@ -164,7 +172,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 486.0, 540.0, 169.0, 20.0 ],
+					"patching_rect" : [ 515.0, 534.0, 169.0, 20.0 ],
 					"style" : "",
 					"text" : "print maphelp @popup 1"
 				}
@@ -349,7 +357,7 @@
 					"destination" : [ "obj-9", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 323.5, 523.0, 495.5, 523.0 ],
+					"midpoints" : [ 323.5, 493.0, 524.5, 493.0 ],
 					"source" : [ "obj-1", 0 ]
 				}
 
@@ -431,12 +439,22 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-11" : [ "number[1]", "number[1]", 0 ],
-			"obj-7" : [ "number", "number", 0 ]
+			"obj-7" : [ "number", "number", 0 ],
+			"obj-11" : [ "number[1]", "number[1]", 0 ]
 		}
 ,
 		"dependency_cache" : [ 			{
+				"name" : "chain.browser.maxpat",
+				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "chain.site.mxo",
+				"type" : "iLaX"
+			}
+, 			{
+				"name" : "chain.info.mxo",
 				"type" : "iLaX"
 			}
 , 			{
@@ -454,13 +472,11 @@
 				"default" : 				{
 					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
 					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"fontface" : [ 0 ],
 					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-					"fontname" : [ "Courier" ],
 					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"textjustification" : [ 0 ],
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
-					"fontface" : [ 0 ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -470,7 +486,9 @@
 						"proportion" : 0.39,
 						"autogradient" : 0
 					}
-
+,
+					"fontname" : [ "Courier" ],
+					"textjustification" : [ 0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -488,8 +506,8 @@
 , 			{
 				"name" : "maxchain-subtitle",
 				"default" : 				{
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
-					"fontsize" : [ 20.0 ]
+					"fontsize" : [ 20.0 ],
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -498,10 +516,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"fontname" : [ "Courier Bold" ],
-					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"fontsize" : [ 48.0 ],
 					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
-					"fontsize" : [ 48.0 ]
+					"fontname" : [ "Courier Bold" ],
+					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
