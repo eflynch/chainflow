@@ -193,7 +193,7 @@
 					"id" : "obj-1",
 					"lockeddragscroll" : 0,
 					"maxclass" : "bpatcher",
-					"name" : "chain.scale.maxpat",
+					"name" : "chain.itertable.maxpat",
 					"numinlets" : 4,
 					"numoutlets" : 2,
 					"offset" : [ 0.0, 0.0 ],
@@ -314,7 +314,7 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "chain.scale.maxpat",
+				"name" : "chain.itertable.maxpat",
 				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
 				"type" : "JSON",
 				"implicit" : 1
