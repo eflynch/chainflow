@@ -9,6 +9,7 @@
 #include "ext_common.h"
 #include "ext_dictobj.h"
 #include "ext_database.h"
+#include "ext_path.h"
 
 #include "messages.h"
 #include "chainworker.h"
@@ -40,6 +41,8 @@ void chain_data_int(t_chain_data *x, long n);
 void chain_data_bang(t_chain_data *x);
 void chain_data_clear(t_chain_data *x);
 void chain_data_set(t_chain_data *x, t_symbol *s, long argc, t_atom *argv);
+void chain_data_read(t_chain_data *x, t_symbol *s);
+void chain_data_write(t_chain_data *x, t_symbol *s);
 
 // Helpers
 void chain_data_output_resampled_list(t_chain_data *x);
@@ -47,6 +50,12 @@ void chain_data_output_resampled_interleaved_list(t_chain_data *x);
 
 // Attribute Setters
 void chain_data_set_site_name(t_chain_data *x, void *attr, long argc, t_atom *argv);
+
+// File readers / writers
+void chain_data_openfile(t_chain_data *x, char *filename, short path);
+void chain_data_doread(t_chain_data *x, t_symbol *s);
+void chain_data_dowrite(t_chain_data *x, t_symbol *s);
+void chain_data_writefile(t_chain_data *x, char *filename, short path);
 
 // Notify
 void chain_data_notify(t_chain_data *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
@@ -67,6 +76,9 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_data_notify, "notify", A_CANT, 0);
     class_addmethod(c, (method)chain_data_set, "set", A_GIMME, 0);
     class_addmethod(c, (method)chain_data_clear, "clear", 0);
+
+    class_addmethod(c, (method)chain_data_read, "read", A_DEFSYM, 0);
+    class_addmethod(c, (method)chain_data_write, "write", A_DEFSYM, 0);
    
     CLASS_ATTR_SYM(c, "savefile", 0L, t_chain_data, s_savefile);
     CLASS_ATTR_LONG(c, "normalize", 0L, t_chain_data, s_normalize);
@@ -88,7 +100,7 @@ void *chain_data_new(t_symbol *s, long argc, t_atom *argv)
     
     chain_worker_new((t_chain_worker *)x, s, argc, argv);
 
-    x->s_interval = 0.0;
+    x->s_interval = 1.0;
     x->s_normalize = 0;
     x->s_savefile = NULL;
 
@@ -132,11 +144,175 @@ void chain_data_bang(t_chain_data *x)
     chain_data_output_resampled_interleaved_list(x);
 }
 
+void chain_data_read(t_chain_data *x, t_symbol *s)
+{
+    defer(x, (method)chain_data_doread, s, 0, NULL);
+}
+
+void chain_data_write(t_chain_data *x, t_symbol *s)
+{
+    defer(x, (method)chain_data_dowrite, s, 0, NULL);
+}
+
+void chain_data_doread(t_chain_data *x, t_symbol *s)
+{
+    long filetype = 'TEXT', outtype;
+    char filename[512];
+    short path;
+
+    if (s == gensym("")){
+        if (open_dialog(filename, &path, &outtype, &filetype, 1)){
+            return;
+        }
+    } else {
+        strcpy(filename, s->s_name);
+        if (locatefile_extended(filename, &path, &outtype, &filetype, 1)){
+            chain_error("%s: not found", s->s_name);
+            return;
+        }
+    }
+    chain_data_openfile(x, filename, path);
+}
+
+void chain_data_openfile(t_chain_data *x, char *filename, short path){
+    t_filehandle fh;
+    long err;
+
+    if (path_opensysfile(filename, path, &fh, READ_PERM)){
+        chain_error("Error opening: %s", filename);
+        return;
+    }
+
+    long num_bytes = 1024 * 1024;
+    char buf[1024 * 1024];
+    err = sysfile_read(fh, &num_bytes, buf);
+
+    long num_tokens = 1;
+    for (long i=0; i < num_bytes; i++){
+        if (buf[i] == ' '){
+            num_tokens++;
+        }
+    }
+
+    long num_samples = (num_tokens - 3) / 2;
+
+
+
+    // Get metric name token
+    char *token;
+    char *savptr = NULL;
+    token = strtok_r(buf, " ", &savptr);
+    if (!token){
+        chain_error("No metric_name in file");
+        sysfile_close(fh);
+        return;
+    }
+    x->s_metric_name = gensym(token);
+
+
+    // Get start
+    token = strtok_r(NULL, " ", &savptr);
+    if (!token){
+        chain_error("No start time in file");
+        sysfile_close(fh);
+        return;
+    }
+    x->s_start = strtol(token, NULL, 10);
+
+    // Get end
+    token = strtok_r(NULL, " ", &savptr);
+    if (!token){
+        chain_error("No end time in file");
+        sysfile_close(fh);
+        return;
+    }
+    x->s_end = strtol(token, NULL, 10);
+
+
+    if (x->s_values){
+        free(x->s_values);
+        x->s_values = NULL;
+    }
+    if (x->s_offsets){
+        free(x->s_offsets);
+        x->s_offsets = NULL;
+    }
+
+    x->s_values = malloc(num_samples * sizeof(*(x->s_values)));
+    x->s_offsets = malloc(num_samples * sizeof(*(x->s_offsets)));
+
+    // Get the rest
+    for (long i=0; i < num_samples; i++){
+        // Get offset
+        token = strtok_r(NULL, " ", &savptr);
+        double offset = strtod(token, NULL);
+        token = strtok_r(NULL, " ", &savptr);
+        double value = strtod(token, NULL);
+        *(x->s_values + i) = value;
+        *(x->s_offsets + i) = offset;
+    }
+
+    x->s_num_samples = num_samples;
+
+    sysfile_close(fh);
+}
+
+void chain_data_dowrite(t_chain_data *x, t_symbol *s)
+{
+    if (!x->s_values || !x->s_offsets || !x->s_num_samples){
+        // Fail silently
+        chain_error("No data to write in chain.data");
+        return;
+    }
+
+    char filename[512];
+    short path;
+
+    if (s == gensym("")){
+        if (saveas_dialog(filename, &path, 0)){
+            return;
+        }
+    } else {
+        strcpy(filename, s->s_name);
+        path = path_getdefault();
+    }
+    chain_data_writefile(x, filename, path);
+}
+
+void chain_data_writefile(t_chain_data *x, char *filename, short path)
+{
+    long message_size = (x->s_num_samples * (44)) + (3 * 20);
+    char buf[message_size];
+    
+    // Write Header
+    char header[128];
+    sprintf(header, "%s %ld %ld", x->s_metric_name->s_name, x->s_start, x->s_end);
+    strncat(buf, header, 128);
+    
+    // Write Values
+    for (long i=0; i < x->s_num_samples; i++){
+        char pair[44];
+        sprintf(pair, " %lf %lf", *(x->s_offsets + i), *(x->s_values + i));
+        strncat(buf, pair, 44);
+    }
+
+    long err;
+    t_filehandle fh;
+    t_ptr_size size = strlen(buf);
+
+    err = path_createsysfile(filename, path, 'TEXT', &fh);
+    if (err) {chain_error("Error creating file: %s", filename);}
+    err = sysfile_write(fh, &size, (void *)buf);
+    if (err) {chain_error("Error writing to file: %s", filename);}
+    
+    sysfile_close(fh);
+}
+
 void chain_data_output_resampled_list(t_chain_data *x)
 {
     if (!x->s_values || !x->s_offsets || !x->s_num_samples){
         // Fail silently
-        chain_error("No data.");
+        chain_error("No data saved in chain.data");
         return;
     }
 
@@ -147,7 +323,7 @@ void chain_data_output_resampled_list(t_chain_data *x)
 
     // if interval == 0, return all data without resampling to periodic intervals
     if (interval == 0.0){
-        chain_error("Not implemented");
+        chain_error("Chain.data behavior for interval=0.0 is not yet implemented");
         return;
     }
 
@@ -218,7 +394,7 @@ void chain_data_output_resampled_interleaved_list(t_chain_data *x)
 {
     if (!x->s_values || !x->s_offsets || !x->s_num_samples){
         // Fail silently
-        chain_debug("No data.");
+        chain_debug("No data saved in chain.data.");
         return;
     }
 }

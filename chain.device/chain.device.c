@@ -375,6 +375,10 @@ If s_historical_interval > 0:
 */
 void chain_device_data(t_chain_device *x, t_symbol *metric, long start, long end)
 {
+    if (!x->s_device_name){
+        chain_error("No device_name set");
+        return;
+    }
     t_db_result *db_result = NULL;
     query_sensor_href_by_device_name_metric_name(x->s_worker.s_db, x->s_device_name->s_name,
                                                  metric->s_name, &db_result);
