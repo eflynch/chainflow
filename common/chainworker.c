@@ -91,6 +91,7 @@ void *chain_worker_find_site_threadproc(t_chain_worker *x)
         if (x->s_find_site_cancel){
             break;
         }
+        systhread_sleep(100);
     }
     while(1){
         if (x->s_find_site_cancel){

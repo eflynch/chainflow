@@ -24,6 +24,7 @@ typedef struct chain_device
     t_chain_worker s_worker;
     t_symbol *s_device_name;
     long s_autoupdate;
+    long s_aggregate;
     long s_deviation;
     double s_historical_interval;
     t_symbol *s_historical_downsample_rule;
@@ -83,6 +84,7 @@ int C74_EXPORT main(void)
     CLASS_ATTR_ACCESSORS(c, "device_name", NULL, (method)chain_device_set_device_name);
 
     CLASS_ATTR_LONG(c, "autoupdate", 0, t_chain_device, s_autoupdate);
+    CLASS_ATTR_LONG(c, "aggregate", 0, t_chain_device, s_aggregate);
     CLASS_ATTR_LONG(c, "deviation", 0, t_chain_device, s_deviation);
     CLASS_ATTR_DOUBLE(c, "historical_interval", 0, t_chain_device, s_historical_interval);
     CLASS_ATTR_SYM(c, "historical_downsample_rule", 0, t_chain_device, s_historical_downsample_rule);
@@ -110,6 +112,7 @@ void *chain_device_new(t_symbol *s, long argc, t_atom *argv)
     x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, NULL);
     x->s_autoupdate = 1;
+    x->s_aggregate = 0;
     x->s_deviation = 0;
     x->s_historical_interval = 0.0;
     x->s_historical_downsample_rule = ps_mean;
@@ -247,24 +250,45 @@ void chain_device_send_all(t_chain_device *x){
 
     long numrecords = db_result_numrecords(db_result);
 
-    for (int i=0; i<numrecords; i++){
-        const char *timestamp, *metric_name;
-        double value;
-        timestamp = db_result_string(db_result, i, 1);
-        value = db_result_float(db_result, i, 0);
-        metric_name = db_result_string(db_result, i, 2);
-        t_symbol *metric = gensym(metric_name);
+    if (x->s_aggregate){
+        t_atom av[2*numrecords];
+        long ac=2*numrecords;
+        for (int i=0; i<numrecords; i++){
+            const char *timestamp, *metric_name;
+            double value;
+            timestamp = db_result_string(db_result, i, 1);
+            value = db_result_float(db_result, i, 0);
+            metric_name = db_result_string(db_result, i, 2);
+            t_symbol *metric = gensym(metric_name);
 
-        if (x->s_deviation){
-            value = chain_device_compute_deviation(x, metric, value);
+            if (x->s_deviation){
+                value = chain_device_compute_deviation(x, metric, value);
+            }
+
+            atom_setsym(av+(i*2), metric);
+            atom_setfloat(av+(i*2)+1, value);
         }
-
-        t_atom av[2];
-        short ac = 2;
-        atom_setsym(av, metric);
-        atom_setfloat(av+1, value);
-
         outlet_list(x->s_outlet, 0L, ac, av);
+    } else {
+        for (int i=0; i<numrecords; i++){
+            const char *timestamp, *metric_name;
+            double value;
+            timestamp = db_result_string(db_result, i, 1);
+            value = db_result_float(db_result, i, 0);
+            metric_name = db_result_string(db_result, i, 2);
+            t_symbol *metric = gensym(metric_name);
+
+            if (x->s_deviation){
+                value = chain_device_compute_deviation(x, metric, value);
+            }
+
+            t_atom av[2];
+            short ac = 2;
+            atom_setsym(av, metric);
+            atom_setfloat(av+1, value);
+
+            outlet_list(x->s_outlet, 0L, ac, av);
+        }
     }
 }
 
