@@ -20,6 +20,7 @@ typedef struct chain_time
     t_chain_worker s_worker;
     void *s_outlet;
     void *s_outlet2;
+    void *s_outlet3;
 } t_chain_time;
 
 // Create + Destroy
@@ -33,6 +34,8 @@ void chain_time_parse(t_chain_time *x, t_symbol *t);
 void chain_time_format(t_chain_time *x, long timestamp);
 void chain_time_now(t_chain_time *x);
 void chain_time_historical_now(t_chain_time *x);
+void chain_time_time_of_day(t_chain_time *x, long tz_shift);
+void chain_time_historical_time_of_day(t_chain_time *x, long tz_shift);
 
 // Notify
 void chain_time_notify(t_chain_time *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
@@ -55,6 +58,8 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)chain_time_format, "format", A_LONG, 0);
     class_addmethod(c, (method)chain_time_now, "now", 0);
     class_addmethod(c, (method)chain_time_historical_now, "historical_now", 0);
+    class_addmethod(c, (method)chain_time_time_of_day, "tod", A_LONG, 0);
+    class_addmethod(c, (method)chain_time_historical_time_of_day, "historical_tod", A_LONG, 0);
 
     CLASS_ATTR_SYM(c, "name", ATTR_SET_OPAQUE_USER, t_chain_time, s_worker.s_site_name);
     
@@ -74,6 +79,7 @@ void *chain_time_new(t_symbol *s, long argc, t_atom *argv)
     
     attr_args_process(x, argc, argv);
     
+    x->s_outlet3 = outlet_new(x, NULL);
     x->s_outlet2 = outlet_new(x, NULL);
     x->s_outlet = outlet_new(x, "int");
     
@@ -136,4 +142,27 @@ void chain_time_historical_now(t_chain_time *x)
     outlet_int(x->s_outlet, (long) timestamp);
     outlet_anything(x->s_outlet2, gensym(buffer), 0, NULL);
     free(buffer);
+}
+
+void chain_time_time_of_day(t_chain_time *x, long tz_shift)
+{
+    time_t timestamp = local_now();
+    time_t seconds = tod_from_time(timestamp);
+
+    outlet_int(x->s_outlet3, ((long)seconds + tz_shift) % 86400);
+}
+
+void chain_time_historical_time_of_day(t_chain_time *x, long tz_shift)
+{
+    t_object *obj = NULL;
+    dictionary_getobject(x->s_worker.s_dictionary, ps_clk, &obj);
+    if (!obj){
+        return;
+    }
+    t_pseudo_clk *clk = (t_pseudo_clk *)obj;
+
+    time_t timestamp = pseudo_now(clk);
+    time_t seconds = tod_from_time(timestamp);
+
+    outlet_int(x->s_outlet3, ((long)seconds + tz_shift) % 86400);
 }

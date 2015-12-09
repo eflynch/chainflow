@@ -77,3 +77,8 @@ char *string_from_time(time_t rawtime){
     strftime(buffer, 40, "%FT%T+00:00", gmtime(&rawtime));
     return buffer;
 }
+
+time_t tod_from_time(time_t rawtime){
+    struct tm *daystart = gmtime(&rawtime);
+    return daystart->tm_hour * 3600 + daystart->tm_min * 60 + daystart->tm_sec;
+}

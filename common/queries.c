@@ -2,6 +2,7 @@
 
 #include "messages.h"
 #include "chainlib.h"
+#include "queries.h"
 
 static const char *insert_device_query = \
 "INSERT INTO devices"
@@ -118,7 +119,7 @@ static const char *get_data_by_device_name_metric_name = \
 "metrics.name=(\"%s\")";
 
 static const char *get_near_data_by_metric_name = \
-"SELECT sensors.value, devices.x, devices.z, "
+"SELECT sensors.value, devices.x, devices.z, devices.name "
 "(((devices.x - %lf) * (devices.x - %lf)) + ((devices.z - %lf) * (devices.z - %lf))) AS distance "
 "FROM sensors, devices, metrics WHERE "
 "distance <= %lf * %lf AND "
@@ -128,7 +129,7 @@ static const char *get_near_data_by_metric_name = \
 "ORDER BY distance";
 
 static const char *get_data_by_metric_name = \
-"SELECT sensors.value, devices.x, devices.z "
+"SELECT sensors.value, devices.x, devices.z, devices.name "
 "FROM sensors, devices, metrics WHERE "
 "sensors.device_id=devices.device_id AND "
 "sensors.metric_id=metrics.metric_id AND "
@@ -352,6 +353,12 @@ void query_near_data_by_metric_name(t_database *db, double x, double z, double s
     err = db_query(db, db_result, get_near_data_by_metric_name, x, x, z, z, s, s, metric);
     if (err)
         chain_error("Error getting data");
+    long num_results = db_result_numrecords(*db_result);
+    if (!num_results){
+        object_free(*db_result);
+        *db_result = NULL;
+        query_data_by_metric_name(db, metric, db_result);
+    }
 }
 
 void query_data_by_metric_name(t_database *db, const char *metric, t_db_result **db_result){

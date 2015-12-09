@@ -28,6 +28,9 @@ typedef struct chain_metric
     t_symbol *s_metric_name;
     t_symbol *s_measure;
     t_symbol *s_interp;
+    t_symbol **s_sensor_list;
+    long s_sensor_list_size;
+    long s_autoupdate;
     float s_pos_x;
     float s_pos_y;
     float s_pos_z;

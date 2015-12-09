@@ -21,6 +21,7 @@ void chain_metric_pos(t_chain_metric *x, t_symbol *s, long argc, t_atom *argv);
 
 // Notify
 void chain_metric_notify(t_chain_metric *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
+void chain_metric_cache_sensor_list(t_chain_metric *x);
 
 void chain_metric_send_mean(t_chain_metric *x);
 void chain_metric_send_std(t_chain_metric *x);
@@ -59,6 +60,8 @@ int C74_EXPORT main(void)
     CLASS_ATTR_FLOAT(c, "pos_z", 0, t_chain_metric, s_pos_z);
     CLASS_ATTR_FLOAT(c, "radius", 0, t_chain_metric, s_radius);
 
+    CLASS_ATTR_LONG(c, "autoupdate", 0L, t_chain_metric, s_autoupdate);
+
     class_register(CLASS_BOX, c);
 
     ps_url = gensym("url");
@@ -94,7 +97,12 @@ void *chain_metric_new(t_symbol *s, long argc, t_atom *argv)
     x->s_measure = ps_mean;
     x->s_interp = ps_proximal;
 
+    x->s_autoupdate = 0;
+    x->s_sensor_list_size = 0;
+
     attr_args_process(x, argc, argv);
+
+    chain_metric_cache_sensor_list(x);
 
     x->s_outlet = outlet_new(x, NULL);
     
@@ -104,15 +112,57 @@ void *chain_metric_new(t_symbol *s, long argc, t_atom *argv)
 void chain_metric_free(t_chain_metric *x)
 {
     chain_worker_release_site((t_chain_worker *)x);
+    if (x->s_sensor_list){
+        free(x->s_sensor_list);
+    }
 }
 
 void chain_metric_notify(t_chain_metric *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
+    if (s == x->s_worker.s_site_name && x->s_autoupdate){
+        int do_it = false;
+        for (int i=0; i < x->s_sensor_list_size; i++){
+            if (msg == x->s_sensor_list[i]){
+                do_it = true;
+                break;
+            }
+        }
+        if (do_it){
+            chain_metric_bang(x);
+        }
+    }
+
     chain_worker_notify((t_chain_worker *)x, s, msg, sender, data);
 }
 
 void chain_metric_int(t_chain_metric *x, long n)
 {
+}
+
+void chain_metric_cache_sensor_list(t_chain_metric *x)
+{
+    if (!x->s_worker.s_db || !x->s_metric_name){
+        return;
+    }
+
+    t_db_result *db_result = NULL;
+    if (x->s_radius > 0.0){
+        query_near_data_by_metric_name(x->s_worker.s_db, x->s_pos_x,
+                                      x->s_pos_z, x->s_radius, x->s_metric_name->s_name, &db_result);
+    } else {
+        query_data_by_metric_name(x->s_worker.s_db, x->s_metric_name->s_name, &db_result);
+    }
+    long num_results = db_result_numrecords(db_result);
+    if (x->s_sensor_list){
+        free(x->s_sensor_list);
+        x->s_sensor_list = NULL;
+    }
+    x->s_sensor_list = malloc(sizeof(*x->s_sensor_list) * num_results);
+    for (int i=0; i < num_results; i++){
+        *(x->s_sensor_list) = gensym(db_result_string(db_result, i, 3));
+    }
+    x->s_sensor_list_size = num_results;
+    object_free(db_result);
 }
 
 void chain_metric_bang(t_chain_metric *x)
@@ -131,6 +181,8 @@ void chain_metric_bang(t_chain_metric *x)
         chain_error("No measure set");
         return;
     }
+
+    chain_metric_cache_sensor_list(x);
 
     if (x->s_measure == ps_mean){
         chain_metric_send_mean(x);
@@ -162,7 +214,7 @@ void chain_metric_send_mean(t_chain_metric *x)
     t_db_result *db_result = NULL;
     if (x->s_radius > 0.0){
         query_near_data_by_metric_name(x->s_worker.s_db, x->s_pos_x,
-                                      x->s_pos_z, x->s_radius, x->s_metric_name->s_name, &db_result);
+                                       x->s_pos_z, x->s_radius, x->s_metric_name->s_name, &db_result);
     } else {
         query_data_by_metric_name(x->s_worker.s_db, x->s_metric_name->s_name, &db_result);
     }
@@ -199,14 +251,13 @@ void chain_metric_send_deviation(t_chain_metric *x){
     } else if (x->s_interp == ps_proximal){
         t_db_result *db_result = NULL;
 
-        // This is basically a hack ... TODO: make this not a hack
-        double radius = x->s_radius;
-        if (radius <= 0.0){
-            radius = 1000000.0;
+        if (x->s_radius > 0.0){
+            query_near_data_by_metric_name(x->s_worker.s_db, x->s_pos_x,
+                                          x->s_pos_z, x->s_radius, x->s_metric_name->s_name, &db_result);
+        } else {
+            query_data_by_metric_name(x->s_worker.s_db, x->s_metric_name->s_name, &db_result);
         }
 
-        query_near_data_by_metric_name(x->s_worker.s_db, x->s_pos_x,
-                                       x->s_pos_z, radius, x->s_metric_name->s_name, &db_result);
         double *argv;
         long argc;
         chain_metric_unpack_values(db_result, &argv, &argc);
@@ -226,14 +277,13 @@ void chain_metric_send_interpolation(t_chain_metric *x){
     } else if (x->s_interp == ps_proximal){
         t_db_result *db_result = NULL;
 
-        // This is basically a hack ... TODO: make this not a hack
-        double radius = x->s_radius;
-        if (radius <= 0.0){
-            radius = 1000000.0;
+        if (x->s_radius > 0.0){
+            query_near_data_by_metric_name(x->s_worker.s_db, x->s_pos_x,
+                                          x->s_pos_z, x->s_radius, x->s_metric_name->s_name, &db_result);
+        } else {
+            query_data_by_metric_name(x->s_worker.s_db, x->s_metric_name->s_name, &db_result);
         }
 
-        query_near_data_by_metric_name(x->s_worker.s_db, x->s_pos_x,
-                                       x->s_pos_z, radius, x->s_metric_name->s_name, &db_result);
         double *argv;
         long argc;
         chain_metric_unpack_values(db_result, &argv, &argc);
