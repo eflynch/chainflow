@@ -174,11 +174,14 @@ void chain_data_doread(t_chain_data *x, t_symbol *s)
     } else {
         strcpy(filename, s->s_name);
         if (locatefile_extended(filename, &path, &outtype, &filetype, 1)){
-            chain_error("%s: not found", s->s_name);
+            // chain_error("%s: not found", s->s_name);
+            // CACHE MISS
+            outlet_anything(x->s_outlet2, gensym("read_miss"), 0L, NULL);
             return;
         }
     }
     chain_data_openfile(x, filename, path);
+    outlet_anything(x->s_outlet2, gensym("read_done"), 0L, NULL);
 }
 
 void chain_data_openfile(t_chain_data *x, char *filename, short path){
@@ -261,7 +264,7 @@ void chain_data_dowrite(t_chain_data *x, t_symbol *s)
 {
     if (!x->s_values || !x->s_offsets || !x->s_num_samples){
         // Fail silently
-        chain_error("No data to write in chain.data");
+        outlet_anything(x->s_outlet2, gensym("write_miss"), 0L, NULL);
         return;
     }
 
@@ -277,6 +280,7 @@ void chain_data_dowrite(t_chain_data *x, t_symbol *s)
         path = path_getdefault();
     }
     chain_data_writefile(x, filename, path);
+    outlet_anything(x->s_outlet2, gensym("write_done"), 0L, NULL);
 }
 
 void chain_data_writefile(t_chain_data *x, char *filename, short path)
@@ -410,9 +414,10 @@ void chain_data_output_resampled_interleaved_list(t_chain_data *x)
 {
     if (!x->s_values || !x->s_offsets || !x->s_num_samples){
         // Fail silently
-        chain_debug("No data saved in chain.data.");
+        // chain_debug("No data saved in chain.data.");
         return;
     }
+    // NOT IMPLMENTED !!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 void chain_data_clear(t_chain_data *x){

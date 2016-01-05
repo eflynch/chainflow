@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 208.0, 249.0, 1047.0, 668.0 ],
+		"rect" : [ 208.0, 249.0, 949.0, 668.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -37,6 +37,56 @@
 		"style" : "",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 149.5, 203.0, 86.0, 22.0 ],
+					"style" : "",
+					"text" : "r #0-readdone"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-13",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 608.0, 416.0, 88.0, 22.0 ],
+					"style" : "",
+					"text" : "s #0-readdone"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-10",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 608.0, 392.0, 99.0, 22.0 ],
+					"style" : "",
+					"text" : "route read_done"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"comment" : "Cache Miss",
+					"id" : "obj-6",
+					"maxclass" : "outlet",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 743.5, 388.0, 30.0, 30.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-9",
 					"maxclass" : "newobj",
@@ -207,7 +257,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 521.0, 395.5, 88.0, 22.0 ],
+					"patching_rect" : [ 479.0, 399.0, 88.0, 22.0 ],
 					"style" : "",
 					"text" : "routepass size"
 				}
@@ -389,9 +439,9 @@
 					"maxclass" : "bpatcher",
 					"name" : "chain.datatable.maxpat",
 					"numinlets" : 2,
-					"numoutlets" : 2,
+					"numoutlets" : 3,
 					"offset" : [ 0.0, 0.0 ],
-					"outlettype" : [ "int", "" ],
+					"outlettype" : [ "int", "", "" ],
 					"patching_rect" : [ 302.0, 256.0, 238.0, 124.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 10.0, 11.0, 238.0, 124.0 ],
@@ -415,6 +465,15 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-1", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-37", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -428,6 +487,33 @@
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-1", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-14", 0 ]
 				}
 
 			}
@@ -548,7 +634,7 @@
 					"destination" : [ "obj-30", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 530.5, 438.25, 803.5, 438.25 ],
+					"midpoints" : [ 488.5, 438.25, 803.5, 438.25 ],
 					"source" : [ "obj-37", 0 ]
 				}
 
@@ -698,14 +784,9 @@
 		"styles" : [ 			{
 				"name" : "maxchain",
 				"default" : 				{
-					"fontface" : [ 0 ],
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"fontname" : [ "Courier" ],
-					"textjustification" : [ 0 ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -716,7 +797,12 @@
 						"autogradient" : 0
 					}
 ,
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ]
+					"fontface" : [ 0 ],
+					"textjustification" : [ 0 ],
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -734,8 +820,8 @@
 , 			{
 				"name" : "maxchain-subtitle",
 				"default" : 				{
-					"fontsize" : [ 20.0 ],
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
+					"fontsize" : [ 20.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -744,10 +830,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"fontsize" : [ 48.0 ],
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 					"fontname" : [ "Courier Bold" ],
-					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
+					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"fontsize" : [ 48.0 ]
 				}
 ,
 				"parentstyle" : "",

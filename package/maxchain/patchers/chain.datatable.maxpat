@@ -38,6 +38,18 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"comment" : "Cashe Miss",
+					"id" : "obj-8",
+					"maxclass" : "outlet",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 705.0, 375.0, 30.0, 30.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-5",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
@@ -540,6 +552,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"midpoints" : [ 279.5, 158.5, 714.5, 158.5 ],
+					"source" : [ "obj-1", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -632,14 +654,6 @@
 		"styles" : [ 			{
 				"name" : "maxchain",
 				"default" : 				{
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"fontface" : [ 0 ],
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"textjustification" : [ 0 ],
-					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
-					"fontname" : [ "Courier" ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -650,7 +664,15 @@
 						"autogradient" : 0
 					}
 ,
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ]
+					"textjustification" : [ 0 ],
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"fontname" : [ "Courier" ],
+					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"fontface" : [ 0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -668,8 +690,8 @@
 , 			{
 				"name" : "maxchain-subtitle",
 				"default" : 				{
-					"fontsize" : [ 20.0 ],
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
+					"fontsize" : [ 20.0 ]
 				}
 ,
 				"parentstyle" : "",
@@ -678,10 +700,10 @@
 , 			{
 				"name" : "maxchain-title",
 				"default" : 				{
-					"fontsize" : [ 48.0 ],
-					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"fontname" : [ "Courier Bold" ],
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
+					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
+					"fontsize" : [ 48.0 ]
 				}
 ,
 				"parentstyle" : "",
