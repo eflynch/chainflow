@@ -285,13 +285,13 @@ void chain_data_dowrite(t_chain_data *x, t_symbol *s)
 
 void chain_data_writefile(t_chain_data *x, char *filename, short path)
 {
-    long message_size = (x->s_num_samples * (44)) + (3 * 20);
+    long message_size = (x->s_num_samples * (44)) + 256;
     char buf[message_size];
     
     // Write Header
-    char header[128];
+    char header[256];
     sprintf(header, "%s %ld %ld", x->s_metric_name->s_name, x->s_start, x->s_end);
-    strncat(buf, header, 128);
+    strncat(buf, header, 256);
     
     // Write Values
     for (long i=0; i < x->s_num_samples; i++){

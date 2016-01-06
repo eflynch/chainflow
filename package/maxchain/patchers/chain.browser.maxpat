@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 59.0, 104.0, 1016.0, 748.0 ],
+		"rect" : [ 59.0, 104.0, 902.0, 748.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -51,7 +51,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "selection",
 					"id" : "obj-6",
 					"maxclass" : "outlet",
 					"numinlets" : 1,
@@ -125,7 +125,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "meta",
 					"id" : "obj-10",
 					"maxclass" : "outlet",
 					"numinlets" : 1,
@@ -137,7 +137,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "historical",
 					"id" : "obj-7",
 					"maxclass" : "outlet",
 					"numinlets" : 1,
@@ -188,7 +188,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "realtime",
 					"id" : "obj-4",
 					"maxclass" : "outlet",
 					"numinlets" : 1,
