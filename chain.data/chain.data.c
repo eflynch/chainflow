@@ -197,6 +197,7 @@ void chain_data_openfile(t_chain_data *x, char *filename, short path){
     char buf[1024 * 1024];
     err = sysfile_read(fh, &num_bytes, buf);
 
+    // Count Tokens
     long num_tokens = 1;
     for (long i=0; i < num_bytes; i++){
         if (buf[i] == ' '){
@@ -206,7 +207,7 @@ void chain_data_openfile(t_chain_data *x, char *filename, short path){
 
     long num_samples = (num_tokens - 3) / 2;
 
-
+    chain_data_clear(x);
 
     // Get metric name token
     char *token;
@@ -239,7 +240,7 @@ void chain_data_openfile(t_chain_data *x, char *filename, short path){
     x->s_end = strtol(token, NULL, 10);
 
 
-    chain_data_clear(x);
+
 
     x->s_values = malloc(num_samples * sizeof(*(x->s_values)));
     x->s_offsets = malloc(num_samples * sizeof(*(x->s_offsets)));
@@ -280,13 +281,15 @@ void chain_data_dowrite(t_chain_data *x, t_symbol *s)
         path = path_getdefault();
     }
     chain_data_writefile(x, filename, path);
+    chain_info("Writing: %s", filename);
     outlet_anything(x->s_outlet2, gensym("write_done"), 0L, NULL);
 }
 
 void chain_data_writefile(t_chain_data *x, char *filename, short path)
 {
+    chain_info("Writing for real: %s", filename);
     long message_size = (x->s_num_samples * (44)) + 256;
-    char buf[message_size];
+    char *buf = malloc(sizeof(*buf) * message_size);
     
     // Write Header
     char header[256];
@@ -295,6 +298,8 @@ void chain_data_writefile(t_chain_data *x, char *filename, short path)
     
     // Write Values
     for (long i=0; i < x->s_num_samples; i++){
+        long j = i;
+        j = j + 0;
         char pair[44];
         sprintf(pair, " %lf %lf", *(x->s_offsets + i), *(x->s_values + i));
         strncat(buf, pair, 44);
@@ -309,6 +314,7 @@ void chain_data_writefile(t_chain_data *x, char *filename, short path)
     err = sysfile_write(fh, &size, (void *)buf);
     if (err) {chain_error("Error writing to file: %s", filename);}
     
+    free(buf);
     sysfile_close(fh);
 }
 
@@ -429,6 +435,9 @@ void chain_data_clear(t_chain_data *x){
         free(x->s_offsets);
         x->s_offsets = NULL;
     }
+    x->s_metric_name = NULL;
+    x->s_start = 0;
+    x->s_end = 0;
     x->s_num_samples = 0;
 }
 
