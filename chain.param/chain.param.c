@@ -2,7 +2,7 @@
  @file
  chain.param - a simple chain_param object
  
- @ingroup    maxchain
+ @ingroup    chainflow
  */
 
 #include "ext.h"

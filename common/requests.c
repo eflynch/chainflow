@@ -60,7 +60,7 @@ static char *request(const char *url)
         .pos = 0
     };
 
-    headers = curl_slist_append(headers, "User-Agent: MaxChain");
+    headers = curl_slist_append(headers, "User-Agent: ChainFlow");
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_response);

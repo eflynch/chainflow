@@ -1114,7 +1114,7 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "chain.tdparse.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}

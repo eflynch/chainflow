@@ -2,10 +2,10 @@
 #include "messages.h"
 #include "ext_dictobj.h"
 
-t_symbol *cws_maxchain, *cws_db, *cws_free, *cws_willfree, *cws_deprecated, *cws_name;
+t_symbol *cws_chainflow, *cws_db, *cws_free, *cws_willfree, *cws_deprecated, *cws_name;
 
 static void chain_worker_prenew(t_chain_worker *x){
-    cws_maxchain = gensym("maxchain");
+    cws_chainflow = gensym("chainflow");
     cws_db = gensym("db");
     cws_free = gensym("free");
     cws_willfree = gensym("willfree");
@@ -54,7 +54,7 @@ void chain_worker_new(t_chain_worker *x, t_symbol *s, long argc, t_atom *argv){
 
 void chain_worker_free(t_chain_worker *x){
     chain_worker_release_site(x);
-    object_detach(cws_maxchain, x->s_site_name, x);
+    object_detach(cws_chainflow, x->s_site_name, x);
 }
 
 void chain_worker_release_site(t_chain_worker *x){
@@ -83,9 +83,9 @@ void chain_worker_find_site(t_chain_worker *x){
 void *chain_worker_find_site_threadproc(t_chain_worker *x)
 {
     while(1){
-        void *site_ptr = object_findregistered(cws_maxchain, x->s_site_name);
+        void *site_ptr = object_findregistered(cws_chainflow, x->s_site_name);
         if (site_ptr != x->s_site_ptr){
-            object_detach(cws_maxchain, x->s_site_name, x);
+            object_detach(cws_chainflow, x->s_site_name, x);
             break;
         }
         if (x->s_find_site_cancel){
@@ -99,12 +99,12 @@ void *chain_worker_find_site_threadproc(t_chain_worker *x)
             break;
         }
         
-        void *site_ptr = object_findregistered(cws_maxchain, x->s_site_name);
+        void *site_ptr = object_findregistered(cws_chainflow, x->s_site_name);
         if (site_ptr){
             x->s_dictionary = dictobj_findregistered_retain(x->s_site_name);
             if (x->s_dictionary){
                 // Subscribe to object
-                x->s_site_ptr = object_attach(cws_maxchain, x->s_site_name, x);
+                x->s_site_ptr = object_attach(cws_chainflow, x->s_site_name, x);
 
                 // Cache pointer to database
                 dictionary_getobject(x->s_dictionary, cws_db, &x->s_db);

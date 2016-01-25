@@ -323,8 +323,8 @@
 				"kind" : "object",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/things/maxchain/package/maxchain/patchers",
-					"projectrelativepath" : "../package/maxchain/patchers"
+					"bootpath" : "~/things/chainflow/package/chainflow/patchers",
+					"projectrelativepath" : "../package/chainflow/patchers"
 				}
 
 			}
@@ -333,8 +333,8 @@
 				"kind" : "object",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/things/maxchain/package/maxchain/patchers",
-					"projectrelativepath" : "../package/maxchain/patchers"
+					"bootpath" : "~/things/chainflow/package/chainflow/patchers",
+					"projectrelativepath" : "../package/chainflow/patchers"
 				}
 
 			}
@@ -355,8 +355,8 @@
 				"kind" : "object",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/things/maxchain/package/maxchain/patchers",
-					"projectrelativepath" : "../package/maxchain/patchers"
+					"bootpath" : "~/things/chainflow/package/chainflow/patchers",
+					"projectrelativepath" : "../package/chainflow/patchers"
 				}
 
 			}

@@ -31,7 +31,7 @@
 *.hex
 
 # Package folder
-package/maxchain/externals/
+package/chainflow/externals/
 package/*.zip
 
 

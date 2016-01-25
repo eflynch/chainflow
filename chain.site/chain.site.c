@@ -2,7 +2,7 @@
  @file
  chain.site - a simple chain_site object
  
- @ingroup    maxchain
+ @ingroup    chainflow
  */
 #include "chain.site.h"
 
@@ -50,14 +50,14 @@ void chain_site_free_update(t_chain_site_and_event *xe);
 
 static t_class *s_chain_site_class = NULL;
 
-t_symbol *ps_url, *ps_db, *ps_clk, *ps_maxchain;
+t_symbol *ps_url, *ps_db, *ps_clk, *ps_chainflow;
 
 int C74_EXPORT main(void)
 {
     ps_url = gensym("url");
     ps_db = gensym("db");
     ps_clk = gensym("clk");
-    ps_maxchain = gensym("maxchain");
+    ps_chainflow = gensym("chainflow");
     
     t_class *c;
 
@@ -152,7 +152,7 @@ void chain_site_set_site_name(t_chain_site *x, t_symbol *site_name)
     dictionary_appendobject(x->s_dictionary, ps_db, x->s_db);
 
     // Register object
-    x->s_reg_ptr = object_register(ps_maxchain, site_name, x);
+    x->s_reg_ptr = object_register(ps_chainflow, site_name, x);
 }
 
 void chain_site_release_site(t_chain_site *x)

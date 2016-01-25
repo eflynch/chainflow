@@ -36,7 +36,7 @@
 		"description" : "",
 		"digest" : "",
 		"tags" : "",
-		"style" : "maxchain",
+		"style" : "chainflow",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
@@ -569,7 +569,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 14.5, 55.0, 438.0, 18.0 ],
-					"style" : "maxchain-subsubtitle",
+					"style" : "chainflow-subsubtitle",
 					"text" : "Evan Lynch, MIT Media Lab - Responsive Environments © 2015"
 				}
 
@@ -580,8 +580,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 277.5, 21.0, 156.0, 26.0 ],
-					"style" : "maxchain-subtitle",
+					"patching_rect" : [ 296.5, 21.0, 156.0, 26.0 ],
+					"style" : "chainflow-subtitle",
 					"text" : "chain.cache"
 				}
 
@@ -605,9 +605,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 14.5, 7.0, 252.0, 54.0 ],
-					"style" : "maxchain-title",
-					"text" : "MAXchain"
+					"patching_rect" : [ 14.5, 7.0, 281.0, 54.0 ],
+					"style" : "chainflow-title",
+					"text" : "ChainFlow"
 				}
 
 			}
@@ -622,7 +622,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 2.5, 4.0, 463.0, 79.0 ],
 					"proportion" : 0.749053,
-					"style" : "maxchain"
+					"style" : "chainflow"
 				}
 
 			}
@@ -894,31 +894,31 @@
 ,
 		"dependency_cache" : [ 			{
 				"name" : "chain.cache.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "chain.browser.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "chain.timerange.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "chain.tdparse.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "chain.datatable.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
@@ -945,9 +945,16 @@
  ],
 		"embedsnapshot" : 0,
 		"styles" : [ 			{
-				"name" : "maxchain",
+				"name" : "chainflow",
 				"default" : 				{
+					"fontface" : [ 0 ],
+					"textjustification" : [ 0 ],
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
+					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
+					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"fontname" : [ "Courier" ],
 					"bgfillcolor" : 					{
 						"type" : "color",
@@ -958,21 +965,14 @@
 						"proportion" : 0.39,
 						"autogradient" : 0
 					}
-,
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"textjustification" : [ 0 ],
-					"fontface" : [ 0 ],
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ]
+
 				}
 ,
 				"parentstyle" : "",
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-subsubtitle",
+				"name" : "chainflow-subsubtitle",
 				"default" : 				{
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
@@ -981,22 +981,22 @@
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-subtitle",
+				"name" : "chainflow-subtitle",
 				"default" : 				{
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
-					"fontsize" : [ 20.0 ]
+					"fontsize" : [ 20.0 ],
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-title",
+				"name" : "chainflow-title",
 				"default" : 				{
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
-					"fontname" : [ "Courier Bold" ],
+					"fontsize" : [ 48.0 ],
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"fontsize" : [ 48.0 ]
+					"fontname" : [ "Courier Bold" ],
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
 				}
 ,
 				"parentstyle" : "",

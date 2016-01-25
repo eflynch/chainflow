@@ -2,7 +2,7 @@
  @file
  chain.time
  
- @ingroup    maxchain
+ @ingroup    chainflow
  */
 #include <time.h>
 

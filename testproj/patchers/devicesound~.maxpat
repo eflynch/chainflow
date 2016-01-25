@@ -1011,7 +1011,7 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "speaknumber~.maxpat",
-				"bootpath" : "~/things/maxchain/testproj/patchers",
+				"bootpath" : "~/things/chainflow/testproj/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1

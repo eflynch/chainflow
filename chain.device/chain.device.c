@@ -2,7 +2,7 @@
  @file
  chain.device - 
  
- @ingroup    maxchain
+ @ingroup    chainflow
  */
 
 #include "ext.h"

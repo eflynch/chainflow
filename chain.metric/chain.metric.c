@@ -2,7 +2,7 @@
  @file
  chain.metric - a chain_metric object
  
- @ingroup    maxchain
+ @ingroup    chainflow
  */
 #include "chain.metric.h"
 

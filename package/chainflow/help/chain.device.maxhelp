@@ -36,7 +36,7 @@
 		"description" : "",
 		"digest" : "",
 		"tags" : "",
-		"style" : "maxchain",
+		"style" : "chainflow",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
@@ -638,7 +638,7 @@
 											}
  ],
 										"styles" : [ 											{
-												"name" : "maxchain",
+												"name" : "chainflow",
 												"default" : 												{
 													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
@@ -665,7 +665,7 @@
 												"multi" : 0
 											}
 , 											{
-												"name" : "maxchain-subsubtitle",
+												"name" : "chainflow-subsubtitle",
 												"default" : 												{
 													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 												}
@@ -674,7 +674,7 @@
 												"multi" : 0
 											}
 , 											{
-												"name" : "maxchain-subtitle",
+												"name" : "chainflow-subtitle",
 												"default" : 												{
 													"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
 													"fontsize" : [ 20.0 ]
@@ -684,7 +684,7 @@
 												"multi" : 0
 											}
 , 											{
-												"name" : "maxchain-title",
+												"name" : "chainflow-title",
 												"default" : 												{
 													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 													"fontname" : [ "Courier Bold" ],
@@ -1054,7 +1054,7 @@
 						"description" : "",
 						"digest" : "",
 						"tags" : "",
-						"style" : "maxchain",
+						"style" : "chainflow",
 						"subpatcher_template" : "",
 						"boxes" : [ 							{
 								"box" : 								{
@@ -1314,7 +1314,7 @@
 											}
  ],
 										"styles" : [ 											{
-												"name" : "maxchain",
+												"name" : "chainflow",
 												"default" : 												{
 													"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 													"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
@@ -1341,7 +1341,7 @@
 												"multi" : 0
 											}
 , 											{
-												"name" : "maxchain-subsubtitle",
+												"name" : "chainflow-subsubtitle",
 												"default" : 												{
 													"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 												}
@@ -1350,7 +1350,7 @@
 												"multi" : 0
 											}
 , 											{
-												"name" : "maxchain-subtitle",
+												"name" : "chainflow-subtitle",
 												"default" : 												{
 													"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
 													"fontsize" : [ 20.0 ]
@@ -1360,7 +1360,7 @@
 												"multi" : 0
 											}
 , 											{
-												"name" : "maxchain-title",
+												"name" : "chainflow-title",
 												"default" : 												{
 													"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 													"fontname" : [ "Courier Bold" ],
@@ -1474,7 +1474,7 @@
 							}
  ],
 						"styles" : [ 							{
-								"name" : "maxchain",
+								"name" : "chainflow",
 								"default" : 								{
 									"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 									"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
@@ -1508,7 +1508,7 @@
 						"description" : "",
 						"digest" : "",
 						"globalpatchername" : "",
-						"style" : "maxchain",
+						"style" : "chainflow",
 						"tags" : ""
 					}
 ,
@@ -1672,7 +1672,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 14.5, 55.0, 438.0, 18.0 ],
-					"style" : "maxchain-subsubtitle",
+					"style" : "chainflow-subsubtitle",
 					"text" : "Evan Lynch, MIT Media Lab - Responsive Environments © 2015"
 				}
 
@@ -1684,7 +1684,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 277.5, 19.0, 156.0, 26.0 ],
-					"style" : "maxchain-subtitle",
+					"style" : "chainflow-subtitle",
 					"text" : "chain.device"
 				}
 
@@ -1709,7 +1709,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 14.5, 7.0, 252.0, 54.0 ],
-					"style" : "maxchain-title",
+					"style" : "chainflow-title",
 					"text" : "MAXchain"
 				}
 
@@ -1725,7 +1725,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 2.5, 4.0, 463.0, 79.0 ],
 					"proportion" : 0.749053,
-					"style" : "maxchain"
+					"style" : "chainflow"
 				}
 
 			}
@@ -2171,7 +2171,7 @@
  ],
 		"embedsnapshot" : 0,
 		"styles" : [ 			{
-				"name" : "maxchain",
+				"name" : "chainflow",
 				"default" : 				{
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
@@ -2198,7 +2198,7 @@
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-subsubtitle",
+				"name" : "chainflow-subsubtitle",
 				"default" : 				{
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
@@ -2207,7 +2207,7 @@
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-subtitle",
+				"name" : "chainflow-subtitle",
 				"default" : 				{
 					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
 					"fontsize" : [ 20.0 ]
@@ -2217,7 +2217,7 @@
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-title",
+				"name" : "chainflow-title",
 				"default" : 				{
 					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
 					"fontname" : [ "Courier Bold" ],

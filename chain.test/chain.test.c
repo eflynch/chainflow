@@ -2,7 +2,7 @@
     @file
     chain.test - a simple chain_test object
  
-    @ingroup    maxchain
+    @ingroup    chainflow
  */
 
 #include "ext.h"

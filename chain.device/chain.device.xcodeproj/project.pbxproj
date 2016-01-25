@@ -247,7 +247,7 @@
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/eflynch/things/maxchain/jansson/build/lib,
+					/Users/eflynch/things/chainflow/jansson/build/lib,
 				);
 			};
 			name = Debug;
@@ -258,7 +258,7 @@
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/eflynch/things/maxchain/jansson/build/lib,
+					/Users/eflynch/things/chainflow/jansson/build/lib,
 				);
 			};
 			name = Release;

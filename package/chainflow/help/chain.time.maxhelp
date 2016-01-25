@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 7,
 			"minor" : 0,
-			"revision" : 3,
+			"revision" : 6,
 			"architecture" : "x86",
 			"modernui" : 1
 		}
@@ -36,7 +36,7 @@
 		"description" : "",
 		"digest" : "",
 		"tags" : "",
-		"style" : "maxchain",
+		"style" : "chainflow",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
@@ -218,8 +218,8 @@
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "int", "" ],
+					"numoutlets" : 3,
+					"outlettype" : [ "int", "", "" ],
 					"patching_rect" : [ 24.0, 297.0, 147.0, 20.0 ],
 					"style" : "",
 					"text" : "chain.time timehelp"
@@ -263,7 +263,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 14.5, 55.0, 438.0, 18.0 ],
-					"style" : "maxchain-subsubtitle",
+					"style" : "chainflow-subsubtitle",
 					"text" : "Evan Lynch, MIT Media Lab - Responsive Environments © 2015"
 				}
 
@@ -274,8 +274,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 277.5, 19.0, 144.0, 26.0 ],
-					"style" : "maxchain-subtitle",
+					"patching_rect" : [ 287.5, 21.0, 144.0, 26.0 ],
+					"style" : "chainflow-subtitle",
 					"text" : "chain.time"
 				}
 
@@ -299,9 +299,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 14.5, 7.0, 252.0, 54.0 ],
-					"style" : "maxchain-title",
-					"text" : "MAXchain"
+					"patching_rect" : [ 14.5, 7.0, 271.0, 54.0 ],
+					"style" : "chainflow-title",
+					"text" : "ChainFlow"
 				}
 
 			}
@@ -316,7 +316,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 2.5, 4.0, 463.0, 79.0 ],
 					"proportion" : 0.749053,
-					"style" : "maxchain"
+					"style" : "chainflow"
 				}
 
 			}
@@ -335,7 +335,7 @@
 					"destination" : [ "obj-7", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 161.5, 336.5, 194.5, 336.5 ],
+					"midpoints" : [ 97.5, 336.5, 194.5, 336.5 ],
 					"source" : [ "obj-1", 1 ]
 				}
 
@@ -418,15 +418,17 @@
  ],
 		"embedsnapshot" : 0,
 		"styles" : [ 			{
-				"name" : "maxchain",
+				"name" : "chainflow",
 				"default" : 				{
+					"fontface" : [ 0 ],
+					"textjustification" : [ 0 ],
 					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
 					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"fontname" : [ "Courier" ],
-					"textjustification" : [ 0 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
-					"fontface" : [ 0 ],
 					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
+					"fontname" : [ "Courier" ],
 					"bgfillcolor" : 					{
 						"type" : "color",
 						"color" : [ 0.639216, 0.458824, 0.070588, 1.0 ],
@@ -436,16 +438,14 @@
 						"proportion" : 0.39,
 						"autogradient" : 0
 					}
-,
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+
 				}
 ,
 				"parentstyle" : "",
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-subsubtitle",
+				"name" : "chainflow-subsubtitle",
 				"default" : 				{
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
@@ -454,21 +454,21 @@
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-subtitle",
+				"name" : "chainflow-subtitle",
 				"default" : 				{
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
-					"fontsize" : [ 20.0 ]
+					"fontsize" : [ 20.0 ],
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-title",
+				"name" : "chainflow-title",
 				"default" : 				{
-					"fontname" : [ "Courier Bold" ],
-					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
 					"fontsize" : [ 48.0 ],
+					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"fontname" : [ "Courier Bold" ],
 					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
 				}
 ,

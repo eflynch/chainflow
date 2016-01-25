@@ -2,7 +2,7 @@
  @file
  chain.zone - a simple chain_zone object
  
- @ingroup    maxchain
+ @ingroup    chainflow
  */
 
 #include <math.h>

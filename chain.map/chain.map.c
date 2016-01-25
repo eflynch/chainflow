@@ -2,7 +2,7 @@
     @file
     chain.map - a simple chain_map object
  
-    @ingroup    maxchain
+    @ingroup    chainflow
  */
 
 #include "ext.h"
@@ -95,7 +95,7 @@ void chain_map_setscale(t_chain_map *x, t_rect *rect);
 static t_class *s_chain_map_class = NULL;
 
 t_symbol *ps_url, *ps_name, *ps_db, *ps_devices, *ps_metrics;
-t_symbol *ps_maxchain, *ps_free, *ps_willfree;
+t_symbol *ps_chainflow, *ps_free, *ps_willfree;
 
 static void init_globals(void){
     ps_url = gensym("url");
@@ -103,7 +103,7 @@ static void init_globals(void){
     ps_db = gensym("db");
     ps_metrics = gensym("metrics");
     ps_devices = gensym("devices");
-    ps_maxchain = gensym("maxchain");
+    ps_chainflow = gensym("chainflow");
 }
 
 /************************************************************/

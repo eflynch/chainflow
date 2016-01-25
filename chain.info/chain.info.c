@@ -2,7 +2,7 @@
     @file
     chain.info - a simple chain_info object
  
-    @ingroup    maxchain
+    @ingroup    chainflow
  */
 
 #include "ext.h"

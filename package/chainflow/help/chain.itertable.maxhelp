@@ -315,13 +315,13 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "chain.itertable.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "chain.datatable.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}

@@ -1518,36 +1518,36 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "devicevoice~.maxpat",
-				"bootpath" : "~/things/maxchain/testproj/patchers",
+				"bootpath" : "~/things/chainflow/testproj/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "devicesound~.maxpat",
-				"bootpath" : "~/things/maxchain/testproj/patchers",
+				"bootpath" : "~/things/chainflow/testproj/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "speaknumber~.maxpat",
-				"bootpath" : "~/things/maxchain/testproj/patchers",
+				"bootpath" : "~/things/chainflow/testproj/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "chain.player.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
-				"patcherrelativepath" : "../../package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
+				"patcherrelativepath" : "../../package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "chain.browser.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
-				"patcherrelativepath" : "../../package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
+				"patcherrelativepath" : "../../package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}

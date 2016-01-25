@@ -23,7 +23,7 @@ JANSSON_DIR = $(SRCROOT)/../jansson
 WEBSOCKET_DIR = $(SRCROOT)/../libwebsockets
 HEADER_SEARCH_PATHS = "$(C74SUPPORT)/max-includes" "$(C74SUPPORT)/msp-includes" "$(C74SUPPORT)/jit-includes" "$(COMMON_DIR)" "$(JANSSON_DIR)/build/include" "$(WEBSOCKET_DIR)/lib" "$(WEBSOCKET_DIR)/build" "/usr/local/opt/openssl/include"
 FRAMEWORK_SEARCH_PATHS = "$(C74SUPPORT)/max-includes" "$(C74SUPPORT)/msp-includes" "$(C74SUPPORT)/jit-includes"
-DSTROOT = $(SRCROOT)/../package/maxchain/externals
+DSTROOT = $(SRCROOT)/../package/chainflow/externals
 // (This next path is relative to DSTROOT)
 INSTALL_PATH = /
 

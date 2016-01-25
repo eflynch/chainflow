@@ -2509,14 +2509,14 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "devicesound~.maxpat",
-				"bootpath" : "~/things/maxchain/testproj/patchers",
+				"bootpath" : "~/things/chainflow/testproj/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "speaknumber~.maxpat",
-				"bootpath" : "~/things/maxchain/testproj/patchers",
+				"bootpath" : "~/things/chainflow/testproj/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1

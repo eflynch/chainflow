@@ -771,7 +771,7 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "chain.datatable.maxpat",
-				"bootpath" : "~/things/maxchain/package/maxchain/patchers",
+				"bootpath" : "~/things/chainflow/package/chainflow/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
@@ -782,8 +782,14 @@
  ],
 		"embedsnapshot" : 0,
 		"styles" : [ 			{
-				"name" : "maxchain",
+				"name" : "chainflow",
 				"default" : 				{
+					"fontface" : [ 0 ],
+					"textjustification" : [ 0 ],
+					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
+					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
 					"textcolor_inverse" : [ 1.0, 1.0, 1.0, 1.0 ],
 					"patchlinecolor" : [ 0.639216, 0.458824, 0.070588, 0.9 ],
 					"fontname" : [ "Courier" ],
@@ -796,20 +802,14 @@
 						"proportion" : 0.39,
 						"autogradient" : 0
 					}
-,
-					"fontface" : [ 0 ],
-					"textjustification" : [ 0 ],
-					"bgcolor" : [ 0.095481, 0.100396, 0.100293, 1.0 ],
-					"accentcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
-					"elementcolor" : [ 0.282353, 0.309804, 0.266667, 1.0 ],
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
+
 				}
 ,
 				"parentstyle" : "",
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-subsubtitle",
+				"name" : "chainflow-subsubtitle",
 				"default" : 				{
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
@@ -818,22 +818,22 @@
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-subtitle",
+				"name" : "chainflow-subtitle",
 				"default" : 				{
-					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ],
-					"fontsize" : [ 20.0 ]
+					"fontsize" : [ 20.0 ],
+					"textcolor" : [ 0.870588, 0.415686, 0.062745, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
 				"multi" : 0
 			}
 , 			{
-				"name" : "maxchain-title",
+				"name" : "chainflow-title",
 				"default" : 				{
-					"fontname" : [ "Courier Bold" ],
-					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ],
+					"fontsize" : [ 48.0 ],
 					"textcolor" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"fontsize" : [ 48.0 ]
+					"fontname" : [ "Courier Bold" ],
+					"clearcolor" : [ 0.317647, 0.654902, 0.976471, 0.0 ]
 				}
 ,
 				"parentstyle" : "",

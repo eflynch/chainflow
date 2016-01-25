@@ -265,8 +265,8 @@
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/lib,
-					/Users/eflynch/things/maxchain/jansson/build/lib,
-					/Users/eflynch/things/maxchain/libwebsockets/build/lib,
+					/Users/eflynch/things/chainflow/jansson/build/lib,
+					/Users/eflynch/things/chainflow/libwebsockets/build/lib,
 				);
 			};
 			name = Debug;
@@ -277,8 +277,8 @@
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/lib,
-					/Users/eflynch/things/maxchain/jansson/build/lib,
-					/Users/eflynch/things/maxchain/libwebsockets/build/lib,
+					/Users/eflynch/things/chainflow/jansson/build/lib,
+					/Users/eflynch/things/chainflow/libwebsockets/build/lib,
 				);
 			};
 			name = Release;

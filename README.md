@@ -1,4 +1,4 @@
-# MaxChain #
+# ChainFlo #
 This build max external objects for interacting with chainAPI
 
 ## Build instructions ##
@@ -10,8 +10,8 @@ brew install cmake
 
 ### Clone repository ###
 ```
-git clone git@github.com:eflynch/maxchain
-cd maxchain
+git clone git@github.com:eflynch/chainflow
+cd chainflow
 git submodule init
 git submodule update
 ```
@@ -49,7 +49,7 @@ make
 
 
 ## Documentation ##
-MaxChain consists of a set of max external objects that interact with eachother and collectively provide an interface for accessing spatially distributed time-series data hosted by chainAPI server.
+ChainFlow consists of a set of Max external objects that interact with eachother and collectively provide an interface for accessing spatially distributed time-series data hosted by chainAPI server.
 
 ### Definitions ###
 * "site" - a collection of devices, sensors, and their data
