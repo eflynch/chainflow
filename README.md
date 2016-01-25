@@ -1,4 +1,4 @@
-# ChainFlo #
+# ChainFlow #
 This build max external objects for interacting with chainAPI
 
 ## Build instructions ##
