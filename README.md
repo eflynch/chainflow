@@ -1,5 +1,5 @@
 # ChainFlow #
-This build max external objects for interacting with chainAPI
+Max external objects for interacting with chainAPI (formerly called MAXChain).
 
 ## Build instructions ##
 
@@ -49,33 +49,10 @@ make
 
 
 ## Documentation ##
-ChainFlow consists of a set of Max external objects that interact with eachother and collectively provide an interface for accessing spatially distributed time-series data hosted by chainAPI server.
+ChainFlow consists of a set of Max external objects that interact with eachother and collectively provide an interface for accessing spatially distributed time-series data hosted by chainAPI server. See Help files for documentation on specific objects.
 
-### Definitions ###
 * "site" - a collection of devices, sensors, and their data
 * "device" - a location in space associated with one or more streams of time-series data usually corresponding to a real-world physical device carrying sensors
 * "metric" - a type of time-series data (e.g. "humidity", "temperature")
 
-### Objects ###
 The `[chain.site]` object manages a connection to a chainAPI server. The other `[chain.*]` objects need to be attached to an instance of `[chain.site]` which manages them. The first and only argument to all `[chain.*]` objects is an identifier to associate workers with a site. This defaults to a genric identifier "defaul_site." Each instance of `[chain.site]` should be given a unique identifier.
-
-#### `[chain.site]` ####
-
-
-#### `[chain.device]` ####
-
-
-#### `[chain.info]` ####
-
-
-#### `[chain.zone]` ####
-
-
-#### `[chain.time]` ####
-
-
-#### `[chain.metric]` ####
-
-
-#### `[chain.map]` ####
-
